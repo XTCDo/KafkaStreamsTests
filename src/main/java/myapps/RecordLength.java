@@ -45,7 +45,7 @@ public class RecordLength {
         final StreamsBuilder builder = new StreamsBuilder();
 
 		KStream<String, String> source = builder.stream("streams-plaintext-input");
-		source.flatMapValues((key, value) -> Arrays.asList(Integer.toString(value.length())))
+		source.mapValues((key, value) -> Integer.toString(value.length()))
                 .to("streams-recordlength-output");
 
         final Topology topology = builder.build();
