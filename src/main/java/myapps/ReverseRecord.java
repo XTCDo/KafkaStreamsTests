@@ -57,6 +57,8 @@ public class ReverseRecord {
             }
         });
 
+		outputStream.to("streams-reverserecord-output");
+
         final Topology topology = builder.build();
 		System.out.println(topology.describe());
         final KafkaStreams streams = new KafkaStreams(topology, props);
