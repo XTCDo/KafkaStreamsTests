@@ -50,8 +50,9 @@ public class LineSplit {
 		source.flatMapValues(
 		            // The regex \\W+ matches on one or more special characters
                     // and is used to define the delimiter on which to split
-                    // the input records. Because there are one or more output
-                    // records per input record we use flatMapValues
+                    // the input records.
+                    // Because there are one or more output
+                    // records per input record we use flatMapValues.
 		            value -> Arrays.asList(value.split("\\W+"))
                 )
                 // Send output records to the 'streams-linesplit-output" topic

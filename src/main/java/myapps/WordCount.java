@@ -27,8 +27,14 @@ public class WordCount {
         final StreamsBuilder builder = new StreamsBuilder();
 
         KStream<String, String> source = builder.stream("streams-plaintext-input");
-        source.flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))
+        source.flatMapValues(
+                // Turn the Value of the input record into a list of words. The input record is split
+                // into several strings using "\\W+" as delimiter.
+                value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))
+                // Group the new records. The new records are all single words.
                 .groupBy((key, value) -> value)
+
+                // I have not figured out the rest of this code yet.
                 .count(Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("counts-store"))
                 .toStream()
                 .to("streams-wordcount-output", Produced.with(Serdes.String(), Serdes.Long()));
