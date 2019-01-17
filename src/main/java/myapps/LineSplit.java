@@ -43,8 +43,19 @@ public class LineSplit {
 
         final StreamsBuilder builder = new StreamsBuilder();
 
+        // Get a source stream from the topic 'streams-plaintext-input'
 		KStream<String, String> source = builder.stream("streams-plaintext-input");
-		source.flatMapValues(value -> Arrays.asList(value.split("\\W+"))).to("streams-linesplit-output");
+		// Split every record into separate words. This results in one or more output record
+        // per input record.
+		source.flatMapValues(
+		            // The regex \\W+ matches on one or more special characters
+                    // and is used to define the delimiter on which to split
+                    // the input records. Because there are one or more output
+                    // records per input record we use flatMapValues
+		            value -> Arrays.asList(value.split("\\W+"))
+                )
+                // Send output records to the 'streams-linesplit-output" topic
+                .to("streams-linesplit-output");
 
         final Topology topology = builder.build();
 		System.out.println(topology.describe());

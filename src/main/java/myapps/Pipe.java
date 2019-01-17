@@ -33,18 +33,29 @@ import java.util.concurrent.CountDownLatch;
 public class Pipe {
 
     public static void main(String[] args) throws Exception {
+        // Start of by defining the properties for the Stream
         Properties props = new Properties();
+        // Name the Streams application
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-pipe");
+        // Point it towards the correct kafka broker
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        // Define in what way the Key of each record should be (de)serialized
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        // Define in what way the Value of each record should be (de)serialized
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
+        // Create a StreamsBuilder
         final StreamsBuilder builder = new StreamsBuilder();
 
+        // Stream records in the topic 'streams-plaintext-input' to the topic
+        //  'streams-pipe-output'
         builder.stream("streams-plaintext-input").to("streams-pipe-output");
 
+        // Create the Topology defined above
         final Topology topology = builder.build();
         System.out.println(topology.describe());
+
+        // Make an actual stream out of the defined topology
         final KafkaStreams streams = new KafkaStreams(topology, props);
         final CountDownLatch latch = new CountDownLatch(1);
 
@@ -58,6 +69,7 @@ public class Pipe {
         });
 
         try {
+            // Start the streams application and stop it on ctrl+c
             streams.start();
             latch.await();
         } catch (Throwable e) {
