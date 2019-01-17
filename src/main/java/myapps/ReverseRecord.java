@@ -22,6 +22,7 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.ValueMapper;
 
 import java.util.Arrays;
 import java.util.Properties;
@@ -44,7 +45,17 @@ public class ReverseRecord {
         final StreamsBuilder builder = new StreamsBuilder();
 
 		KStream<String, String> source = builder.stream("streams-plaintext-input");
-		source.mapValues(value -> reverse(value)).to("streams-reverserecord-output");
+		KStream<String, String> outputStream = source.mapValues(new ValueMapper<String, String>() {
+            @Override
+            public String apply(String input) {
+                char [] inputAsCharArray = input.toCharArray();
+                char [] outputAsCharArray = [inputAsCharArray.length];
+                for(int i = 0; i < inputAsCharArray.length; i++){
+                    outputAsCharArray[inputAsCharArray.length - 1 - i] = inputAsCharArray[i];
+                }
+                return new String(outputAsCharArray);
+            }
+        });
 
         final Topology topology = builder.build();
 		System.out.println(topology.describe());
@@ -67,16 +78,5 @@ public class ReverseRecord {
             System.exit(1);
         }
         System.exit(0);
-    }
-
-    private static String reverse(String input){
-        char[] inputAsCharArray = input.toCharArray();
-        char[] outputAsCharArray = new char[inputAsCharArray.length];
-        int j = 0;
-        for(int i = inputAsCharArray.length - 1; i >= 0; i--){
-            outputAsCharArray[j] = inputAsCharArray[i];
-            j++;
-        }
-        return new String(outputAsCharArray);
     }
 }
