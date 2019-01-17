@@ -49,7 +49,7 @@ public class ReverseRecord {
             @Override
             public String apply(String input) {
                 char [] inputAsCharArray = input.toCharArray();
-                char [] outputAsCharArray = [inputAsCharArray.length];
+                char [] outputAsCharArray = new char[inputAsCharArray.length];
                 for(int i = 0; i < inputAsCharArray.length; i++){
                     outputAsCharArray[inputAsCharArray.length - 1 - i] = inputAsCharArray[i];
                 }
