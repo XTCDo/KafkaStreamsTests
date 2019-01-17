@@ -1,3 +1,4 @@
 target/
 streams.examples.iml
 .idea
+.*
