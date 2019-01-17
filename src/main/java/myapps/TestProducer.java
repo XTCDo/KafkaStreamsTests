@@ -8,6 +8,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.StreamsConfig;
 
 import java.util.Properties;
+import java.util.Random;
 
 public class TestProducer {
     public static void main(String[] args) throws Exception {
@@ -30,4 +31,8 @@ public class TestProducer {
 
         producer.close();
     }
+
+	private static int randomInteger(int min, int max) {
+		return Random.nextInt((max - min) + 1) + min;
+	}
 }
