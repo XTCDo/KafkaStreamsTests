@@ -38,7 +38,7 @@ public class RandomWordProducer {
                     while(true){
                         // Add random words to generatedWord
                         String[] generatedWordArray = new String[WORD_LENGTH];
-                        for(int i = 0; i < WORD_LENGTH - 1; i++){
+                        for(int i = 0; i < WORD_LENGTH; i++){
                             generatedWordArray[i] = WORDS[randomInteger(0, WORDS.length - 1)];
                         }
 
