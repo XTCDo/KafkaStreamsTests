@@ -33,8 +33,8 @@ public class RandomWordProducer {
                     final int MIN_WORDS = 1;
                     final int MAX_WORDS = WORDS.length;
 
-                    String generatedWord = "";
                     while(true){
+                        String generatedWord = "";
                         for(int i = MIN_WORDS; i < MAX_WORDS - 1; i++){
                             generatedWord += " ";
                             generatedWord += WORDS[randomInteger(0, WORDS.length - 1)];
