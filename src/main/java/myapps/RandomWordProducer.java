@@ -43,7 +43,7 @@ public class RandomWordProducer {
                                 generatedWord, generatedWord));
 
                         // Sleep because obviously
-                        Thread.sleep(10);
+                        Thread.sleep(1000);
                     }
                 } catch(Exception e){
                     e.printStackTrace();
