@@ -22,23 +22,31 @@ public class RandomWordProducer {
         props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
         props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
 
+        // Create producer with key and value both being String
         Producer<String, String> producer = new KafkaProducer<String, String>(props);
 
+        // Create a thread to keep our producer going
         Thread producerThread = new Thread(){
             public void run(){
                 try {
+                    // List of random words
                     final String[] WORDS = {
                         "test", "random", "word", "java", "kafka", "apache"
                     };
-                    final int MIN_WORDS = 1;
-                    final int MAX_WORDS = WORDS.length;
+                    final int WORD_LENGTH = 4;
 
                     while(true){
+                        // Make generatedWord empty
                         String generatedWord = "";
-                        for(int i = MIN_WORDS; i < MAX_WORDS - 1; i++){
+
+                        // Add random words to generatedWord
+                        StringBuilder builder = new StringBuilder();
+                        for(int i = 0; i < WORD_LENGTH - 1; i++){
                             generatedWord += " ";
                             generatedWord += WORDS[randomInteger(0, WORDS.length - 1)];
                         }
+
+                        // Send the random word to the topic
                         producer.send(new ProducerRecord<String, String>("streams-plaintext-input",
                                 generatedWord, generatedWord));
                         Thread.sleep(1000);
