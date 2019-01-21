@@ -36,15 +36,13 @@ public class RandomWordProducer {
                     final int WORD_LENGTH = 4;
 
                     while(true){
-                        // Make generatedWord empty
-                        String generatedWord = "";
-
                         // Add random words to generatedWord
                         StringBuilder builder = new StringBuilder();
                         for(int i = 0; i < WORD_LENGTH - 1; i++){
-                            generatedWord += " ";
-                            generatedWord += WORDS[randomInteger(0, WORDS.length - 1)];
+                            builder.append(WORDS[randomInteger(0, WORDS.length - 1)]);
                         }
+
+                        String generatedWord = builder.toString();
 
                         // Send the random word to the topic
                         producer.send(new ProducerRecord<String, String>("streams-plaintext-input",
