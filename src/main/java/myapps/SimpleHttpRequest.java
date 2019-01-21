@@ -29,6 +29,8 @@ public class SimpleHttpRequest {
                 response.append(inputLine);
             }
 
+            System.out.println(con.getHeaderField("X-Influxdb-Version"));
+
             in.close();
 
             System.out.println(response.toString());
