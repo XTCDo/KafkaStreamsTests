@@ -1,15 +1,17 @@
 package myapps;
 
 import org.apache.kafka.clients.consumer.*;
-import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
+import java.time.Duration;
 
-public class BasicConsumer {
+public class InfluxConsumer {
+    /*
     public static void main(String[] args){
+
+        // Kafka properties
         Properties props = new Properties();
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "TestBasicConsumer");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
@@ -18,6 +20,7 @@ public class BasicConsumer {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
+        // setting up the consumer
         final Consumer<String, String> consumer = new KafkaConsumer<String, String>(props);
 
         consumer.subscribe(Arrays.asList("streams-pipe-output"));
@@ -28,4 +31,5 @@ public class BasicConsumer {
             }
         }
     }
+*/
 }
