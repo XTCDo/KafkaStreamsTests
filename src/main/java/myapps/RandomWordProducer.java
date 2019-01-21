@@ -36,17 +36,13 @@ public class RandomWordProducer {
                     final int WORD_LENGTH = 4;
 
                     while(true){
-                        // Add random words to generatedWord
-                        String[] generatedWordArray = new String[WORD_LENGTH];
-                        for(int i = 0; i < WORD_LENGTH - 1; i++){
-                            generatedWordArray[i] = WORDS[randomInteger(0, WORDS.length)];
-                        }
+                        String generatedWord = randomString(WORDS, WORD_LENGTH);
 
-                        String generatedWord = String.join(" ", generatedWordArray);
-                        
                         // Send the random word to the topic
                         producer.send(new ProducerRecord<String, String>("streams-plaintext-input",
                                 generatedWord, generatedWord));
+
+                        // Sleep because obviously
                         Thread.sleep(1000);
                     }
                 } catch(Exception e){
@@ -56,10 +52,10 @@ public class RandomWordProducer {
         };
 
         final CountDownLatch latch = new CountDownLatch(1);
-
         Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook"){
             @Override
             public void run(){
+                // Stop producer when thread stops
                 producer.close();
                 latch.countDown();
             }
@@ -79,4 +75,14 @@ public class RandomWordProducer {
 		Random rand = new Random();
 		return rand.nextInt((max - min) + 1) + min;
 	}
+
+	private static String randomString(String[] words, int wordLength){
+        String [] wordsArray = new String[wordLength];
+
+        for(int i = 0; i < wordLength; i++){
+            wordsArray[i] = words[randomInteger(0, words.length - 1)];
+        }
+
+        return String.join(" ", wordsArray);
+    }
 }
