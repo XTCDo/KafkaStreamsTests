@@ -46,24 +46,14 @@ public class ReverseRecordLambdaPoter {
         // Get a source stream from the topic 'streams-plaintext-input'
 		KStream<String, String> source = builder.stream("streams-plaintext-input");
 
-		// Reverse each input record. The notation here is different because I did not use
-        // the lambda notation.
-        // I create a ValueMapper that takes a Key and Value as input, both as strings (<String, String>)
-        // Then I take the Value (input) and reverse it.
-        // I define the stream of reversed records as 'outputStream'
-		KStream<String, String> outputStream = source.mapValues(new ValueMapper<String, String>() {
-            @Override
-            public String apply(String input) {
-                char [] inputAsCharArray = input.toCharArray();
-                char [] outputAsCharArray = new char[inputAsCharArray.length];
-                for(int i = 0; i < inputAsCharArray.length; i++){
-                    outputAsCharArray[inputAsCharArray.length - 1 - i] = inputAsCharArray[i];
-                }
-                return new String(outputAsCharArray);
+        source.mapValues(value -> {
+            char[] inputAsCharArray = value.toCharArray();
+            char[] outputAsCharArray = new char[inputAsCharArray.length];
+            for(int i = 0; i < inputAsCharArray.length; i++){
+                outputAsCharArray[inputAsCharArray.length - 1 - i] = inputAsCharArray[i];
             }
+            return new String(outputAsCharArray);
         });
-        // Send the reversed records in outputStream to the output topic 'streams-reverserecord-output'
-		outputStream.to("streams-reverserecord-output");
 
         final Topology topology = builder.build();
 		System.out.println(topology.describe());
