@@ -1,7 +1,7 @@
 defmodule Pipe do
   @moduledoc false
   use KafkaEx.GenConsumer
-  alias kafkaEx.Protocol.Fetch.Message
+  alias KafkaEx.Protocol.Fetch.Message
 
   require Logger
 
