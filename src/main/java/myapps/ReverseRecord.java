@@ -36,6 +36,8 @@ import java.util.concurrent.CountDownLatch;
 public class ReverseRecord {
 
     public static void main(String[] args) throws Exception {
+
+        // conventional props setup
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-reverserecord");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -62,7 +64,10 @@ public class ReverseRecord {
                 }
                 return new String(outputAsCharArray);
             }
+
         });
+
+
         // Send the reversed records in outputStream to the output topic 'streams-reverserecord-output'
 		outputStream.to("streams-reverserecord-output");
 
