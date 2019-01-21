@@ -19,7 +19,7 @@ public class BasicConsumer {
 
         final Consumer<String, String> consumer = new KafkaConsumer<String, String>(props);
 
-        consumer.subscribe(Arrays.asList("streams-pip-output"));
+        consumer.subscribe(Arrays.asList("streams-pipe-output"));
         while(true){
             ConsumerRecords<String, String> records = consumer.poll(10);
             for(ConsumerRecord<String, String> record: records){
