@@ -21,7 +21,7 @@ public class InfluxInsertTest {
             Map<String, String> parameters = new HashMap<>();
             parameters.put("db","kafka_test");
             parameters.put("q", "weather,location=us-midwest temperature=8");
-
+            ;
             // request is url-encoded
             //con.setRequestProperty("Content-Type", "form/multipart");
 
