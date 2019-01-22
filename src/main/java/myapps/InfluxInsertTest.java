@@ -13,7 +13,7 @@ public class InfluxInsertTest {
     public static void main(String[] args){
         try {
             // set up connection to localhost URL
-            URL url = new URL("http://localhost:8086/query?");
+            URL url = new URL("http://localhost:8086/write?");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
 
@@ -27,6 +27,7 @@ public class InfluxInsertTest {
 
             // do the request, specified by out
             con.setDoOutput(true);
+
             DataOutputStream out = new DataOutputStream(con.getOutputStream());
             out.writeBytes(ParameterStringBuilder.getParamsString(parameters));
             out.flush();
