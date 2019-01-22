@@ -2,3 +2,4 @@ target/
 streams.examples.iml
 .idea
 .*
+src/cola/
