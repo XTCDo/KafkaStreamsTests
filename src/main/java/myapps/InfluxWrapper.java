@@ -37,8 +37,7 @@ public class InfluxWrapper {
 
             // do something with the response specified by in
             int status = con.getResponseCode();
-            switch (status) {
-                case 200:
+                if (status<300){ // 2XX is okay range for HTTP
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(con.getInputStream()));
                     String inputLine;
@@ -48,11 +47,12 @@ public class InfluxWrapper {
                     }
                     in.close();
                     System.out.println(content);
-                default:
-                    System.out.println(status);
+
+            }else{
+                System.out.println(status);
             }
 
-
+            con.disconnect();
         } catch (Exception e){
             e.printStackTrace();
         }
