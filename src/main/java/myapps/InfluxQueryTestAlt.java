@@ -13,6 +13,7 @@ public class InfluxQueryTestAlt {
     public static void main(String[] args){
         // connect to influxDB
         InfluxDB influxDB = InfluxDBFactory.connect("http://localhost:8086");
+
         // what database to use
         String dbName = "kafka_test";
 
@@ -21,11 +22,7 @@ public class InfluxQueryTestAlt {
         influxDB.enableBatch(BatchOptions.DEFAULTS);
 
         Query query = new Query("SELECT * FROM weather", dbName);
-        influxDB.query(query, queryResult -> {
-            System.out.println(queryResult);
-        },throwable -> {
-            throwable.printStackTrace();
-        });
+        influxDB.query(query, System.out::println, Throwable::printStackTrace);
         influxDB.close();
     }
 }
