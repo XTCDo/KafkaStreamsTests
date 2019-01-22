@@ -13,14 +13,16 @@ public class InfluxAPIClientTest {
         String dbName = "kafka_test";
         influxDB.setDatabase(dbName);
         String rpName = "aRetentionPolicy";
-        //influxDB.createRetentionPolicy(rpName, dbName, "30d", "30m", 2, true);
-        //influxDB.setRetentionPolicy(rpName);
+        influxDB.createRetentionPolicy(rpName, dbName, "30d", "30m", 2, true);
+        influxDB.setRetentionPolicy(rpName);
         influxDB.enableBatch(BatchOptions.DEFAULTS);
-
+        System.out.println("about to write");
         influxDB.write(Point.measurement("weather")
             .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
             .addField("location", "midwest-us")
             .addField("temperature", 90)
             .build());
+        System.out.print("done writing");
+        influxDB.dropRetentionPolicy(rpName,dbName);
     }
 }
