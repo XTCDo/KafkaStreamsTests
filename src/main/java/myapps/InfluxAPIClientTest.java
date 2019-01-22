@@ -15,14 +15,9 @@ public class InfluxAPIClientTest {
         String rpName = "aRetentionPolicy";
         influxDB.createRetentionPolicy(rpName, dbName, "30d", "30m", 2, true);
         influxDB.setRetentionPolicy(rpName);
-        influxDB.enableBatch(BatchOptions.DEFAULTS);
-        System.out.println("about to write");
-        influxDB.write(Point.measurement("weather")
-            .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-            .addField("location", "midwest-us")
-            .addField("temperature", 90)
-            .build());
-        System.out.print("done writing");
+        influxDB.enableBatch(2000,100, TimeUnit.MILLISECONDS);
         influxDB.dropRetentionPolicy(rpName,dbName);
+
+        influxDB.close();
     }
 }
