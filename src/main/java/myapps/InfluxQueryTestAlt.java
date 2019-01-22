@@ -21,7 +21,7 @@ public class InfluxQueryTestAlt {
         influxDB.setDatabase(dbName);
         influxDB.enableBatch(BatchOptions.DEFAULTS);
 
-        Query query = new Query("SELECT * FROM weather", dbName);
+        Query query = new Query("INSERT weather,location=us-midwest temperature=8", dbName);
         influxDB.query(query, System.out::println, Throwable::printStackTrace);
         influxDB.close();
     }
