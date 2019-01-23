@@ -42,6 +42,7 @@ public class InfluxDAO {
         // connect to influxdb
         InfluxDB ifdb = connect();
         // connect
+        ifdb.setLogLevel(InfluxDB.LogLevel.FULL);
         ifdb.setDatabase(database);
         ifdb.enableBatch(BatchOptions.DEFAULTS);
 
