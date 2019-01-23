@@ -46,13 +46,13 @@ public class InfluxDAO {
 
         // connect
         ifdb.setDatabase(database);
-        ifdb.enableBatch(BatchOptions.DEFAULTS);
+        //ifdb.enableBatch(BatchOptions.DEFAULTS);
 
         // prepare query
         Query query = new Query(inputquery, database);
 
         // perform the query
-        StringBuilder responseStringBuilder= new StringBuilder();
+        StringBuilder responseStringBuilder = new StringBuilder();
         ifdb.query(query, responseStringBuilder::append, Throwable::printStackTrace);
 
         // close connection
@@ -60,9 +60,16 @@ public class InfluxDAO {
 
         return responseStringBuilder.toString();
     }
-    
+
+    /**
+     * Performs an INSERT query on a given database in a given table
+     * @param database The name of the database to insert into
+     * @param table The table to insert to
+     * @param tags The tags that should be inserted
+     * @param fields The values/fields that should be inserted
+     * @return true if no exception
+     */
     public boolean insertRecord(String database, String table, Map<String, String> tags, Map<String, String> fields){
-        //"INSERT weather,location=us-midwest temperature=8"
         try {
             String tagsAsString = tagsMapToString(tags);
             String fieldsAsString = fieldsMapToString(fields);
@@ -75,7 +82,7 @@ public class InfluxDAO {
                     .append(fieldsAsString);
 
             String queryString = new String(queryStringBuilder);
-            System.out.println("query built:\t"+queryString);
+            System.out.println("query built:\n"+queryString);
             System.out.println("response:\t"+this.query(database, queryString));
             return true;
         } catch (Throwable e){
@@ -84,6 +91,13 @@ public class InfluxDAO {
         }
     }
 
+    /**
+     * Transforms a Map of fields into a String to be used in a query
+     * Values that match the regex "\\d+" are not surrounded by double quotes
+     * Values that don't match the regex "\\d+" are surrounded by double quotes
+     * @param map The map that should be transformed into a String
+     * @return The given Map as a String to use in a query
+     */
     private String fieldsMapToString(Map<String, String> map){
         Set<String> keySet = map.keySet();
         List<String> keyValuePairsAsString = new ArrayList<String>();
@@ -98,6 +112,11 @@ public class InfluxDAO {
         return String.join(",", keyValuePairsAsString);
     }
 
+    /**
+     * Transforms a Map of tags into a string to be used in a query
+     * @param map The Map that should be tranformed into a String
+     * @return The given Map as a String to use in a query
+     */
     private String tagsMapToString(Map<String, String> map){
         Set<String> keySet = map.keySet();
         List<String> keyValuePairsAsStrings = new ArrayList<String>();
