@@ -1,9 +1,5 @@
 package myapps;
 
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
-import org.apache.kafka.common.protocol.types.Field;
-//todo tr " " to "_" in tags
-// todo edit RecordTest to test for string fields
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;

@@ -12,7 +12,7 @@ public class RecordTest {
         // instantiating an empty record and populating it with tags & fields
         Record earth= new Record();
         earth.addTag("location","Terra");
-        earth.addTag("capitol", "Diepenbeek");
+        earth.addTag("capitol", "Diepenbeek stad");
 
         earth.addField("gravity", 9.81);
         earth.addField("temperature",20);
