@@ -9,7 +9,7 @@ import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
 
 import java.net.URL;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -61,9 +61,27 @@ public class InfluxDAO {
         return responseStringBuilder.toString();
     }
 
+
     public boolean insertRecord(String database, String table, Map<String, String> values){
-        "INSERT weather,location=us-midwest temperature=8"
-        query(database, "INSERT"+table+);
+        //"INSERT weather,location=us-midwest temperature=8"
+        try {
+            Set<String> keySet = values.keySet();
+            List<String> keyValuePairsAsStrings = new ArrayList<>();
+            for (String key : keySet) {
+                keyValuePairsAsStrings.add(key + "=" + values.get(key));
+            }
+            String keyValuePairsAsString = String.join(" ", keyValuePairsAsStrings);
+            StringBuilder queryStringBuilder = new StringBuilder();
+            queryStringBuilder.append("INSERT ");
+            queryStringBuilder.append(table).append(",");
+            queryStringBuilder.append(keyValuePairsAsString);
+            String queryString = new String(queryStringBuilder);
+            query(database, queryString);
+            return true;
+        } catch (Throwable e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
