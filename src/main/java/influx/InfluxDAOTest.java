@@ -9,7 +9,7 @@ public class InfluxDAOTest {
         InfluxDAO dao = new InfluxDAO("http://localhost:8086/write");
 
         // === pinging database ===
-        dao.ping();
+        //dao.ping();
 
         // === testing basic query ===
         dao.query("kafka_test","SELECT * FROM planets");
