@@ -4,7 +4,6 @@ package influx;
 import org.influxdb.BatchOptions;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
-import org.influxdb.dto.Pong;
 import org.influxdb.dto.Query;
 
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class InfluxDAO {
 
         // perform the query
         StringBuilder responseStringBuilder = new StringBuilder();
-        System.out.println("performing query:\t"+query.toString());
+        System.out.println("performing query:\t"+query.getCommand());
         // perform query and immediately process response
         ifdb.query(query, responseStringBuilder::append, Throwable::printStackTrace);
         String responseString = responseStringBuilder.toString();
