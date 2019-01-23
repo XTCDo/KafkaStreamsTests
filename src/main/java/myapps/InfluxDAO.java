@@ -1,6 +1,7 @@
 package myapps;
 
 
+import com.sun.javafx.util.Logging;
 import org.apache.kafka.common.protocol.types.Field;
 import org.influxdb.BatchOptions;
 import org.influxdb.InfluxDB;
@@ -11,6 +12,7 @@ import org.influxdb.dto.Query;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class InfluxDAO {
@@ -75,13 +77,13 @@ public class InfluxDAO {
             queryStringBuilder.append(table).append(",");
             queryStringBuilder.append(keyValuePairsAsString);
             String queryString = new String(queryStringBuilder);
-            System.out.println(this.query(database, queryString));
+            System.out.println("query built:\t"+queryString);
+            System.out.println("response:\t"+this.query(database, queryString));
             return true;
         } catch (Throwable e){
             e.printStackTrace();
             return false;
         }
     }
-
 
 }
