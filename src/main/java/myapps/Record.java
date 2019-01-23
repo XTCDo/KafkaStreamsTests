@@ -12,25 +12,25 @@ public class Record {
 
     // === constructors ===
     public Record(){
-        this.tags= new HashMap<>();
+        this.tags = new HashMap<>();
         this.fields = new HashMap<>();
     }
     public Record(Map<String, String> tags, Map<String, Object> fields){
-        this.tags=tags;
-        this.fields=fields;
+        this.tags = tags;
+        this.fields = fields;
     }
 
     // === publically available functs ==
     public String toString(){
-        String tagString=tags.entrySet() // perform stream on entrySet
+        String tagString = tags.entrySet() // perform stream on entrySet
                 .stream()   // start java stream
                 .map(entry -> entry.getKey() + "=" + entry.getValue())  // map all entries to function
                 .collect(Collectors.joining(","));  // join mapped Strings with delimiter ","
-        String fieldString=fields.entrySet()
+        String fieldString = fields.entrySet()
                 .stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue().toString())
                 .collect(Collectors.joining(","));
-        return (tagString+" "+fieldString);
+        return (tagString + " " + fieldString);
     }
 
     public void addTag(String key, String tag){
