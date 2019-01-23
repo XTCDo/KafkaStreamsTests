@@ -77,32 +77,6 @@ public class InfluxDAO {
         return responseString;
     }
 
-
-    /**
-     *  simplified record insert function
-     * @param database
-     * @param table
-     * @param record
-     */
-    public void simpleInsertRecord(String database,String table, Record record){
-        try{
-            // Build the query string
-            StringBuilder queryStringBuilder = new StringBuilder();
-            queryStringBuilder.append("INSERT ")
-                    .append(table).append(",")
-                    .append(record.toString());
-            String queryString = new String(queryStringBuilder);
-            System.out.println("query built:\t" + queryString);
-
-            // Perform query and print response
-            String response = query(database, queryString);
-            System.out.println("response:\t" + response);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
     /**
      * Performs an INSERT query on a given database in a given table
      * @param database The name of the database to insert into
