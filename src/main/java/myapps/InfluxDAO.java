@@ -71,19 +71,23 @@ public class InfluxDAO {
      */
     public boolean insertRecord(String database, String table, Map<String, String> tags, Map<String, String> fields){
         try {
+            // Convert tags and fields to strings
             String tagsAsString = tagsMapToString(tags);
             String fieldsAsString = fieldsMapToString(fields);
 
+            // Build the query string
             StringBuilder queryStringBuilder = new StringBuilder();
             queryStringBuilder.append("INSERT ")
                     .append(table).append(",")
                     .append(tagsAsString)
                     .append(" ")
                     .append(fieldsAsString);
-
             String queryString = new String(queryStringBuilder);
-            System.out.println("query built:\n"+queryString);
-            System.out.println("response:\t"+this.query(database, queryString));
+            System.out.println("query built: " + queryString);
+
+            // Perform query and print response
+            String response = query(database, queryString);
+            System.out.println("response:\t" + response);
             return true;
         } catch (Throwable e){
             e.printStackTrace();
@@ -99,16 +103,23 @@ public class InfluxDAO {
      * @return The given Map as a String to use in a query
      */
     private String fieldsMapToString(Map<String, String> map){
+        // Get keys from given map
         Set<String> keySet = map.keySet();
         List<String> keyValuePairsAsString = new ArrayList<String>();
+
+        // Iterate through keys and add strings to list
         for(String key : keySet){
             String value = map.get(key);
             if(isNumeric(value)){
+                // Numbers are not surrounded by double quotes
                 keyValuePairsAsString.add(key + "=" + value);
             } else {
+                // Strings are surrounded by double quotes
                 keyValuePairsAsString.add(key + "=\"" + value + "\"");
             }
         }
+
+        // Join the list together and use a comma as delimiter
         return String.join(",", keyValuePairsAsString);
     }
 
@@ -118,14 +129,24 @@ public class InfluxDAO {
      * @return The given Map as a String to use in a query
      */
     private String tagsMapToString(Map<String, String> map){
+        // Get keys from given map
         Set<String> keySet = map.keySet();
         List<String> keyValuePairsAsStrings = new ArrayList<String>();
+
+        // Iterate through keys and add strings to list
         for (String key : keySet){
             keyValuePairsAsStrings.add(key + "=" + map.get(key));
         }
+
+        // Join the list together and use a comma as delimiter
         return String.join(",", keyValuePairsAsStrings);
     }
 
+    /**
+     * Checks if a string is numeric
+     * @param value The string to check
+     * @return true if value is numeric
+     */
     private boolean isNumeric(String value){
         return value.matches("\\d+");
     }
