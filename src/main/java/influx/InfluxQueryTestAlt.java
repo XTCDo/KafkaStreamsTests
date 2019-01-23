@@ -1,4 +1,4 @@
-package myapps;
+package influx;
 
 
 import org.influxdb.BatchOptions;

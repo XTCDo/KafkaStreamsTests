@@ -1,4 +1,4 @@
-package myapps;
+package influx;
 
 import java.util.HashMap;
 import java.util.Map;

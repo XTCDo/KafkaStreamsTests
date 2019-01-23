@@ -1,4 +1,4 @@
-package myapps;
+package influx;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

@@ -1,6 +1,7 @@
-package myapps;
+package influx;
 
-import java.rmi.MarshalException;
+import influx.Record;
+
 import java.util.HashMap;
 import java.util.Map;
 

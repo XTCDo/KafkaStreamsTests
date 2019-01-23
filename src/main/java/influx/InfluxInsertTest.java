@@ -1,4 +1,4 @@
-package myapps;
+package influx;
 
 
 import java.io.BufferedReader;
@@ -8,25 +8,26 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
-public class InfluxQueryTest {
+// curl -XPOST 'http://localhost:8086/write?db=kafka_test' --data-binary 'weather,location=us-midwest temperature=8'
+public class InfluxInsertTest {
     public static void main(String[] args){
         try {
             // set up connection to localhost URL
-            URL url = new URL("http://localhost:8086/query?");
+            URL url = new URL("http://localhost:8086/write?");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
 
             // request params
             Map<String, String> parameters = new HashMap<>();
             parameters.put("db","kafka_test");
-            parameters.put("q", "SELECT * FROM weather");
-
+            parameters.put("q", "weather,location=us-midwest temperature=8");
+            ;
             // request is url-encoded
-            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            //con.setRequestProperty("Content-Type", "form/multipart");
 
             // do the request, specified by out
             con.setDoOutput(true);
+
             DataOutputStream out = new DataOutputStream(con.getOutputStream());
             out.writeBytes(ParameterStringBuilder.getParamsString(parameters));
             out.flush();

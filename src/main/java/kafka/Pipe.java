@@ -14,17 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package myapps;
+package kafka;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
-import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.ValueMapper;
 
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
@@ -33,46 +30,32 @@ import java.util.concurrent.CountDownLatch;
  * that reads from a source topic "streams-plaintext-input", where the values of messages represent lines of text,
  * and writes the messages as-is into a sink topic "streams-pipe-output".
  */
-public class ReverseRecord {
+public class Pipe {
 
     public static void main(String[] args) throws Exception {
-
-        // conventional props setup
+        // Start of by defining the properties for the Stream
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-reverserecord");
+        // Name the Streams application
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-pipe");
+        // Point it towards the correct kafka broker
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        // Define in what way the Key of each record should be (de)serialized
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        // Define in what way the Value of each record should be (de)serialized
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
+        // Create a StreamsBuilder
         final StreamsBuilder builder = new StreamsBuilder();
 
-        // Get a source stream from the topic 'streams-plaintext-input'
-		KStream<String, String> source = builder.stream("streams-plaintext-input");
+        // Stream records in the topic 'streams-plaintext-input' to the topic
+        //  'streams-pipe-output'
+        builder.stream("streams-plaintext-input").to("streams-pipe-output");
 
-		// Reverse each input record. The notation here is different because I did not use
-        // the lambda notation.
-        // I create a ValueMapper that takes a Key and Value as input, both as strings (<String, String>)
-        // Then I take the Value (input) and reverse it.
-        // I define the stream of reversed records as 'outputStream'
-		KStream<String, String> outputStream = source.mapValues(new ValueMapper<String, String>() {
-            @Override
-            public String apply(String input) {
-                char [] inputAsCharArray = input.toCharArray();
-                char [] outputAsCharArray = new char[inputAsCharArray.length];
-                for(int i = 0; i < inputAsCharArray.length; i++){
-                    outputAsCharArray[inputAsCharArray.length - 1 - i] = inputAsCharArray[i];
-                }
-                return new String(outputAsCharArray);
-            }
-
-        });
-
-
-        // Send the reversed records in outputStream to the output topic 'streams-reverserecord-output'
-		outputStream.to("streams-reverserecord-output");
-
+        // Create the Topology defined above
         final Topology topology = builder.build();
-		System.out.println(topology.describe());
+        System.out.println(topology.describe());
+
+        // Make an actual stream out of the defined topology
         final KafkaStreams streams = new KafkaStreams(topology, props);
         final CountDownLatch latch = new CountDownLatch(1);
 
@@ -86,6 +69,7 @@ public class ReverseRecord {
         });
 
         try {
+            // Start the streams application and stop it on ctrl+c
             streams.start();
             latch.await();
         } catch (Throwable e) {
