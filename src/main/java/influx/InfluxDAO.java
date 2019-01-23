@@ -5,6 +5,7 @@ import org.influxdb.BatchOptions;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Query;
+import org.influxdb.dto.QueryResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,15 +56,16 @@ public class InfluxDAO {
         System.out.println("performing query:\t"+query.getCommand());
 
         // perform query and immediately process response
-        ifdb.query(query, System.out::println, Throwable::printStackTrace); // we know SELECT FROM works
+        //ifdb.query(query, System.out::println, Throwable::printStackTrace); // we know SELECT FROM works
+        QueryResult result= ifdb.query(query);
 
-        String responseString = responseStringBuilder.toString();
+        String responseString = result.getResults().toString();
         System.out.println("got response:\t"+responseString);
+        // flush
         ifdb.flush();
         // close connection
         ifdb.close();
 
-        //return responseString;
         return responseString;
     }
 
