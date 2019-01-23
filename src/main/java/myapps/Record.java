@@ -1,5 +1,6 @@
 package myapps;
 
+import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 import org.apache.kafka.common.protocol.types.Field;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class Record {
                 .collect(Collectors.joining(","));  // join mapped Strings with delimiter ","
         String fieldString=fields.entrySet()
                 .stream()
-                .map(entry -> entry.getKey() + "=" + entry.getValue().toString())
+                .map(entry -> entry.getKey() + "=" +getFieldString(entry.getKey()))
                 .collect(Collectors.joining(","));
         return (tagString+" "+fieldString);
     }
@@ -50,6 +51,20 @@ public class Record {
     }
 
     // === private auxiliary functions ===
+    private String getFieldString(String key){
+        Object field= getField(key);
+        String response;
+        if (field instanceof String){
+            response = quote((String) field);
+        }
+        else {
+            response=field.toString();
+        }
+        return response;
+    }
 
+    private String quote(String source){
+        return "\""+source+"\"";
+    }
 
 }

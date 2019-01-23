@@ -30,7 +30,7 @@ public class RecordTest {
         // testing getter functions
         System.out.println(earth.getTag("location")+":\t"+earth.getField("gravity"));
         System.out.println(mars.getTag("location")+":\t"+mars.getField("gravity"));
-        
+
         System.out.println(earth.toString());
         System.out.println(mars.toString());
     }
