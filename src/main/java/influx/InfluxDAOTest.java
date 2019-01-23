@@ -8,8 +8,14 @@ public class InfluxDAOTest {
         // Get data access object
         InfluxDAO dao = new InfluxDAO("http://localhost:8086");
 
+        // === pinging database ===
         dao.ping();
 
+        // === testing basic query ===
+        dao.query("kafka_test", "SELECT * FROM weather");
+        dao.query("kafka_test","SELECT * FROM planets");
+        
+        // === testing insert fun===
         // Make some tags
         Map<String, String> tags = new HashMap<>();
         tags.put("location", "russia");
@@ -23,7 +29,7 @@ public class InfluxDAOTest {
         dao.insertRecord("kafka_test", "weather", tags, fields);
         System.out.println("Done.");
 
-        // testing simple insert and Record together
+        // === testing simple insert fun ===
         Record earth= new Record();
         earth.addTag("location","Terra");
         earth.addTag("color","light blue");
