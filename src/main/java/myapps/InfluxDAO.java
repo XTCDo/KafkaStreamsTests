@@ -54,7 +54,7 @@ public class InfluxDAO {
         // perform the query
         StringBuilder responseStringBuilder = new StringBuilder();
         ifdb.query(query, responseStringBuilder::append, Throwable::printStackTrace);
-
+        System.out.println(new String(responseStringBuilder));
         // close connection
         ifdb.close();
 
