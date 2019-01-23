@@ -28,12 +28,12 @@ public class InfluxDAO {
 
     // === public functions ===
     public void ping(){
-        System.out.println("sending ping request to"+ targetUrl);
+        System.out.println("sending ping request to: <"+ targetUrl+">");
         InfluxDB ifdb = connect();
-        Pong pong = ifdb.ping();
+        System.out.println(ifdb.ping().toString());
         ifdb.close();
-        System.out.println(pong.toString());
     }
+
     /**
      * performs a simple query on a given database
      * @param database      database name
@@ -47,17 +47,23 @@ public class InfluxDAO {
         ifdb.setDatabase(database);
         ifdb.enableBatch(BatchOptions.DEFAULTS);
 
+        System.out.println("pinging database:\t"+ifdb.ping().toString());
+
         // prepare query
         Query query = new Query(inputquery, database);
 
         // perform the query
         StringBuilder responseStringBuilder = new StringBuilder();
+        System.out.println("performing query:\t"+query.toString());
+        // perform query and immediately process response
         ifdb.query(query, responseStringBuilder::append, Throwable::printStackTrace);
-        System.out.println(new String(responseStringBuilder));
+        String responseString = responseStringBuilder.toString();
+        System.out.println("got response:\t"+responseString);
+
         // close connection
         ifdb.close();
 
-        return responseStringBuilder.toString();
+        return responseString;
     }
 
     /**
