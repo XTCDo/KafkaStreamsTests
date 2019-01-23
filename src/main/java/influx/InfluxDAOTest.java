@@ -34,7 +34,7 @@ public class InfluxDAOTest {
         earth.addTag("color","light blue");
 
         earth.addField("dist_to_sun",1); // in AU
-        earth.addField("gravity", 9.81);
+        earth.addField("gravity", 981);
         earth.addField("temperature",20);
 
         Record mars= new Record();
