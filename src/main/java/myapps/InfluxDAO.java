@@ -46,7 +46,7 @@ public class InfluxDAO {
 
         // connect
         ifdb.setDatabase(database);
-        ifdb.enableBatch(BatchOptions.DEFAULTS);
+        //ifdb.enableBatch(BatchOptions.DEFAULTS);
 
         // prepare query
         Query query = new Query(inputquery, database);
