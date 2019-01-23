@@ -42,8 +42,8 @@ public class InfluxDAO {
     public String query(String database, String inputquery){
         // connect to influxdb
         InfluxDB ifdb = connect();
+        
         // connect
-        ifdb.setLogLevel(InfluxDB.LogLevel.BASIC);
         ifdb.setDatabase(database);
         ifdb.enableBatch(BatchOptions.DEFAULTS);
 
