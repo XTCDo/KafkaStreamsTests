@@ -1,17 +1,14 @@
 package myapps;
 
 
-import org.influxdb.BatchOptions;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Query;
 
-import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class InfluxDAO {
     // DAO-specific vars
@@ -25,13 +22,6 @@ public class InfluxDAO {
     // === private functions ===
     private InfluxDB connect() {
         return InfluxDBFactory.connect(targetUrl);
-    }
-
-    private String recordBuilder(Map<String, String> map){
-        StringBuilder builder = new StringBuilder();
-        return map.entrySet().stream()
-                        .map(key -> builder.append(key).append("=").append(key.getValue()))
-                        .collect(Collectors.joining());
     }
 
     // === public functions ===
@@ -59,6 +49,31 @@ public class InfluxDAO {
         ifdb.close();
 
         return responseStringBuilder.toString();
+    }
+
+    /**
+     *  simplified record insert function
+     * @param database
+     * @param table
+     * @param record
+     */
+    public void simpleInsertRecord(String database,String table, Record record){
+        try{
+            // Build the query string
+            StringBuilder queryStringBuilder = new StringBuilder();
+            queryStringBuilder.append("INSERT ")
+                    .append(table).append(",")
+                    .append(record.toString());
+            String queryString = new String(queryStringBuilder);
+            System.out.println("query built:\t" + queryString);
+
+            // Perform query and print response
+            String response = query(database, queryString);
+            System.out.println("response:\t" + response);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**

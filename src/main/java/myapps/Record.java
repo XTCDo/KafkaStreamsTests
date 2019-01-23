@@ -1,7 +1,5 @@
 package myapps;
 
-import org.apache.kafka.common.protocol.types.Field;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,8 +14,13 @@ public class Record {
         this.fields = new HashMap<>();
     }
     public Record(Map<String, String> tags, Map<String, Object> fields){
-        this.tags = tags;
-        this.fields = fields;
+        this.tags=
+                tags.entrySet().stream()
+                        .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                entry -> entry.getValue().replace(" ","_"))
+                        );
+        this.fields=fields;
     }
 
     // === publically available functs ==
@@ -28,13 +31,13 @@ public class Record {
                 .collect(Collectors.joining(","));  // join mapped Strings with delimiter ","
         String fieldString = fields.entrySet()
                 .stream()
-                .map(entry -> entry.getKey() + "=" + entry.getValue().toString())
+                .map(entry -> entry.getKey() + "=" +getFieldString(entry.getKey()))
                 .collect(Collectors.joining(","));
         return (tagString + " " + fieldString);
     }
 
     public void addTag(String key, String tag){
-       tags.put(key, tag);
+       tags.put(key, tag.replace(" ","_"));
     }
 
     public void addField(String key, Object value){
@@ -50,6 +53,19 @@ public class Record {
     }
 
     // === private auxiliary functions ===
-
+    private String getFieldString(String key){
+        Object field= getField(key);
+        String response;
+        if (field instanceof String){
+            response = quote((String) field);
+        }
+        else {
+            response=field.toString();
+        }
+        return response;
+    }
+    private String quote(String source){
+        return "\""+source+"\"";
+    }
 
 }

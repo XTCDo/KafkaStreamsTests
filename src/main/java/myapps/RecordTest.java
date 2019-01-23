@@ -12,10 +12,11 @@ public class RecordTest {
         // instantiating an empty record and populating it with tags & fields
         Record earth= new Record();
         earth.addTag("location","Terra");
-        earth.addTag("capitol", "Diepenbeek");
+        earth.addTag("capitol", "Diepenbeek stad");
 
         earth.addField("gravity", 9.81);
         earth.addField("temperature",20);
+        earth.addField("quote","fuck de studenten");
 
         // instantiating a record with predefined tags and fields
         Map<String, String> marsTags = new HashMap<>();
@@ -30,7 +31,7 @@ public class RecordTest {
         // testing getter functions
         System.out.println(earth.getTag("location")+":\t"+earth.getField("gravity"));
         System.out.println(mars.getTag("location")+":\t"+mars.getField("gravity"));
-        
+
         System.out.println(earth.toString());
         System.out.println(mars.toString());
     }
