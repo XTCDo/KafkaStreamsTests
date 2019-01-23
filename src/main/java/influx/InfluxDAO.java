@@ -77,7 +77,7 @@ public class InfluxDAO {
         try{
             // Build the query string
             StringBuilder queryStringBuilder = new StringBuilder();
-            queryStringBuilder.append("INSERT ")
+            queryStringBuilder.append("CREATE ")
                     .append(table).append(",")
                     .append(record.toString());
             String queryString = new String(queryStringBuilder);
