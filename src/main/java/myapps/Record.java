@@ -2,7 +2,8 @@ package myapps;
 
 import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 import org.apache.kafka.common.protocol.types.Field;
-
+//todo tr " " to "_" in tags
+// todo edit RecordTest to test for string fields
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,7 +18,12 @@ public class Record {
         this.fields = new HashMap<>();
     }
     public Record(Map<String, String> tags, Map<String, Object> fields){
-        this.tags=tags;
+        this.tags=
+                tags.entrySet().stream()
+                        .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                entry -> entry.getValue().replace(" ","_"))
+                        );
         this.fields=fields;
     }
 
@@ -35,7 +41,7 @@ public class Record {
     }
 
     public void addTag(String key, String tag){
-       tags.put(key, tag);
+       tags.put(key, tag.replace(" ","_"));
     }
 
     public void addField(String key, Object value){
@@ -62,7 +68,6 @@ public class Record {
         }
         return response;
     }
-
     private String quote(String source){
         return "\""+source+"\"";
     }

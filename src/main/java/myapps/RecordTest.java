@@ -16,6 +16,7 @@ public class RecordTest {
 
         earth.addField("gravity", 9.81);
         earth.addField("temperature",20);
+        earth.addField("quote","fuck de studenten");
 
         // instantiating a record with predefined tags and fields
         Map<String, String> marsTags = new HashMap<>();
