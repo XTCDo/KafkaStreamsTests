@@ -33,7 +33,7 @@ public class InfluxDAOTest {
                 .tag("location","Terra")
                 .addField("color", "blue")
                 .addField("gravity", 9.81)
-                .addField("dist_to_sun", 1)
+                .addField("dist_to_sun", 1f)
                 .build();
         dao.writeRecord("kafka_test",point);
     }
