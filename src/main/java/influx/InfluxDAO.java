@@ -54,6 +54,7 @@ public class InfluxDAO {
         // perform the query
         StringBuilder responseStringBuilder = new StringBuilder();
         System.out.println("performing query:\t"+query.getCommand());
+
         // perform query and immediately process response
         ifdb.query(query, responseStringBuilder::append, Throwable::printStackTrace);
         String responseString = responseStringBuilder.toString();
@@ -64,6 +65,28 @@ public class InfluxDAO {
 
         return responseString;
     }
+
+    public String oldquery(String database, String inputquery){
+        // connect to influxdb
+        InfluxDB ifdb = connect();
+
+        // connect
+        ifdb.setDatabase(database);
+        ifdb.enableBatch(BatchOptions.DEFAULTS);
+
+        // prepare query
+        Query query = new Query(inputquery, database);
+
+        // perform the query
+        StringBuilder responseStringBuilder= new StringBuilder();
+        ifdb.query(query, responseStringBuilder::append, Throwable::printStackTrace);
+
+        // close connection
+        ifdb.close();
+
+        return responseStringBuilder.toString();
+    }
+
 
     /**
      *  simplified record insert function

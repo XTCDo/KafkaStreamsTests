@@ -13,8 +13,8 @@ public class InfluxDAOTest {
 
         // === testing basic query ===
         dao.query("kafka_test", "SELECT * FROM weather");
-        dao.query("kafka_test","SELECT * FROM planets");
-        
+        dao.oldquery("kafka_test","SELECT * FROM planets");
+    
         // === testing insert fun===
         // Make some tags
         Map<String, String> tags = new HashMap<>();
