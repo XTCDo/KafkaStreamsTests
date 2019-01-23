@@ -3,6 +3,7 @@ package influx;
 
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
+import org.influxdb.dto.Pong;
 import org.influxdb.dto.Query;
 
 import java.util.ArrayList;
@@ -25,6 +26,13 @@ public class InfluxDAO {
     }
 
     // === public functions ===
+    public void ping(){
+        System.out.println("sending ping request to"+ targetUrl);
+        InfluxDB ifdb = connect();
+        Pong pong = ifdb.ping();
+        ifdb.close();
+        System.out.println(pong.toString());
+    }
     /**
      * performs a simple query on a given database
      * @param database      database name

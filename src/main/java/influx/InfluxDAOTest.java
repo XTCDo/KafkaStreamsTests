@@ -8,6 +8,8 @@ public class InfluxDAOTest {
         // Get data access object
         InfluxDAO dao = new InfluxDAO("http://localhost:8086");
 
+        dao.ping();
+        
         // Make some tags
         Map<String, String> tags = new HashMap<>();
         tags.put("location", "russia");
