@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 public class InfluxDAOTest {
     public static void main(String[] args){
         // Get data access object
-        InfluxDAO dao = new InfluxDAO("http://localhost:8086/write/");
+        InfluxDAO dao = new InfluxDAO("http://localhost:8086");
 
         // === pinging database ===
         //dao.ping();
