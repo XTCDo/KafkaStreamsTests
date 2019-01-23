@@ -41,7 +41,6 @@ public class InfluxDAO {
     public String query(String database, String inputquery){
         // connect to influxdb
         InfluxDB ifdb = connect();
-
         // connect
         ifdb.setDatabase(database);
         ifdb.enableBatch(BatchOptions.DEFAULTS);
@@ -50,7 +49,6 @@ public class InfluxDAO {
 
         // prepare query
         Query query = new Query(inputquery, database);
-
         // perform the query
         StringBuilder responseStringBuilder = new StringBuilder();
         System.out.println("performing query:\t"+query.getCommand());
@@ -60,7 +58,7 @@ public class InfluxDAO {
         ifdb.query(query);
         String responseString = responseStringBuilder.toString();
         System.out.println("got response:\t"+responseString);
-
+        ifdb.flush();
         // close connection
         ifdb.close();
 
