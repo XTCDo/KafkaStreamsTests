@@ -1,6 +1,7 @@
 package influx;
 
 
+import org.influxdb.BatchOptions;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Query;
@@ -36,7 +37,7 @@ public class InfluxDAO {
 
         // connect
         ifdb.setDatabase(database);
-        //ifdb.enableBatch(BatchOptions.DEFAULTS);
+        ifdb.enableBatch(BatchOptions.DEFAULTS);
 
         // prepare query
         Query query = new Query(inputquery, database);
