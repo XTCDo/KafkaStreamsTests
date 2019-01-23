@@ -6,6 +6,7 @@ import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Query;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -60,19 +61,19 @@ public class InfluxDAO {
         return responseStringBuilder.toString();
     }
 
-    public boolean insertRecord(String database, String table, Map<String, String> values){
+    public boolean insertRecord(String database, String table, Map<String, String> tags, Map<String, String> fields){
         //"INSERT weather,location=us-midwest temperature=8"
         try {
-            Set<String> keySet = values.keySet();
-            List<String> keyValuePairsAsStrings = new ArrayList<>();
-            for (String key : keySet) {
-                keyValuePairsAsStrings.add(key + "=" + values.get(key));
-            }
-            String keyValuePairsAsString = String.join(" ", keyValuePairsAsStrings);
+            String tagsAsString = tagsMapToString(tags);
+            String fieldsAsString = fieldsMapToString(fields);
+
             StringBuilder queryStringBuilder = new StringBuilder();
-            queryStringBuilder.append("INSERT ");
-            queryStringBuilder.append(table).append(",");
-            queryStringBuilder.append(keyValuePairsAsString);
+            queryStringBuilder.append("INSERT ")
+                    .append(table).append(",")
+                    .append(tagsAsString)
+                    .append(" ")
+                    .append(fieldsAsString);
+            
             String queryString = new String(queryStringBuilder);
             System.out.println("query built:\t"+queryString);
             System.out.println("response:\t"+this.query(database, queryString));
@@ -81,6 +82,33 @@ public class InfluxDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private String fieldsMapToString(Map<String, String> map){
+        Set<String> keySet = map.keySet();
+        List<String> keyValuePairsAsString = new ArrayList<String>();
+        for(String key : keySet){
+            String value = map.get(key);
+            if(isNumeric(value)){
+                keyValuePairsAsString.add(key + "=" + value);
+            } else {
+                keyValuePairsAsString.add(key + "=\"" + value + "\"");
+            }
+        }
+        return String.join(",", keyValuePairsAsString);
+    }
+
+    private String tagsMapToString(Map<String, String> map){
+        Set<String> keySet = map.keySet();
+        List<String> keyValuePairsAsStrings = new ArrayList<String>();
+        for (String key : keySet){
+            keyValuePairsAsStrings.add(key + "=" + map.get(key));
+        }
+        return String.join(",", keyValuePairsAsStrings);
+    }
+
+    private boolean isNumeric(String value){
+        return value.matches("\\d+");
     }
 
 }
