@@ -12,7 +12,6 @@ public class InfluxDAOTest {
         dao.ping();
 
         // === testing basic query ===
-        dao.query("kafka_test", "SELECT * FROM weather");
         dao.query("kafka_test","SELECT * FROM planets");
 
         // === testing insert fun===

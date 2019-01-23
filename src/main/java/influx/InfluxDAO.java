@@ -42,7 +42,7 @@ public class InfluxDAO {
         // connect to influxdb
         InfluxDB ifdb = connect();
         // connect
-        ifdb.setLogLevel(InfluxDB.LogLevel.FULL);
+        ifdb.setLogLevel(InfluxDB.LogLevel.BASIC);
         ifdb.setDatabase(database);
         ifdb.enableBatch(BatchOptions.DEFAULTS);
 
@@ -55,8 +55,8 @@ public class InfluxDAO {
         System.out.println("performing query:\t"+query.getCommand());
 
         // perform query and immediately process response
-        //ifdb.query(query, responseStringBuilder::append, Throwable::printStackTrace);
-        ifdb.query(query);
+        ifdb.query(query, responseStringBuilder::append, Throwable::printStackTrace); // we know SELECT FROM works
+
         String responseString = responseStringBuilder.toString();
         System.out.println("got response:\t"+responseString);
         ifdb.flush();
@@ -64,7 +64,7 @@ public class InfluxDAO {
         ifdb.close();
 
         //return responseString;
-        return "done";
+        return responseString;
     }
 
 
