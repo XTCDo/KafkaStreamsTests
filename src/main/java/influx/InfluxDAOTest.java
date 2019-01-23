@@ -6,13 +6,13 @@ import java.util.Map;
 public class InfluxDAOTest {
     public static void main(String[] args){
         // Get data access object
-        InfluxDAO dao = new InfluxDAO("http://localhost:8086/write");
+        InfluxDAO dao = new InfluxDAO("http://localhost:8086/write/");
 
         // === pinging database ===
         //dao.ping();
 
         // === testing basic query ===
-        dao.query("kafka_test","SELECT * FROM planets");
+        //dao.query("kafka_test","SELECT * FROM planets");
 
         // === testing insert fun===
         // Make some tags
