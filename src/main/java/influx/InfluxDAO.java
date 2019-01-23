@@ -55,7 +55,7 @@ public class InfluxDAO {
         System.out.println("performing query:\t"+query.getCommand());
 
         // perform query and immediately process response
-        ifdb.query(query, responseStringBuilder::append, Throwable::printStackTrace); // we know SELECT FROM works
+        ifdb.query(query, System.out::println, Throwable::printStackTrace); // we know SELECT FROM works
 
         String responseString = responseStringBuilder.toString();
         System.out.println("got response:\t"+responseString);
