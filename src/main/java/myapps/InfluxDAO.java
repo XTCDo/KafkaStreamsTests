@@ -60,19 +60,32 @@ public class InfluxDAO {
         return responseStringBuilder.toString();
     }
 
-    public boolean insertRecord(String database, String table, Map<String, String> values){
+    public boolean insertRecord(String database, String table, Map<String, String> tags, Map<String, String> values){
         //"INSERT weather,location=us-midwest temperature=8"
         try {
-            Set<String> keySet = values.keySet();
-            List<String> keyValuePairsAsStrings = new ArrayList<>();
-            for (String key : keySet) {
-                keyValuePairsAsStrings.add(key + "=" + values.get(key));
+            Set<String> tagkeySet = tags.keySet();
+            Set<String> valueKeySet = values.keySet();
+            List<String> tagsAsStringsList = new ArrayList<>();
+            List<String> valuesAsStringsList= new ArrayList<>();
+
+            for (String key : tagkeySet) {
+                tagsAsStringsList.add(key + "=" + tags.get(key));
             }
-            String keyValuePairsAsString = String.join(" ", keyValuePairsAsStrings);
+
+            for (String key : valueKeySet) {
+                valuesAsStringsList.add(key + "=" + values.get(key));
+            }
+
+            String tagsAsStrings = String.join(",", tagsAsStringsList);
+            String valuesAsStrings = String.join(",", valuesAsStringsList);
+
             StringBuilder queryStringBuilder = new StringBuilder();
             queryStringBuilder.append("INSERT ");
             queryStringBuilder.append(table).append(",");
-            queryStringBuilder.append(keyValuePairsAsString);
+            queryStringBuilder.append(tagsAsStrings);
+            queryStringBuilder.append(" ");
+            queryStringBuilder.append(valuesAsStrings);
+
             String queryString = new String(queryStringBuilder);
             System.out.println("query built:\t"+queryString);
             System.out.println("response:\t"+this.query(database, queryString));
