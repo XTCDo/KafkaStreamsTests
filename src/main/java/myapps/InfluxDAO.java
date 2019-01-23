@@ -82,7 +82,7 @@ public class InfluxDAO {
                     .append(fieldsAsString);
 
             String queryString = new String(queryStringBuilder);
-            System.out.println("query built:\t"+queryString);
+            System.out.println("query built:\n"+queryString);
             System.out.println("response:\t"+this.query(database, queryString));
             return true;
         } catch (Throwable e){
