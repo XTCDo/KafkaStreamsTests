@@ -6,7 +6,7 @@ import java.util.Map;
 public class InfluxDAOTest {
     public static void main(String[] args){
         // Get data access object
-        InfluxDAO dao = new InfluxDAO("http://localhost:8086");
+        InfluxDAO dao = new InfluxDAO("http://localhost:8086/write");
 
         // === pinging database ===
         dao.ping();
