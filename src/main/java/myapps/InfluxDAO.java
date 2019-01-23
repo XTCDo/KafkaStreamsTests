@@ -61,7 +61,6 @@ public class InfluxDAO {
         return responseStringBuilder.toString();
     }
 
-
     public boolean insertRecord(String database, String table, Map<String, String> values){
         //"INSERT weather,location=us-midwest temperature=8"
         try {
@@ -76,7 +75,7 @@ public class InfluxDAO {
             queryStringBuilder.append(table).append(",");
             queryStringBuilder.append(keyValuePairsAsString);
             String queryString = new String(queryStringBuilder);
-            query(database, queryString);
+            System.out.println(this.query(database, queryString));
             return true;
         } catch (Throwable e){
             e.printStackTrace();
