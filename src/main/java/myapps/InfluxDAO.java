@@ -52,7 +52,7 @@ public class InfluxDAO {
         Query query = new Query(inputquery, database);
 
         // perform the query
-        StringBuilder responseStringBuilder= new StringBuilder();
+        StringBuilder responseStringBuilder = new StringBuilder();
         ifdb.query(query, responseStringBuilder::append, Throwable::printStackTrace);
 
         // close connection
@@ -60,9 +60,8 @@ public class InfluxDAO {
 
         return responseStringBuilder.toString();
     }
-    
+
     public boolean insertRecord(String database, String table, Map<String, String> tags, Map<String, String> fields){
-        //"INSERT weather,location=us-midwest temperature=8"
         try {
             String tagsAsString = tagsMapToString(tags);
             String fieldsAsString = fieldsMapToString(fields);
