@@ -61,6 +61,7 @@ public class InfluxDAO {
         return responseStringBuilder.toString();
     }
 
+<<<<<<< HEAD
     public boolean insertRecord(String database, String table, Map<String, String> tags, Map<String, String> fields){
         //"INSERT weather,location=us-midwest temperature=8"
         try {
