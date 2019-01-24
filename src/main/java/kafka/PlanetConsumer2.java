@@ -14,13 +14,13 @@ import java.util.Arrays;
 public class PlanetConsumer2 extends AbstractConsumer {
 
     public PlanetConsumer2(){
-        super("streams-planets2-input", "http://localhost:8086", "PlanetConsumer2Test");
+        super("streams-planets-input", "http://localhost:8086", "PlanetConsumer2Test");
     }
 
     @Override
     public void consume() {
         final Consumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
-        consumer.subscribe(Arrays.asList("streams-planets2-input"));
+        consumer.subscribe(Arrays.asList("streams-planets-input"));
 
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(10));
