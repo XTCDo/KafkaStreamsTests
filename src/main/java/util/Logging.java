@@ -2,11 +2,12 @@ package util;
 
 import org.apache.kafka.common.protocol.types.Field;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ResourceBundle;
+import java.util.logging.*;
 
 
 
@@ -14,52 +15,50 @@ public class Logging {
     private static final Logger logger = Logger.getLogger(Logging.class.getName());
     private static final String TAG = "logging";
 
-    // public functions
+    public static void main(String[] args) throws Exception{
+        FileHandler logFile = new FileHandler("log%u.log");
+        // set up formatter so it bends to our will
+        logFile.setFormatter(new CustomFormatter());
+    }
 
+    // public functions
     /**
      * print a formatted string directly to System.out instead of a file
-     * @param tag
-     * @param message
+     * @param tag       tag for log sorting and filtering
+     * @param message   log message
      */
     public static void logprint(String tag, String message){
         System.out.println(fullMessage(tag,message));
     }
 
-    public static void info(String tag, String message){info(fullMessage(tag,message));}
-    public static void warn(String tag, String message){warn(fullMessage(tag,message));}
-    public static void error(String tag, String message){error(fullMessage(tag,message));}
-    public static void debug(String tag, String message){debug(fullMessage(tag,message));}
-
-    public static void info(String fullmessage){logger.info(fullmessage);}
-    public static void warn(String fullmessage){logger.warning(fullmessage);}
-    public static void error(String fullmessage){logger.severe(fullmessage);}
-    public static void debug(String fullmessage){logger.fine(fullmessage);}
-
+    public void info(String tag, String message){log(Level.INFO, tag, message);}
+    public void warn(String tag, String message){log(Level.WARNING, tag, message);}
+    public void error(String tag, String message){log(Level.SEVERE, tag, message);}
+    public void debug(String tag, String message){log(Level.FINE, tag, message);}
+    public void trace(String tag, String message){log(Level.FINER, tag, message);}
 
     /**
      *  general log call for personal preference or other levels
-     * @param level
-     * @param tag
-     * @param message
+     * @param level     logging level
+     * @param tag       tag for log sorting and filtering
+     * @param message   log message
      */
-    public static void log(Level level, String tag, String message){
-        String fullMessage = fullMessage(tag,message);
+    public void log(Level level, String tag, String message){
         try {
-            logger.log(level, fullMessage);
+            logger.log(level, message, tag);
         } catch (Exception e){
-            error(fullMessage(TAG, "exception while trying to log, defaulting to info"));
-            info(fullMessage);
+            error(TAG, "Error while logging: "+e.getMessage()+", defaulting to INFO.");
+            info(tag, message);
         }
     }
 
 
     // private functions
-
     /**
      * converts circumstantial parameters to a timestamed, printable message
-     * @param tag
-     * @param message
-     * @return
+     * @param tag       tag for log sorting and filtering
+     * @param message   log message
+     * @return          String formatted "<time> [tag]: message"
      */
     private static String fullMessage(String tag, String message){
         return new StringBuilder()
