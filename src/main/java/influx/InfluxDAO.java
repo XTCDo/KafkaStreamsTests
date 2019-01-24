@@ -4,18 +4,17 @@ package influx;
 import org.influxdb.BatchOptions;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
+import org.influxdb.dto.BatchPoints;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Arrays;
 
 public class InfluxDAO {
     // DAO-specific vars
     private String targetUrl;
+    private static final String DEFAULT_RP = "autogen";
 
     // === class constructor ===
     public InfluxDAO(String urlString){
@@ -47,8 +46,40 @@ public class InfluxDAO {
         ifdb.close();
     }
 
-    public void exists(String database, String table){
-        
+
+
+    public void select(String database, String target, String table){
+        String selectQuery = new StringBuilder()
+                .append("SELECT").append(target)
+                .append("FROM").append(table)
+                .toString();
+        query(database,selectQuery);
+    }
+
+    public void select(String database, String target, String table, String conditional){
+        String selectQuery = new StringBuilder()
+                .append("SELECT").append(target)
+                .append("FROM").append(table)
+                .append("WHERE").append(conditional)
+                .toString();
+        query(database,selectQuery);
+    }
+
+    public void WritePointList(String database, Point[] points){
+        WritePointList(database, points, DEFAULT_RP);
+    }
+
+    public void WritePointList(String database, Point[] points, String retentionPolicy){
+        InfluxDB ifdb = connect();
+        BatchPoints batch = BatchPoints
+                .database(database)
+                .tag("async", "true")
+                .retentionPolicy(retentionPolicy)
+                .build();
+
+        Arrays.stream(points).forEach(batch::point);
+        ifdb.write(batch);
+        ifdb.close();
     }
 
     /**
@@ -57,7 +88,7 @@ public class InfluxDAO {
      * @param point     point to write
      */
     public void writePoint(String database, Point point){
-        writePoint(database, point, "autogen");
+        writePoint(database, point, DEFAULT_RP);
     }
 
     /**
