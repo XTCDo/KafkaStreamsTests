@@ -30,14 +30,12 @@ public class PlanetConsumer {
         InfluxDAO dao = new InfluxDAO("http://localhost:8086");
         while(true){
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(10));
-            List<Point> planets = new ArrayList<>();
             for(ConsumerRecord<String, String> record : records){
                 Planet planet = new Planet(record.value());
                 planet.describe();
                 Point point = planetToPoint(planet);
-                planets.add(point);
+                dao.writePoint("kafka_test", point);
             }
-            dao.writePointList("kafka_test", planets);
         }
     }
 
