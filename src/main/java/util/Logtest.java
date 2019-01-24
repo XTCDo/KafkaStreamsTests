@@ -1,7 +1,5 @@
 package util;
 
-import sun.rmi.runtime.Log;
-
 import java.util.logging.Level;
 
 public class Logtest {
