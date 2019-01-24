@@ -14,9 +14,13 @@ public class Logging {
     private static final Logger logger = Logger.getLogger(Logging.class.getName());
     private static final String TAG = "logging";
 
-    public Logging()throws Exception{
-        FileHandler logFile = new FileHandler("log%u.log");
-        logFile.setFormatter(new CustomFormatter());
+    public Logging() {
+        try {
+            FileHandler logFile = new FileHandler("log%u.log");
+            logFile.setFormatter(new CustomFormatter());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

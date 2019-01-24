@@ -1,5 +1,7 @@
 package util;
 
+import sun.rmi.runtime.Log;
+
 import java.util.logging.Level;
 
 public class Logtest {
@@ -12,6 +14,6 @@ public class Logtest {
         log.warn(TAG, "oh no, something's wrong!");
         log.log(Level.SEVERE,TAG,"Something has gone off the rails");
 
-        log.logprint("console","just printing to console");
+        Logging.logprint("console","just printing to console");
     }
 }
