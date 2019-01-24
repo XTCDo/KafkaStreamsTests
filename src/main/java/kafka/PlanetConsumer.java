@@ -1,13 +1,16 @@
 package kafka;
 
+import influx.InfluxDAO;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.influxdb.dto.Point;
 
 import javax.print.DocFlavor;
 import java.lang.reflect.Array;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class PlanetConsumer {
     public static void main(String[] args){
@@ -25,9 +28,26 @@ public class PlanetConsumer {
         while(true){
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(10));
             for(ConsumerRecord<String, String> record : records){
-                Planet p = new Planet(record.value());
-                p.describe();
+                Planet planet = new Planet(record.value());
+                planet.describe();
+                Point point = planetToPoint(planet);
+                InfluxDAO dao = new InfluxDAO("http://localhost:8086");
+                dao.writePoint("kafka_test", point);
             }
         }
+    }
+
+    private static Point planetToPoint(Planet planet){
+        Point point = Point.measurement("planets")
+                .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                .tag("name", planet.getName())
+                .addField("capitol", planet.getCapitol())
+                .addField("color", planet.getColor())
+                .addField("gravity", planet.getGravity())
+                .addField("dist_to_sun", planet.getDistanceToSun())
+                .addField("temperature", planet.getTemperature())
+                .build();
+
+        return point;
     }
 }

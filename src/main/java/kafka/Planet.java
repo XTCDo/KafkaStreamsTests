@@ -17,6 +17,11 @@ public class Planet {
         this.setTemperature(temperature);
     }
 
+    /**
+     * Creates a new Planet out of a structured String
+     * name:capitol:color:distanceToSun:gravity:temperature
+     * @param planetAsString Structured String that describes the Planet
+     */
     public Planet(String planetAsString){
         String[] data = planetAsString.split(":");
         name = data[0];
@@ -27,6 +32,10 @@ public class Planet {
         temperature = parseFloatWithDefault(data[5], -1.0f);
     }
 
+    /**
+     * Turns the planet into a structured String
+     * @return The structured String
+     */
     public String toString(){
         StringBuilder builder = new StringBuilder();
         builder.append(name).append(":")
@@ -38,6 +47,9 @@ public class Planet {
         return new String(builder);
     }
 
+    /**
+     * Prints out a description of the Planet
+     */
     public void describe(){
         System.out.printf("Planet: %s\n", name);
         System.out.printf("\tCapitol:\t\t%s\n", capitol);
