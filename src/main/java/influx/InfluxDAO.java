@@ -10,6 +10,7 @@ import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class InfluxDAO {
     // DAO-specific vars
@@ -48,28 +49,28 @@ public class InfluxDAO {
 
 
 
-    public void select(String database, String target, String table){
+    public String select(String database, String target, String table){
         String selectQuery = new StringBuilder()
                 .append("SELECT").append(target)
                 .append("FROM").append(table)
                 .toString();
-        query(database,selectQuery);
+        return query(database,selectQuery);
     }
 
-    public void select(String database, String target, String table, String conditional){
+    public String select(String database, String target, String table, String conditional){
         String selectQuery = new StringBuilder()
                 .append("SELECT").append(target)
                 .append("FROM").append(table)
                 .append("WHERE").append(conditional)
                 .toString();
-        query(database,selectQuery);
+        return query(database,selectQuery);
     }
 
-    public void WritePointList(String database, Point[] points){
-        WritePointList(database, points, DEFAULT_RP);
+    public void writePointList(String database, List<Point> points){
+        writePointList(database, points, DEFAULT_RP);
     }
 
-    public void WritePointList(String database, Point[] points, String retentionPolicy){
+    public void writePointList(String database, List<Point> points, String retentionPolicy){
         InfluxDB ifdb = connect();
         BatchPoints batch = BatchPoints
                 .database(database)
@@ -77,8 +78,9 @@ public class InfluxDAO {
                 .retentionPolicy(retentionPolicy)
                 .build();
 
-        Arrays.stream(points).forEach(batch::point);
+        points.forEach(batch::point);
         ifdb.write(batch);
+
         ifdb.close();
     }
 
