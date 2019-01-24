@@ -13,9 +13,7 @@ public class CustomFormatter extends SimpleFormatter {
 
     @Override
     public synchronized String format(LogRecord record) {
-            System.out.println("logging a record");
-
-            // first extract info form record
+             // first extract info form record
             String level = record.getLevel().toString();                    // logging level -> string
             String time = TIMEFORMAT.format(new Date(record.getMillis()));  // time variable, needs to be formatted
             String message = record.getMessage();                           // actual message
