@@ -24,7 +24,7 @@ public class Planet {
                 .append(color).append(":")
                 .append(distanceToSun).append(":")
                 .append(gravity).append(":")
-                .append(temperature).append(":");
+                .append(temperature);
         return new String(builder);
     }
 
