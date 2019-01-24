@@ -9,7 +9,7 @@ import java.util.Properties;
 public abstract class AbstractConsumer {
     protected Properties properties;
     private String connectionString;
-    private String topic;
+    protected String topic;
     protected InfluxDAO influxDAO;
     public AbstractConsumer(String topic, String connectionString, String groupIdConfig){
         this(topic, connectionString, groupIdConfig, true, 1000, "localhost:9092",

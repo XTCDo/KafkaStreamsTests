@@ -20,7 +20,7 @@ public class PlanetConsumer2 extends AbstractConsumer {
     @Override
     public void consume() {
         final Consumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
-        consumer.subscribe(Arrays.asList("streams-planets-input"));
+        consumer.subscribe(Arrays.asList(topic));
 
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(10));
