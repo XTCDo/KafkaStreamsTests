@@ -25,15 +25,8 @@ public class PlanetConsumer {
         while(true){
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(10));
             for(ConsumerRecord<String, String> record : records){
-                String key = record.key();
-                String value = record.value();
-                String[] data = value.split(":");
-                System.out.printf("Planet: %s\n", data[0]);
-                System.out.printf("\tCapitol:\t\t%s\n", data[1]);
-                System.out.printf("\tColor:\t\t\t%s\n", data[2]);
-                System.out.printf("\tDistance to Sun:\t%s AU\n", data[3]);
-                System.out.printf("\tGravity:\t\t%s m/s^2\n", data[4]);
-                System.out.printf("\tTemperature:\t\t%s K\n", data[5]);
+                Planet p = new Planet(record.value());
+                p.describe();
             }
         }
     }

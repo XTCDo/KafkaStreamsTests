@@ -17,6 +17,16 @@ public class Planet {
         this.setTemperature(temperature);
     }
 
+    public Planet(String planetAsString){
+        String[] data = planetAsString.split(":");
+        name = data[0];
+        capitol = data[1];
+        color = data[2];
+        distanceToSun = parseFloatWithDefault(data[3], -1.0f);
+        gravity = parseFloatWithDefault(data[4], -1.0f);
+        temperature = parseFloatWithDefault(data[5], -1.0f);
+    }
+
     public String toString(){
         StringBuilder builder = new StringBuilder();
         builder.append(name).append(":")
@@ -28,6 +38,26 @@ public class Planet {
         return new String(builder);
     }
 
+    public void describe(){
+        System.out.printf("Planet: %s\n", name);
+        System.out.printf("\tCapitol:\t\t%s\n", capitol);
+        System.out.printf("\tColor:\t\t\t%s\n", color);
+        System.out.printf("\tDistance to Sun:\t%s AU\n", distanceToSun);
+        System.out.printf("\tGravity:\t\t%s m/s^2\n", gravity);
+        System.out.printf("\tTemperature:\t\t%s K\n", temperature);
+    }
+
+    private float parseFloatWithDefault(String value, float defaultValue){
+        float valueAsFloat = defaultValue;
+        try{
+            valueAsFloat = Float.parseFloat(value);
+        } catch (NumberFormatException nfe){
+            nfe.printStackTrace();
+        } finally {
+            return valueAsFloat;
+        }
+
+    }
 
     public String getName() {
         return name;
