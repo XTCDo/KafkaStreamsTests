@@ -7,8 +7,8 @@ import java.util.logging.SimpleFormatter;
 
 public class CustomFormatter extends SimpleFormatter {
     // used formats
-    private static final String BASEFORMAT = "[%s] <%s>: %s";       // logging without tag
-    private static final String TAGFORMAT = "[%s] <%s> [%s]: %s"; // logging with tag
+    private static final String BASEFORMAT = "[%s] <%s>: %s\n";       // logging without tag
+    private static final String TAGFORMAT = "[%s] <%s> [%s]: %s\n"; // logging with tag
     private static final SimpleDateFormat TIMEFORMAT= new SimpleDateFormat("HH:mm:ss"); // formatting time
 
     @Override

@@ -4,6 +4,7 @@ import sun.rmi.runtime.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,9 +17,12 @@ public class Logging {
 
     public Logging() {
         try {
+            logger.removeHandler(logger.getHandlers());
             FileHandler logFile = new FileHandler("log%u.log");
-            logFile.setFormatter(new CustomFormatter());
-            logger.addHandler(logFile);
+            ConsoleHandler console = new ConsoleHandler();
+            CustomFormatter customFormatter = new CustomFormatter();
+            logFile.setFormatter(customFormatter);
+            console.setFormatter(customFormatter);
         } catch (Exception e){
             e.printStackTrace();
         }
