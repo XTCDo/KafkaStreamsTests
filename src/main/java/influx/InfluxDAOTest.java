@@ -24,7 +24,8 @@ public class InfluxDAOTest {
                 .addField("temperature",310f)
                 .build());
 
-        planets.add(Point.measurement("planets")
+        planets.add(Point
+                .measurement("planets")
                 .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                 .tag("name","Mercury")
                 .addField("capitol","Sydney")

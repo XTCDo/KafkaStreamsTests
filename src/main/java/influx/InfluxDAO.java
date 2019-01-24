@@ -51,17 +51,17 @@ public class InfluxDAO {
 
     public String select(String database, String target, String table){
         String selectQuery = new StringBuilder()
-                .append("SELECT").append(target)
-                .append("FROM").append(table)
+                .append("SELECT ").append(target)
+                .append("FROM ").append(table)
                 .toString();
         return query(database,selectQuery);
     }
 
     public String select(String database, String target, String table, String conditional){
         String selectQuery = new StringBuilder()
-                .append("SELECT").append(target)
-                .append("FROM").append(table)
-                .append("WHERE").append(conditional)
+                .append("SELECT ").append(target)
+                .append("FROM ").append(table)
+                .append("WHERE ").append(conditional)
                 .toString();
         return query(database,selectQuery);
     }
@@ -74,7 +74,6 @@ public class InfluxDAO {
         InfluxDB ifdb = connect();
         BatchPoints batch = BatchPoints
                 .database(database)
-                .tag("async", "true")
                 .retentionPolicy(retentionPolicy)
                 .build();
 
