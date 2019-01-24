@@ -17,7 +17,6 @@ public class Logging {
 
     public Logging() {
         try {
-            logger.removeHandler(logger.getHandlers());
             FileHandler logFile = new FileHandler("log%u.log");
             ConsoleHandler console = new ConsoleHandler();
             CustomFormatter customFormatter = new CustomFormatter();
