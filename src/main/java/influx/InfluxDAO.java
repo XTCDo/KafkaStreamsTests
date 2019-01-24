@@ -47,6 +47,10 @@ public class InfluxDAO {
         ifdb.close();
     }
 
+    public void exists(String database, String table){
+        
+    }
+
     /**
      * uploads a point to the specified database, using default retentionPolicy: autogen
      * @param database  name of database
