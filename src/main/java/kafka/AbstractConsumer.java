@@ -10,13 +10,18 @@ public abstract class AbstractConsumer {
     protected Properties properties;
     private String connectionString;
     protected String topic;
-    protected InfluxDAO influxDAO;
-    public AbstractConsumer(String topic, String connectionString, String groupIdConfig){
-        this(topic, connectionString, groupIdConfig, true, 1000, "localhost:9092",
+
+    /**
+     * Constructor for an AbstractConsumer with default Properties
+     * @param topic The topic the consumer should read form
+     * @param groupIdConfig
+     */
+    public AbstractConsumer(String topic, String groupIdConfig){
+        this(topic, groupIdConfig, true, 1000, "localhost:9092",
                 StringDeserializer.class, StringDeserializer.class);
     }
 
-    public AbstractConsumer(String topic, String connectionString, String groupIdConfig,
+    public AbstractConsumer(String topic, String groupIdConfig,
                             boolean enableAutoCommitConfig,
                             int autoCommitIntervalMSConfig,
                             String bootstrapServersConfig,
@@ -31,19 +36,16 @@ public abstract class AbstractConsumer {
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServersConfig);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, keyDeserializerClass);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializerClass);
-        influxDAO = new InfluxDAO(connectionString);
     }
 
     public abstract void consume();
-
+    public abstract void handleException(Exception e);
     public void main(){
-        influxDAO = new InfluxDAO(connectionString);
         Thread consumerThread = new Thread(() -> {
             try {
                 consume();
             } catch(Exception e) {
-                e.printStackTrace();
-                influxDAO.close();
+                handleException(e);
             }
         });
 

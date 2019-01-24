@@ -1,20 +1,17 @@
 package kafka;
 
-import influx.InfluxDAO;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import javax.print.DocFlavor;
-import java.lang.reflect.Array;
 import java.time.Duration;
 import java.util.Arrays;
 
 public class PlanetConsumer2 extends AbstractConsumer {
 
     public PlanetConsumer2(){
-        super("streams-planets-input", "http://localhost:8086", "PlanetConsumer2Test");
+        super("streams-planets-input", "PlanetConsumer2Test");
     }
 
     @Override
@@ -29,5 +26,10 @@ public class PlanetConsumer2 extends AbstractConsumer {
                 System.out.println(record.value());
             }
         }
+    }
+
+    @Override
+    public void handleException(Exception e) {
+        e.printStackTrace();
     }
 }
