@@ -21,6 +21,6 @@ public class InfluxDAOTest {
                 .build();
 
         // Put the point into the database
-        dao.writeRecord("kafka_test",point);
+        dao.writePoint("kafka_test",point);
     }
 }
