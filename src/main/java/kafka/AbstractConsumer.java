@@ -1,6 +1,5 @@
 package kafka;
 
-import influx.InfluxDAO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
@@ -8,7 +7,6 @@ import java.util.Properties;
 
 public abstract class AbstractConsumer {
     protected Properties properties;
-    private String connectionString;
     protected String topic;
 
     /**
@@ -28,7 +26,6 @@ public abstract class AbstractConsumer {
                             Object keyDeserializerClass,
                             Object valueDeserializerClass){
         this.topic = topic;
-        this.connectionString = connectionString;
         properties = new Properties();
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupIdConfig);
         properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, enableAutoCommitConfig);
