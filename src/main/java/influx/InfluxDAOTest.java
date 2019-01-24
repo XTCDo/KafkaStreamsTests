@@ -21,7 +21,7 @@ public class InfluxDAOTest {
                 .addField("color", "blue")
                 .addField("gravity", 9.81f)
                 .addField("dist_to_sun", 1f)
-                .addField("temperature",310)
+                .addField("temperature",310f)
                 .build());
 
         planets.add(Point.measurement("planets")
@@ -31,7 +31,7 @@ public class InfluxDAOTest {
                 .addField("color", "brown")
                 .addField("gravity", 3.7f)
                 .addField("dist_to_sun", 0.39f)
-                .addField("temperature",452)
+                .addField("temperature",452f)
                 .build());
 
         planets.add(Point.measurement("planets")
@@ -40,7 +40,7 @@ public class InfluxDAOTest {
                 .addField("color", "light_blue")
                 .addField("gravity", 8.87f)
                 .addField("dist_to_sun", 0.723f)
-                .addField("temperature",726)
+                .addField("temperature",726f)
                 .build());
 
 
