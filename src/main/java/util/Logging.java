@@ -22,6 +22,8 @@ public class Logging {
             ConsoleHandler console = new ConsoleHandler();
             logFile.setFormatter(new CustomFormatter());
             console.setFormatter(new CustomFormatter());
+            logger.addHandler(logFile);
+            logger.addHandler(console);
         } catch (Exception e){
             e.printStackTrace();
         }
