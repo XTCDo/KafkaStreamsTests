@@ -1,13 +1,12 @@
 package util;
 
-import org.apache.kafka.common.protocol.types.Field;
+import sun.rmi.runtime.Log;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.ResourceBundle;
-import java.util.logging.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 
@@ -15,11 +14,11 @@ public class Logging {
     private static final Logger logger = Logger.getLogger(Logging.class.getName());
     private static final String TAG = "logging";
 
-    public static void main(String[] args) throws Exception{
+    public Logging()throws Exception{
         FileHandler logFile = new FileHandler("log%u.log");
-        // set up formatter so it bends to our will
         logFile.setFormatter(new CustomFormatter());
     }
+
 
     // public functions
     /**
