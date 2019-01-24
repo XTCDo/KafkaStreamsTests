@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class PlanetConsumer2 extends AbstractConsumer {
 
     public PlanetConsumer2(){
-        super("streams-planets2-input", "localhost:9092", "PlanetConsumer2Test");
+        super("streams-planets2-input", "http://localhost:8086", "PlanetConsumer2Test");
     }
 
     @Override
