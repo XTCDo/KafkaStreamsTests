@@ -9,27 +9,25 @@ import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class InfluxDAO {
-    // DAO-specific vars
     private String targetUrl;
     private InfluxDB influxDB;
     private static final String DEFAULT_RP = "autogen";
 
-    // === class constructor ===
+    // class constructor
     public InfluxDAO(String urlString){
         targetUrl = urlString;
         influxDB = connect();
     }
 
-    // === private functions ===
+    // private functions
     private InfluxDB connect() {
         return InfluxDBFactory.connect(targetUrl);
     }
 
-    // === public functions ===
+    // public functions
     /*  todo add more general functions for specific queries/operations
         write batch of points
         CREATE
@@ -125,5 +123,9 @@ public class InfluxDAO {
         // close connection
 
         return responseString;
+    }
+
+    public void close(){
+        influxDB.close();
     }
 }
