@@ -16,8 +16,9 @@ public class Logging {
 
     public Logging() {
         try {
-            FileHandler logFile = new FileHandler("/logs/log%u.log");
+            FileHandler logFile = new FileHandler("log%u.log");
             logFile.setFormatter(new CustomFormatter());
+            logger.addHandler(logFile);
         } catch (Exception e){
             e.printStackTrace();
         }
