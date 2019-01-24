@@ -8,7 +8,9 @@ import org.influxdb.dto.Point;
 import javax.print.DocFlavor;
 import java.lang.reflect.Array;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -25,15 +27,17 @@ public class PlanetConsumer {
         final Consumer<String, String> consumer = new KafkaConsumer<String, String>(props);
 
         consumer.subscribe(Arrays.asList("streams-planets-input"));
+        InfluxDAO dao = new InfluxDAO("http://localhost:8086");
         while(true){
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(10));
+            List<Point> planets = new ArrayList<>();
             for(ConsumerRecord<String, String> record : records){
                 Planet planet = new Planet(record.value());
                 planet.describe();
                 Point point = planetToPoint(planet);
-                InfluxDAO dao = new InfluxDAO("http://localhost:8086");
-                dao.writePoint("kafka_test", point);
+                planets.add(point);
             }
+            dao.writePointList("kafka_test", planets);
         }
     }
 
