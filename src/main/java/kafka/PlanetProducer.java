@@ -33,8 +33,9 @@ public class PlanetProducer {
                     for(Planet p : planets){
                         producer.send(new ProducerRecord<String, String>("streams-planets-input",
                                 p.getName(), p.toString()));
+                        Thread.sleep(10);
                     }
-                    Thread.sleep(1000);
+                    //Thread.sleep(1000);
                 }
 
             } catch (Exception e){
