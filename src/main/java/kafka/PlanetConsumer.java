@@ -62,6 +62,15 @@ public class PlanetConsumer {
                 latch.countDown();
             }
         });
+
+        try {
+            consumerThread.start();
+            latch.await();
+        } catch (Throwable e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+        System.exit(0);
     }
 
     /**
