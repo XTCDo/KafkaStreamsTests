@@ -15,11 +15,13 @@ import java.util.List;
 public class InfluxDAO {
     // DAO-specific vars
     private String targetUrl;
+    private InfluxDB influxDB;
     private static final String DEFAULT_RP = "autogen";
 
     // === class constructor ===
     public InfluxDAO(String urlString){
         targetUrl = urlString;
+        influxDB = connect();
     }
 
     // === private functions ===
@@ -42,9 +44,7 @@ public class InfluxDAO {
      */
     public void ping(){
         System.out.println("sending ping request to:\t"+ targetUrl);
-        InfluxDB ifdb = connect();
-        System.out.println("response time:\t"+ifdb.ping().getResponseTime());
-        ifdb.close();
+        System.out.println("response time:\t"+influxDB.ping().getResponseTime());
     }
 
 
@@ -71,16 +71,13 @@ public class InfluxDAO {
     }
 
     public void writePointList(String database, List<Point> points, String retentionPolicy){
-        InfluxDB ifdb = connect();
         BatchPoints batch = BatchPoints
                 .database(database)
                 .retentionPolicy(retentionPolicy)
                 .build();
 
         points.forEach(batch::point);
-        ifdb.write(batch);
-
-        ifdb.close();
+        influxDB.write(batch);
     }
 
     /**
@@ -99,9 +96,7 @@ public class InfluxDAO {
      * @param retentionPolicy   retention policy to maintain(how long to save etc...)
      */
     public void writePoint(String database, Point point, String retentionPolicy){
-        InfluxDB ifdb = connect();
-        ifdb.write(database, retentionPolicy, point);
-        ifdb.close();
+        influxDB.write(database, retentionPolicy, point);
     }
 
     /**
@@ -111,25 +106,23 @@ public class InfluxDAO {
      */
     public String query(String database, String inputquery){
         // connect to influxdb
-        InfluxDB ifdb = connect();
-        
+
         // connect
-        ifdb.setDatabase(database); // is this necessary?
-        ifdb.enableBatch(BatchOptions.DEFAULTS); // todo figure out if this needs to exist
+        influxDB.setDatabase(database); // is this necessary?
+        influxDB.enableBatch(BatchOptions.DEFAULTS); // todo figure out if this needs to exist
 
         // prepare query
         Query query = new Query(inputquery, database);
         System.out.println("performing query:\t"+query.getCommand());
 
         // perform query and immediately process response as a string
-        QueryResult result= ifdb.query(query);  // todo improve this to better process responses
+        QueryResult result= influxDB.query(query);  // todo improve this to better process responses
 
         String responseString = result.getResults().toString();
         System.out.println("got response:\t"+responseString);
 
         //ifdb.flush();   // put in comments to test if it can be removed
         // close connection
-        ifdb.close();
 
         return responseString;
     }
