@@ -17,6 +17,17 @@ public class Planet {
         this.setTemperature(temperature);
     }
 
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append(name).append(":")
+                .append(capitol).append(":")
+                .append(color).append(":")
+                .append(distanceToSun).append(":")
+                .append(gravity).append(":")
+                .append(temperature).append(":");
+        return new String(builder);
+    }
+
 
     public String getName() {
         return name;

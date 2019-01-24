@@ -21,7 +21,7 @@ public class PlanetProducer {
         props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
         props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
 
-        Producer<String, Planet> producer = new KafkaProducer<String, Planet>(props);
+        Producer<String, String> producer = new KafkaProducer<String, String>(props);
 
         Thread producerThread = new Thread(() -> {
             try {
@@ -101,8 +101,8 @@ public class PlanetProducer {
 
                 while(true) {
                     for(Planet p : planets){
-                        producer.send(new ProducerRecord<String, Planet>("streams-planets-input",
-                                p.getName(), p));
+                        producer.send(new ProducerRecord<String, String>("streams-planets-input",
+                                p.getName(), p.toString()));
                     }
                     Thread.sleep(1000);
                 }
