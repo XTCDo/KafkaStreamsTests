@@ -8,7 +8,7 @@ import java.util.logging.*;
 
 
 public class Logging {
-    private static final Logger logger = Logger.getLogger(Logging.class.getName());
+    private Logger logger = Logger.getLogger(Logging.class.getName()); // todo figure out possibility for custom file logging
     private static final String TAG = "logging";
     private static final String logDirPath="./logs/";
 
@@ -28,6 +28,7 @@ public class Logging {
     }
 
     // this function will ALWAYS be called on creating a new object
+    // logging to a custom file is temporarily broken: todo implement diversified logging.
     public Logging(boolean console, boolean file, String fileName){
         // I reject your handlers, and susbtitute my own!
         logger.setUseParentHandlers(false);
@@ -121,10 +122,10 @@ public class Logging {
      * converts circumstantial parameters to a timestamped, printable message
      * @param tag       tag for log sorting and filtering
      * @param message   log message
-     * @return          String formatted "<time> [tag]: message"
+     * @return          String formatted "[CONSOLE] <time> [tag]: message"
      */
     private static String fullMessage(String tag, String message){
-       return String.format("[%s] <%s> [%s]: %s", "CONSOLE", now(), tag, message);
+        return String.format("%10s","[CONSOLE]")+'<'+now()+"> "+'['+tag+"]: "+message;
     }
 
     private static String now(){
