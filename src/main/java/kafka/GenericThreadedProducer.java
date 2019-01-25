@@ -2,6 +2,11 @@ package kafka;
 
 import java.util.concurrent.CountDownLatch;
 
+/**
+ *
+ * @param <K>
+ * @param <V>
+ */
 public class GenericThreadedProducer<K, V> extends GenericProducer<K, V> {
     public GenericThreadedProducer(String topic,
                                    String bootStrapServer,
