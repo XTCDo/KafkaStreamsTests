@@ -30,7 +30,7 @@ public abstract class AbstractProducer {
         properties.put(ProducerConfig.BATCH_SIZE_CONFIG, batchSize);
         properties.put(ProducerConfig.LINGER_MS_CONFIG, lingerMS);
         properties.put(ProducerConfig.BUFFER_MEMORY_CONFIG, bufferMemory);
-        producer = new KafkaProducer<K, V>(properties);
+        producer = new KafkaProducer<String, String>(properties);
     }
 
     public AbstractProducer(String topic, String bootStrapServer){
