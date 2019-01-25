@@ -4,3 +4,4 @@ streams.examples.iml
 .*
 src/cola/
 runclass
+log*
