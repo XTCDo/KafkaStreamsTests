@@ -32,6 +32,7 @@ public class Logging {
     public Logging(boolean console, boolean file, String fileName){
         // I reject your handlers, and susbtitute my own!
         logger.setUseParentHandlers(false);
+        logger.setLevel(Level.ALL);
 
         if (console){logger.addHandler(consoleHandler());} // consoleHandlers are easy
         if (file){
@@ -125,7 +126,7 @@ public class Logging {
      * @return          String formatted "[CONSOLE] <time> [tag]: message"
      */
     private static String fullMessage(String tag, String message){
-        return String.format("%10s","[CONSOLE]")+'<'+now()+"> "+'['+tag+"]: "+message;
+        return String.format("%-10s","[CONSOLE]")+'<'+now()+"> "+'['+tag+"]: "+message;
     }
 
     private static String now(){

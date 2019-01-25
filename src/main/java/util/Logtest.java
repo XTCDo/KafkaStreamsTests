@@ -26,9 +26,8 @@ public class Logtest {
         });
 
         // stress test
-        for (int i=1; i<100000; i++){
-            stressLog.debug(TAG,"stress test iteration"+ i);
-        }
+        for (int i=1; i<100000; i++)
+            stressLog.debug(TAG, "stress test iteration" + i);
 
         Logging.logprint("console","just printing to console");
 
