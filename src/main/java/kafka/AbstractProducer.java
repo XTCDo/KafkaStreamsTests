@@ -7,7 +7,8 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
 
-public abstract class AbstractProducer<K, V> {
+
+public class AbstractProducer<K, V> {
     private Properties properties;
     private String topic;
     private Producer<K, V> producer;
