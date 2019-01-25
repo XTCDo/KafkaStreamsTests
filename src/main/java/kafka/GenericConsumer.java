@@ -33,10 +33,6 @@ public class GenericConsumer<K, V> {
         consumer.subscribe(topics);
     }
 
-    public GenericConsumer(String topic, String bootStrapServer, String groupId){
-        this(Arrays.asList(topic), bootStrapServer, groupId);
-    }
-
     public GenericConsumer(String topic,
                            String bootStrapServers,
                            String groupId,
@@ -46,6 +42,10 @@ public class GenericConsumer<K, V> {
                            int autoCommitIntervalMS){
         this(Arrays.asList(topic), bootStrapServers, groupId, keyDeserializerClass,
                 valueDeserializerClass, enableAutoCommit, autoCommitIntervalMS);
+    }
+
+    public GenericConsumer(String topic, String bootStrapServer, String groupId){
+        this(Arrays.asList(topic), bootStrapServer, groupId);
     }
 
     public GenericConsumer(List<String> topics, String bootStrapServer, String groupId) {
