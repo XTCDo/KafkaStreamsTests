@@ -4,7 +4,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.util.List;
 
-public class NewPlanetProducer extends AbstractThreadedProducer {
+public class NewPlanetProducer extends GenericThreadedProducer<String, String> {
     public NewPlanetProducer(String topic, String bootStrapServer, Object keySerializerClass, Object valueSerializerClass, String acks, int retries, int batchSize, int lingerMS, int bufferMemory) {
         super(topic, bootStrapServer, keySerializerClass, valueSerializerClass, acks, retries, batchSize, lingerMS, bufferMemory);
     }
@@ -20,8 +20,7 @@ public class NewPlanetProducer extends AbstractThreadedProducer {
 
                 while(true) {
                     for(Planet p : planets){
-                        getProducer().send(new ProducerRecord(getTopic(), p.getName(), p.toString()));
-                        p.describe();
+                        getProducer().send(new ProducerRecord<String, String>(getTopic(), p.getName(), p.toString()));
                         Thread.sleep(100);
                     }
                 }
