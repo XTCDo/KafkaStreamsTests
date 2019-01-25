@@ -3,10 +3,7 @@ package kafka;
 import java.util.concurrent.CountDownLatch;
 
 public abstract class AbstractThreadedProducer<K,V> extends AbstractProducer {
-    private Thread producerThread;
-
-    public AbstractThreadedProducer(Thread producerThread,
-                                    String topic,
+    public AbstractThreadedProducer(String topic,
                                     String bootStrapServer,
                                     Object keySerializerClass,
                                     Object valueSerializerClass,
@@ -17,15 +14,13 @@ public abstract class AbstractThreadedProducer<K,V> extends AbstractProducer {
                                     int bufferMemory){
         super(topic, bootStrapServer, keySerializerClass, valueSerializerClass,
                 acks, retries, batchSize, lingerMS, bufferMemory);
-        this.producerThread = producerThread;
     }
 
-    public AbstractThreadedProducer(Thread producerThread, String topic, String bootStrapServer){
+    public AbstractThreadedProducer(String topic, String bootStrapServer){
         super(topic, bootStrapServer);
-        this.producerThread = producerThread;
     }
 
-    public void run(){
+    public void run(Thread producerThread) {
         final CountDownLatch latch = new CountDownLatch(1);
         Runtime.getRuntime().addShutdownHook(new Thread("producer-shutdown-hook"){
             @Override

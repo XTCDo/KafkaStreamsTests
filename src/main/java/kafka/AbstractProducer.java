@@ -41,4 +41,7 @@ public abstract class AbstractProducer<K, V> {
     public Producer<K, V> getProducer() {
         return producer;
     }
+    public String getTopic() {
+        return topic;
+    }
 }
