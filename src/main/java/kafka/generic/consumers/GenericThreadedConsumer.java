@@ -3,7 +3,7 @@ package kafka.generic.consumers;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-
+// TODO Test generic consumers
 public class GenericThreadedConsumer<K, V> extends GenericConsumer<K, V> {
     public GenericThreadedConsumer(List<String> topics,
                                    String bootStrapServers,
