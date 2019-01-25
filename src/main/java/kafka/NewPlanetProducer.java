@@ -20,7 +20,7 @@ public class NewPlanetProducer extends AbstractThreadedProducer {
 
                 while(true) {
                     for(Planet p : planets){
-                        getProducer().send(new ProducerRecord(getTopic(), p.getName(), p.toString()));
+                        getProducer().send(new ProducerRecord<String, String>(getTopic(), p.getName(), p.toString()));
                         p.describe();
                         Thread.sleep(100);
                     }

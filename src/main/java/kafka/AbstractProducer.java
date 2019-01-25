@@ -11,6 +11,7 @@ public abstract class AbstractProducer {
     private Properties properties;
     private String topic;
     private Producer<String, String> producer;
+
     public AbstractProducer(String topic,
                             String bootStrapServer,
                             Object keySerializerClass,
@@ -35,10 +36,10 @@ public abstract class AbstractProducer {
 
     public AbstractProducer(String topic, String bootStrapServer){
         this(topic, bootStrapServer, StringSerializer.class, StringSerializer.class,
-                "all", 0, 16384, 1, 0);
+                "all", 0, 16384, 1, 33554432);
     }
 
-    public Producer<String, String> getProducer() {
+    public Producer getProducer() {
         return producer;
     }
     public String getTopic() {
