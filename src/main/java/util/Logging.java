@@ -1,12 +1,7 @@
 package util;
 
-import org.apache.kafka.common.protocol.types.Field;
-import sun.rmi.runtime.Log;
-
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
@@ -64,9 +59,13 @@ public class Logging {
 
     public void info(String tag, String message){log(Level.INFO, tag, message);}
     public void warn(String tag, String message){log(Level.WARNING, tag, message);}
-    public void error(String tag, String message){log(Level.SEVERE, tag, message);}
-    public void debug(String tag, String message){log(Level.FINE, tag, message);}
-    public void trace(String tag, String message){log(Level.FINER, tag, message);}
+    public void severe(String tag, String message){log(Level.SEVERE, tag, message);}
+    public void fine(String tag, String message){log(Level.FINE, tag, message);}
+    public void finer(String tag, String message){log(Level.FINER, tag, message);}
+    // aliases
+    public void error(String tag, String message){severe(tag, message);}
+    public void debug(String tag, String message){fine(tag, message);}
+    public void trace(String tag, String message){finer(tag, message);}
 
     /**
      *  general log call for personal preference or other levels
@@ -83,9 +82,22 @@ public class Logging {
         }
     }
 
+    /**
+     * tagless logging
+     * @param level     log level
+     * @param message   log message
+     */
+    public void log(Level level, String message){
+        try {
+            logger.log(level, message);
+        } catch (Exception e){
+            error(TAG, "Error while logging: "+e.getMessage()+", defaulting to INFO.");
+            log(Level.INFO, message);
+        }
+    }
+
 
     // private functions
-
     private FileHandler fileHandler(String filePath, String fileName) throws Exception{
             // catch user errors
             if (filePath.isEmpty() || fileName.isEmpty()){
@@ -109,7 +121,7 @@ public class Logging {
     }
 
     /**
-     * converts circumstantial parameters to a timestamed, printable message
+     * converts circumstantial parameters to a timestamped, printable message
      * @param tag       tag for log sorting and filtering
      * @param message   log message
      * @return          String formatted "<time> [tag]: message"
