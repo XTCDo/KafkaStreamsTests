@@ -24,7 +24,6 @@ public class PlanetProducer {
 
 
         Producer<String, String> producer = new KafkaProducer<String, String>(props);
-
         Thread producerThread = new Thread(() -> {
             try {
                 List<Planet> planets = PlanetProvider.getPlanets();
