@@ -7,8 +7,6 @@ import java.util.logging.SimpleFormatter;
 
 public class CustomFormatter extends SimpleFormatter {
     // used formats
-    private static final String BASEFORMAT = "[%s] <%s>: %s\n";       // logging without tag
-    private static final String TAGFORMAT = "[%s] <%s> [%s]: %s\n";   // logging with tag
     private static final SimpleDateFormat TIMEFORMAT= new SimpleDateFormat("HH:mm:ss"); // formatting time
 
     @Override
@@ -21,12 +19,35 @@ public class CustomFormatter extends SimpleFormatter {
             String response;
             try {
                 String tag = (String) record.getParameters()[0];
-                response = String.format(TAGFORMAT, level, time, tag, message);
+                response = buildFormat(level,time,tag,message);
             } catch (Exception e){
-                response= String.format(BASEFORMAT,level,time, message);
+                response= buildFormat(level,time,message);
             }
 
             return response;
     }
 
+
+    // formatting with Stringbuilder because it's significantly faster and more lightweight
+    private String buildFormat(String level, String time, String tag, String message){
+        return new StringBuilder(pad('['+level+']',10)) // pad so messages are nicely aligned
+                .append('<').append(time).append("> ")
+                .append('[').append(tag).append("] ")
+                .append(": ").append(message).append('\n')
+                .toString();
+    }
+
+    // do it again without tags
+    private String buildFormat(String level, String time, String message){
+        return new StringBuilder(pad('['+level+']',10)) // pad so messages are nicely aligned
+                .append('<').append(time).append("> ")
+                .append(": ").append(message).append('\n')
+                .toString();
+    }
+
+    private String pad(String input, int length){
+        StringBuilder sb = new StringBuilder(input);
+        sb.setLength(length);
+        return sb.toString();
+    }
 }
