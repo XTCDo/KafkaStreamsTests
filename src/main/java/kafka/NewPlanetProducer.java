@@ -1,5 +1,6 @@
 package kafka;
 
+import kafka.generic.producers.GenericThreadedProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.util.List;

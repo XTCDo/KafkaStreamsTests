@@ -1,6 +1,4 @@
-package kafka;
-
-import org.apache.kafka.common.serialization.StringDeserializer;
+package kafka.generic.consumers;
 
 import java.util.Arrays;
 import java.util.List;
