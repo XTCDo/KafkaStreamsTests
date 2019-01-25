@@ -27,7 +27,7 @@ public class Logtest {
 
         // stress test
         stressLog.info(TAG, "commencing stress test");
-        for (int i=1; i<100000; i++) {
+        for (int i=1; i<1000; i++) {
             stressLog.info(TAG, "stress test iteration " + i);
             stressLog.debug(TAG, "stress test iteration " + i);
         }

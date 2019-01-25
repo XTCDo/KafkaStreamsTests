@@ -138,7 +138,10 @@ public class Logging {
         // close all current fileHandlers
         Arrays.stream(logger.getHandlers())
                 .filter(handler -> handler instanceof FileHandler)
-                .forEach(Handler::close);
+                .forEach(handler -> {
+                    System.out.println("found file handler, closing");
+                    handler.close();
+                });
 
         super.finalize();
     }
