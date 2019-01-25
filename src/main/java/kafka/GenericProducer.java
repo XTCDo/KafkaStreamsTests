@@ -8,20 +8,20 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import java.util.Properties;
 
 
-public class AbstractProducer<K, V> {
+public class GenericProducer<K, V> {
     private Properties properties;
     private String topic;
     private Producer<K, V> producer;
 
-    public AbstractProducer(String topic,
-                            String bootStrapServer,
-                            Object keySerializerClass,
-                            Object valueSerializerClass,
-                            String acks,
-                            int retries,
-                            int batchSize,
-                            int lingerMS,
-                            int bufferMemory) {
+    public GenericProducer(String topic,
+                           String bootStrapServer,
+                           Object keySerializerClass,
+                           Object valueSerializerClass,
+                           String acks,
+                           int retries,
+                           int batchSize,
+                           int lingerMS,
+                           int bufferMemory) {
         this.topic = topic;
         properties = new Properties();
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapServer);
@@ -35,7 +35,7 @@ public class AbstractProducer<K, V> {
         producer = new KafkaProducer<K, V>(properties);
     }
 
-    public AbstractProducer(String topic, String bootStrapServer){
+    public GenericProducer(String topic, String bootStrapServer){
         this(topic, bootStrapServer, StringSerializer.class, StringSerializer.class,
                 "all", 0, 16384, 1, 33554432);
     }
