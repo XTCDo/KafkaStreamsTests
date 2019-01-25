@@ -9,7 +9,7 @@ public class NewPlanetProducer extends AbstractThreadedProducer {
         super(topic, bootStrapServer, keySerializerClass, valueSerializerClass, acks, retries, batchSize, lingerMS, bufferMemory);
     }
 
-    private NewPlanetProducer(String topic, String bootStrapServer){
+    public NewPlanetProducer(String topic, String bootStrapServer){
         super(topic, bootStrapServer);
     }
 
