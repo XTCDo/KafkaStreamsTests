@@ -2,7 +2,7 @@ package kafka;
 
 import java.util.concurrent.CountDownLatch;
 
-public abstract class AbstractThreadedProducer<K,V> extends AbstractProducer<K, V> {
+public abstract class AbstractThreadedProducer extends AbstractProducer {
     public AbstractThreadedProducer(String topic,
                                     String bootStrapServer,
                                     Object keySerializerClass,

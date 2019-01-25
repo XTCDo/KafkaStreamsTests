@@ -7,10 +7,10 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
 
-public abstract class AbstractProducer<K, V> {
+public abstract class AbstractProducer {
     private Properties properties;
     private String topic;
-    private Producer<K, V> producer;
+    private Producer<String, String> producer;
     public AbstractProducer(String topic,
                             String bootStrapServer,
                             Object keySerializerClass,
@@ -38,7 +38,7 @@ public abstract class AbstractProducer<K, V> {
                 "all", 0, 16384, 1, 0);
     }
 
-    public Producer<K, V> getProducer() {
+    public Producer<String, String> getProducer() {
         return producer;
     }
     public String getTopic() {
