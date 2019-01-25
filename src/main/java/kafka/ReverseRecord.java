@@ -83,7 +83,7 @@ public class ReverseRecord {
                 streams.close();
                 latch.countDown();
             }
-        }); 
+        });
 
         try {
             streams.start();
