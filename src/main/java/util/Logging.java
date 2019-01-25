@@ -1,13 +1,19 @@
 package util;
 
+import sun.rmi.runtime.Log;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.*;
 
 
 public class Logging {
+    private List<Logger> loggers = new ArrayList();
+
     private Logger logger = Logger.getLogger(Logging.class.getName()); // todo figure out possibility for custom file logging
     private static final String TAG = "logging";
     private static final String logDirPath="./logs/";
@@ -17,6 +23,7 @@ public class Logging {
     public Logging() {
         new Logging(true, true);
     }
+
     public Logging(boolean console, boolean file){
         //define default value for file Handling
         String defaultFileName="";
@@ -32,7 +39,6 @@ public class Logging {
     public Logging(boolean console, boolean file, String fileName){
         // I reject your handlers, and susbtitute my own!
         logger.setUseParentHandlers(false);
-        logger.setLevel(Level.ALL);
 
         if (console){logger.addHandler(consoleHandler());} // consoleHandlers are easy
         if (file){
@@ -43,6 +49,7 @@ public class Logging {
             }
         }
         // it is possible for a logger to not have any handlers at all
+        logger.setLevel(Level.ALL);
     }
 
 
