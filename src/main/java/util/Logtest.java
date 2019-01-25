@@ -14,11 +14,11 @@ public class Logtest {
         // depth test
         Level[] levelArray= new Level[]{Level.INFO, Level.WARNING, Level.SEVERE, Level.FINE, Level.FINER, Level.FINEST};
 
-
+        Logging stressLog = new Logging(true, false);
 
         List<Logging> logList = new ArrayList<>();
         logList.add(new Logging());
-        logList.add(new Logging(true, false));
+        logList.add(stressLog);
         logList.add(new Logging(false, true));
 
         logList.forEach(logging -> {
@@ -26,8 +26,8 @@ public class Logtest {
         });
 
         // stress test
-        for (int i=0; i<100000; i++){
-            logList.get(0).debug(TAG,"stress test iteration"+ i);
+        for (int i=1; i<100000; i++){
+            stressLog.debug(TAG,"stress test iteration"+ i);
         }
 
         Logging.logprint("console","just printing to console");

@@ -30,24 +30,22 @@ public class CustomFormatter extends SimpleFormatter {
 
     // formatting with Stringbuilder because it's significantly faster and more lightweight
     private String buildFormat(String level, String time, String tag, String message){
-        return new StringBuilder(pad('['+level+']',10)) // pad so messages are nicely aligned
-                .append('<').append(time).append("> ")
-                .append('[').append(tag).append("] ")
-                .append(": ").append(message).append('\n')
-                .toString();
+        return pad('[' + level + ']', 10, ' ') + // pad so messages are nicely aligned
+                '<' + time + "> " +
+                '[' + tag + "] " +
+                ": " + message + '\n';
     }
 
     // do it again without tags
     private String buildFormat(String level, String time, String message){
-        return new StringBuilder(pad('['+level+']',10)) // pad so messages are nicely aligned
-                .append('<').append(time).append("> ")
-                .append(": ").append(message).append('\n')
-                .toString();
+        return pad('[' + level + ']', 10, ' ') + // pad so messages are nicely aligned
+                '<' + time + "> " +
+                ": " + message + '\n';
     }
 
-    private String pad(String input, int length){
+    private String pad(String input, int length, char character){
         StringBuilder sb = new StringBuilder(input);
-        sb.setLength(length);
+        while (sb.length()<length) sb.append(character);
         return sb.toString();
     }
 }
