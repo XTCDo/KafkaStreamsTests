@@ -2,12 +2,9 @@ package util;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import java.util.logging.*;
 
 
 public class Logging {
@@ -38,7 +35,7 @@ public class Logging {
         if (console){logger.addHandler(consoleHandler());} // consoleHandlers are easy
         if (file){
             try {
-                fileHandler(logDirPath,fileName);
+                logger.addHandler(fileHandler(logDirPath,fileName));
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -132,5 +129,15 @@ public class Logging {
 
     private static String now(){
         return new SimpleDateFormat("HH:mm:ss").format(new Date());
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        // close all current fileHandlers
+        Arrays.stream(logger.getHandlers())
+                .filter(handler -> handler instanceof FileHandler)
+                .forEach(Handler::close);
+
+        super.finalize();
     }
 }
