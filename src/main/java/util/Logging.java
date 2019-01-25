@@ -1,8 +1,12 @@
 package util;
 
+import org.apache.kafka.common.protocol.types.Field;
 import sun.rmi.runtime.Log;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
@@ -14,19 +18,37 @@ import java.util.logging.Logger;
 public class Logging {
     private static final Logger logger = Logger.getLogger(Logging.class.getName());
     private static final String TAG = "logging";
+    private static final String logDirPath="./logs/";
 
+
+    // constructors
     public Logging() {
-        try {
-            logger.setUseParentHandlers(false);
-            FileHandler logFile = new FileHandler("log%u.log");
-            ConsoleHandler console = new ConsoleHandler();
-            logFile.setFormatter(new CustomFormatter());
-            console.setFormatter(new CustomFormatter());
-            logger.addHandler(logFile);
-            logger.addHandler(console);
-        } catch (Exception e){
-            e.printStackTrace();
+        new Logging(true, true);
+    }
+    public Logging(boolean console, boolean file){
+        //define default value for file Handling
+        String defaultFileName="";
+        if (file) {
+            String timeString = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            defaultFileName = "log-" + timeString;
         }
+        new Logging(console, file, defaultFileName);
+    }
+
+    // this function will ALWAYS be called on creating a new object
+    public Logging(boolean console, boolean file, String fileName){
+        // I reject your handlers, and susbtitute my own!
+        logger.setUseParentHandlers(false);
+
+        if (console){logger.addHandler(consoleHandler());} // consoleHandlers are easy
+        if (file){
+            try {
+                fileHandler(logDirPath,fileName);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        // it is possible for a logger to not have any handlers at all
     }
 
 
@@ -63,6 +85,29 @@ public class Logging {
 
 
     // private functions
+
+    private FileHandler fileHandler(String filePath, String fileName) throws Exception{
+            // catch user errors
+            if (filePath.isEmpty() || fileName.isEmpty()){
+                throw new IllegalArgumentException("file path or file name can't be empty");
+            }
+
+            // ensure there's a folder to write logs to
+            File path = new File(filePath);
+            if (!(path.exists())) { path.mkdir();}
+
+            // then, create a handler to the specified file - append if it already exists
+            FileHandler fileHandler = new FileHandler(filePath + fileName + ".log", true); // IOException is propagated upwards
+            fileHandler.setFormatter(new CustomFormatter());// special: set a custom formatter for tagging
+            return fileHandler;
+    }
+
+    private ConsoleHandler consoleHandler(){
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new CustomFormatter());
+        return consoleHandler;
+    }
+
     /**
      * converts circumstantial parameters to a timestamed, printable message
      * @param tag       tag for log sorting and filtering
@@ -70,11 +115,7 @@ public class Logging {
      * @return          String formatted "<time> [tag]: message"
      */
     private static String fullMessage(String tag, String message){
-        return new StringBuilder()
-                .append("<").append(now()).append("> ")
-                .append("[").append(tag).append("]: ")
-                .append(message)
-                .toString();
+       return String.format("[%s] <%s> [%s]: %s", "CONSOLE", now(), tag, message);
     }
 
     private static String now(){
