@@ -2,7 +2,7 @@ package kafka;
 
 import java.util.concurrent.CountDownLatch;
 
-public abstract class GenericThreadedProducer<K, V> extends GenericProducer<K, V> {
+public class GenericThreadedProducer<K, V> extends GenericProducer<K, V> {
     public GenericThreadedProducer(String topic,
                                    String bootStrapServer,
                                    Object keySerializerClass,
