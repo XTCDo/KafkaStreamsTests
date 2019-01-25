@@ -7,10 +7,10 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
 
-public abstract class AbstractProducer {
+public abstract class AbstractProducer<K, V> {
     private Properties properties;
     private String topic;
-    private Producer<String, String> producer;
+    private Producer<K, V> producer;
 
     public AbstractProducer(String topic,
                             String bootStrapServer,
@@ -31,7 +31,7 @@ public abstract class AbstractProducer {
         properties.put(ProducerConfig.BATCH_SIZE_CONFIG, batchSize);
         properties.put(ProducerConfig.LINGER_MS_CONFIG, lingerMS);
         properties.put(ProducerConfig.BUFFER_MEMORY_CONFIG, bufferMemory);
-        producer = new KafkaProducer<String, String>(properties);
+        producer = new KafkaProducer<K, V>(properties);
     }
 
     public AbstractProducer(String topic, String bootStrapServer){
