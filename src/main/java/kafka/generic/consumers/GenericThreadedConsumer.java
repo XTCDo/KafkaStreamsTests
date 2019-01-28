@@ -36,22 +36,10 @@ public class GenericThreadedConsumer<K, V> extends GenericConsumer<K, V> {
     }
 
     public void run(Thread consumerThread) {
-        final CountDownLatch latch = new CountDownLatch(1);
-        Runtime.getRuntime().addShutdownHook(new Thread("consumer-shutdown-hook"){
-            @Override
-            public void run(){
-                getConsumer().close();
-                latch.countDown();
-            }
-        });
-
         try {
             consumerThread.start();
-            latch.await();
         } catch(Throwable e){
             e.printStackTrace();
-            System.exit(1);
         }
-        System.exit(0);
     }
 }

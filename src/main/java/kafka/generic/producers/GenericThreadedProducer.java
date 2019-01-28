@@ -26,23 +26,11 @@ public class GenericThreadedProducer<K, V> extends GenericProducer<K, V> {
     }
 
     public void run(Thread producerThread) {
-        final CountDownLatch latch = new CountDownLatch(1);
-        Runtime.getRuntime().addShutdownHook(new Thread("producer-shutdown-hook"){
-            @Override
-            public void run(){
-                getProducer().close();
-                latch.countDown();
-            }
-        });
-
         try {
             producerThread.start();
-            latch.await();
         } catch(Throwable e){
             e.printStackTrace();
-            System.exit(1);
         }
-        System.exit(0);
     }
 
 }
