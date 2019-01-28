@@ -45,4 +45,8 @@ public class GenericThreadedInfluxConsumer<K, V> extends GenericThreadedConsumer
     private void makeInfluxDAO(String influxURL){
         influxDAO = new InfluxDAO(influxURL);
     }
+
+    public InfluxDAO getInfluxDAO(){
+        return influxDAO;
+    }
 }
