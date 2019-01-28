@@ -4,6 +4,6 @@ import kafka.producers.NewPlanetProducer;
 
 public class TestNewPlanetProducer {
     public static void main(String[] args){
-        new NewPlanetProducer("kafka.streams-planets-input", "localhost:9092").run();
+        new NewPlanetProducer("streams-planets-input", "localhost:9092").run();
     }
 }

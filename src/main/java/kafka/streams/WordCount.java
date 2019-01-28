@@ -20,14 +20,14 @@ import java.util.concurrent.CountDownLatch;
 public class WordCount {
     public static void main(String[] args) throws Exception {
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka.streams-wordcount");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-wordcount");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
         final StreamsBuilder builder = new StreamsBuilder();
 
-        KStream<String, String> source = builder.stream("kafka.streams-plaintext-input");
+        KStream<String, String> source = builder.stream("streams-plaintext-input");
         source.flatMapValues(
                 // Turn the Value of the input record into a list of words. The input record is split
                 // into several strings using "\\W+" as delimiter.
@@ -38,7 +38,7 @@ public class WordCount {
                 // I have not figured out the rest of this code yet.
                 .count(Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("counts-store"))
                 .toStream()
-                .to("kafka.streams-wordcount-output", Produced.with(Serdes.String(), Serdes.Long()));
+                .to("streams-wordcount-output", Produced.with(Serdes.String(), Serdes.Long()));
 
         final Topology topology = builder.build();
         System.out.println(topology.describe());
@@ -46,7 +46,7 @@ public class WordCount {
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
-        Runtime.getRuntime().addShutdownHook(new Thread("kafka.streams-shutdown-hook") {
+        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
             @Override
             public void run() {
                 streams.close();

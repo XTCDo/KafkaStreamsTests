@@ -30,13 +30,13 @@ import java.util.concurrent.CountDownLatch;
 /**
  * In this example, we implement a simple LineSplit program using the high-level Streams DSL
  * that reads from a source topic "kafka.streams-plaintext-input", where the values of messages represent lines of text,
- * and writes the messages as-is into a sink topic "kafka.streams-pipe-output".
+ * and writes the messages as-is into a sink topic "streams-pipe-output".
  */
 public class LineSplit {
 
     public static void main(String[] args) throws Exception {
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka.streams-linesplit");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-linesplit");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -44,7 +44,7 @@ public class LineSplit {
         final StreamsBuilder builder = new StreamsBuilder();
 
         // Get a source stream from the topic 'kafka.streams-plaintext-input'
-		KStream<String, String> source = builder.stream("kafka.streams-plaintext-input");
+		KStream<String, String> source = builder.stream("streams-plaintext-input");
 		// Split every record into separate words. This results in one or more output record
         // per input record.
 		source.flatMapValues(
@@ -56,7 +56,7 @@ public class LineSplit {
 		            value -> Arrays.asList(value.split("\\W+"))
                 )
                 // Send output records to the 'kafka.streams-linesplit-output" topic
-                .to("kafka.streams-linesplit-output");
+                .to("streams-linesplit-output");
 
         final Topology topology = builder.build();
 		System.out.println(topology.describe());
@@ -64,7 +64,7 @@ public class LineSplit {
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
-        Runtime.getRuntime().addShutdownHook(new Thread("kafka.streams-shutdown-hook") {
+        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
             @Override
             public void run() {
                 streams.close();

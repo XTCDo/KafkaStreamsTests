@@ -9,7 +9,7 @@ import java.time.Duration;
 
 public class NewPlanetConsumer extends GenericThreadedConsumer<String, String> {
     public NewPlanetConsumer(){
-        super("kafka.streams-planets-input", "localhost:9092", "NewPlanetConsumer");
+        super("streams-planets-input", "localhost:9092", "NewPlanetConsumer");
     }
 
     public void run(){

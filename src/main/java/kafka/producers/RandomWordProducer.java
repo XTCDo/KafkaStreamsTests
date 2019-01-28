@@ -39,7 +39,7 @@ public class RandomWordProducer {
                         String generatedWord = randomString(WORDS, WORD_LENGTH);
 
                         // Send the random word to the topic
-                        producer.send(new ProducerRecord<String, String>("kafka.streams-plaintext-input",
+                        producer.send(new ProducerRecord<String, String>("streams-plaintext-input",
                                 generatedWord, generatedWord));
 
                         // Sleep because obviously
@@ -52,7 +52,7 @@ public class RandomWordProducer {
         };
 
         final CountDownLatch latch = new CountDownLatch(1);
-        Runtime.getRuntime().addShutdownHook(new Thread("kafka.streams-shutdown-hook"){
+        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook"){
             @Override
             public void run(){
                 // Stop producer when thread stops

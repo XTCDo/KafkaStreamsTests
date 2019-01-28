@@ -35,7 +35,7 @@ public class ReverseRecordLambdaPoter {
 
     public static void main(String[] args) throws Exception {
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka.streams-reverserecordpoter");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-reverserecordpoter");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -43,7 +43,7 @@ public class ReverseRecordLambdaPoter {
         final StreamsBuilder builder = new StreamsBuilder();
 
         // Get a source stream from the topic 'kafka.streams-plaintext-input'
-		KStream<String, String> source = builder.stream("kafka.streams-plaintext-input");
+		KStream<String, String> source = builder.stream("streams-plaintext-input");
 
         source.mapValues(value -> {
             char[] inputAsCharArray = value.toCharArray();
@@ -52,7 +52,7 @@ public class ReverseRecordLambdaPoter {
                 outputAsCharArray[inputAsCharArray.length - 1 - i] = inputAsCharArray[i];
             }
             return new String(outputAsCharArray);
-        }).to("kafka.streams-reverserecordpoter-output");
+        }).to("streams-reverserecordpoter-output");
 
 
 
@@ -62,7 +62,7 @@ public class ReverseRecordLambdaPoter {
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
-        Runtime.getRuntime().addShutdownHook(new Thread("kafka.streams-shutdown-hook") {
+        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
             @Override
             public void run() {
                 streams.close();

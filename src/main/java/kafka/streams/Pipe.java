@@ -28,7 +28,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * In this example, we implement a simple LineSplit program using the high-level Streams DSL
  * that reads from a source topic "kafka.streams-plaintext-input", where the values of messages represent lines of text,
- * and writes the messages as-is into a sink topic "kafka.streams-pipe-output".
+ * and writes the messages as-is into a sink topic "streams-pipe-output".
  */
 public class Pipe {
 
@@ -36,7 +36,7 @@ public class Pipe {
         // Start of by defining the properties for the Stream
         Properties props = new Properties();
         // Name the Streams application
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka.streams-pipe");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-pipe");
         // Point it towards the correct kafka broker
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         // Define in what way the Key of each record should be (de)serialized
@@ -49,7 +49,7 @@ public class Pipe {
 
         // Stream records in the topic 'kafka.streams-plaintext-input' to the topic
         //  'kafka.streams-pipe-output'
-        builder.stream("kafka.streams-plaintext-input").to("kafka.streams-pipe-output");
+        builder.stream("streams-plaintext-input").to("streams-pipe-output");
 
         // Create the Topology defined above
         final Topology topology = builder.build();
@@ -60,7 +60,7 @@ public class Pipe {
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
-        Runtime.getRuntime().addShutdownHook(new Thread("kafka.streams-shutdown-hook") {
+        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
             @Override
             public void run() {
                 streams.close();

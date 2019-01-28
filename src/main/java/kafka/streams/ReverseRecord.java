@@ -38,7 +38,7 @@ public class ReverseRecord {
 
         // conventional properties setup
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka.streams-reverserecord");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-reverserecord");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -46,7 +46,7 @@ public class ReverseRecord {
         final StreamsBuilder builder = new StreamsBuilder();
 
         // Get a source stream from the topic 'kafka.streams-plaintext-input'
-		KStream<String, String> source = builder.stream("kafka.streams-plaintext-input");
+		KStream<String, String> source = builder.stream("streams-plaintext-input");
 
 		// Reverse each input record. The notation here is different because I did not use
         // the lambda notation.
@@ -67,8 +67,8 @@ public class ReverseRecord {
         });
 
 
-        // Send the reversed records in outputStream to the output topic 'kafka.streams-reverserecord-output'
-		outputStream.to("kafka.streams-reverserecord-output");
+        // Send the reversed records in outputStream to the output topic 'streams-reverserecord-output'
+		outputStream.to("streams-reverserecord-output");
 
         final Topology topology = builder.build();
 		System.out.println(topology.describe());
@@ -76,7 +76,7 @@ public class ReverseRecord {
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
-        Runtime.getRuntime().addShutdownHook(new Thread("kafka.streams-shutdown-hook") {
+        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
             @Override
             public void run() {
                 streams.close();

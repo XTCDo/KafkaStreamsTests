@@ -27,7 +27,7 @@ public class PlanetConsumer {
         final Consumer<String, String> consumer = new KafkaConsumer<String, String>(props);
 
         // Subscribe to planets input topic
-        consumer.subscribe(Arrays.asList("kafka.streams-planets-input"));
+        consumer.subscribe(Arrays.asList("streams-planets-input"));
 
         // Get dao object
         InfluxDAO dao = new InfluxDAO("http://localhost:8086");

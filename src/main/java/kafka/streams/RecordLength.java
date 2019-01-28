@@ -28,14 +28,14 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * In this example, we implement a simple LineSplit program using the high-level Streams DSL
- * that reads from a source topic "kafka.streams-plaintext-input", where the values of messages represent lines of text,
+ * that reads from a source topic "streams-plaintext-input", where the values of messages represent lines of text,
  * and writes the messages as-is into a sink topic "kafka.streams-pipe-output".
  */
 public class RecordLength {
 
     public static void main(String[] args) throws Exception {
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka.streams-recordlength");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-recordlength");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -43,13 +43,13 @@ public class RecordLength {
         final StreamsBuilder builder = new StreamsBuilder();
 
         // Get a source stream from the topic 'kafka.streams-plaintext-input'
-		KStream<String, String> source = builder.stream("kafka.streams-plaintext-input");
+		KStream<String, String> source = builder.stream("streams-plaintext-input");
 		// Get the length of the string in the input record and then turn
         // that number into a string. I did this because I'm still figuring the
         // (de)serialization out.
 		source.mapValues(value -> Integer.toString(value.length()))
-                // Send the records to the output topic 'kafka.streams-recordlength-output'
-                .to("kafka.streams-recordlength-output");
+                // Send the records to the output topic 'streams-recordlength-output'
+                .to("streams-recordlength-output");
 
         final Topology topology = builder.build();
 		System.out.println(topology.describe());
@@ -57,7 +57,7 @@ public class RecordLength {
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
-        Runtime.getRuntime().addShutdownHook(new Thread("kafka.streams-shutdown-hook") {
+        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
             @Override
             public void run() {
                 streams.close();
