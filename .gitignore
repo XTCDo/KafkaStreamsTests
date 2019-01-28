@@ -1,5 +1,5 @@
 target/
-streams.examples.iml
+kafka.streams.examples.iml
 .idea
 .*
 src/cola/

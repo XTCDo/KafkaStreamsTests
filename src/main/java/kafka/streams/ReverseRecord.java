@@ -14,50 +14,61 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package streams;
+package kafka.streams;
 
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.Materialized;
-import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.kstream.ValueMapper;
-import org.apache.kafka.streams.state.KeyValueStore;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Collections;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 /**
  * In this example, we implement a simple LineSplit program using the high-level Streams DSL
- * that reads from a source topic "streams-plaintext-input", where the values of messages represent lines of text,
- * and writes the messages as-is into a sink topic "streams-pipe-output".
+ * that reads from a source topic "kafka.streams-plaintext-input", where the values of messages represent lines of text,
+ * and writes the messages as-is into a sink topic "kafka.streams-pipe-output".
  */
-public class ReverseRecordLambda {
+public class ReverseRecord {
 
     public static void main(String[] args) throws Exception {
+
+        // conventional properties setup
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-reverserecord-lambda-chiel");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka.streams-reverserecord");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
         final StreamsBuilder builder = new StreamsBuilder();
 
-        // Get a source stream from the topic 'streams-plaintext-input'
-		KStream<String, String> source = builder.stream("streams-plaintext-input");
+        // Get a source stream from the topic 'kafka.streams-plaintext-input'
+		KStream<String, String> source = builder.stream("kafka.streams-plaintext-input");
 
-        // reverse the input string using lambda functions and StringBuilder
-        source.mapValues(
-                value -> new StringBuilder(value).reverse().toString())
-                .to("streams-reverse-lambda-chiel-output");
+		// Reverse each input record. The notation here is different because I did not use
+        // the lambda notation.
+        // I create a ValueMapper that takes a Key and Value as input, both as strings (<String, String>)
+        // Then I take the Value (input) and reverse it.
+        // I define the stream of reversed records as 'outputStream'
+		KStream<String, String> outputStream = source.mapValues(new ValueMapper<String, String>() {
+            @Override
+            public String apply(String input) {
+                char [] inputAsCharArray = input.toCharArray();
+                char [] outputAsCharArray = new char[inputAsCharArray.length];
+                for(int i = 0; i < inputAsCharArray.length; i++){
+                    outputAsCharArray[inputAsCharArray.length - 1 - i] = inputAsCharArray[i];
+                }
+                return new String(outputAsCharArray);
+            }
+
+        });
+
+
+        // Send the reversed records in outputStream to the output topic 'kafka.streams-reverserecord-output'
+		outputStream.to("kafka.streams-reverserecord-output");
 
         final Topology topology = builder.build();
 		System.out.println(topology.describe());
@@ -65,7 +76,7 @@ public class ReverseRecordLambda {
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
-        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
+        Runtime.getRuntime().addShutdownHook(new Thread("kafka.streams-shutdown-hook") {
             @Override
             public void run() {
                 streams.close();

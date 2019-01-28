@@ -31,7 +31,7 @@ public class PlanetProducer {
 
                 while(true) {
                     for(Planet p : planets){
-                        producer.send(new ProducerRecord<String, String>("streams-planets-input",
+                        producer.send(new ProducerRecord<String, String>("kafka.streams-planets-input",
                                 p.getName(), p.toString()));
                         Thread.sleep(100);
                     }
@@ -43,7 +43,7 @@ public class PlanetProducer {
         });
 
         final CountDownLatch latch = new CountDownLatch(1);
-        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook"){
+        Runtime.getRuntime().addShutdownHook(new Thread("kafka.streams-shutdown-hook"){
             @Override
             public void run(){
                 producer.close();

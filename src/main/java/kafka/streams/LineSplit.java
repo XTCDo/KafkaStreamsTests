@@ -14,53 +14,57 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package streams;
+package kafka.streams;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.kstream.KStream;
 
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 /**
  * In this example, we implement a simple LineSplit program using the high-level Streams DSL
- * that reads from a source topic "streams-plaintext-input", where the values of messages represent lines of text,
- * and writes the messages as-is into a sink topic "streams-pipe-output".
+ * that reads from a source topic "kafka.streams-plaintext-input", where the values of messages represent lines of text,
+ * and writes the messages as-is into a sink topic "kafka.streams-pipe-output".
  */
-public class Pipe {
+public class LineSplit {
 
     public static void main(String[] args) throws Exception {
-        // Start of by defining the properties for the Stream
         Properties props = new Properties();
-        // Name the Streams application
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-pipe");
-        // Point it towards the correct kafka broker
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka.streams-linesplit");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        // Define in what way the Key of each record should be (de)serialized
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
-        // Define in what way the Value of each record should be (de)serialized
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
-        // Create a StreamsBuilder
         final StreamsBuilder builder = new StreamsBuilder();
 
-        // Stream records in the topic 'streams-plaintext-input' to the topic
-        //  'streams-pipe-output'
-        builder.stream("streams-plaintext-input").to("streams-pipe-output");
+        // Get a source stream from the topic 'kafka.streams-plaintext-input'
+		KStream<String, String> source = builder.stream("kafka.streams-plaintext-input");
+		// Split every record into separate words. This results in one or more output record
+        // per input record.
+		source.flatMapValues(
+		            // The regex \\W+ matches on one or more special characters
+                    // and is used to define the delimiter on which to split
+                    // the input records.
+                    // Because there are one or more output
+                    // records per input record we use flatMapValues.
+		            value -> Arrays.asList(value.split("\\W+"))
+                )
+                // Send output records to the 'kafka.streams-linesplit-output" topic
+                .to("kafka.streams-linesplit-output");
 
-        // Create the Topology defined above
         final Topology topology = builder.build();
-        System.out.println(topology.describe());
-
-        // Make an actual stream out of the defined topology
+		System.out.println(topology.describe());
         final KafkaStreams streams = new KafkaStreams(topology, props);
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
-        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
+        Runtime.getRuntime().addShutdownHook(new Thread("kafka.streams-shutdown-hook") {
             @Override
             public void run() {
                 streams.close();
@@ -69,7 +73,6 @@ public class Pipe {
         });
 
         try {
-            // Start the streams application and stop it on ctrl+c
             streams.start();
             latch.await();
         } catch (Throwable e) {

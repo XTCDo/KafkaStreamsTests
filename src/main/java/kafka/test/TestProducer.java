@@ -25,7 +25,7 @@ public class TestProducer {
         Producer<String, String> producer = new KafkaProducer<String, String>(props);
         for(int i = 0; i < 100; i++) {
 			int randomInteger = randomInteger(0, 100);
-            producer.send(new ProducerRecord<String, String>("streams-plaintext-input",
+            producer.send(new ProducerRecord<String, String>("kafka.streams-plaintext-input",
                     Integer.toString(randomInteger), Integer.toString(randomInteger)));
 
         }

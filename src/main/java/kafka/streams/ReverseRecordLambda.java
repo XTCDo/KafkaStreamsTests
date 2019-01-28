@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package streams;
+package kafka.streams;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -23,40 +23,32 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
 
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 /**
  * In this example, we implement a simple LineSplit program using the high-level Streams DSL
- * that reads from a source topic "streams-plaintext-input", where the values of messages represent lines of text,
- * and writes the messages as-is into a sink topic "streams-pipe-output".
+ * that reads from a source topic "kafka.streams-plaintext-input", where the values of messages represent lines of text,
+ * and writes the messages as-is into a sink topic "kafka.streams-pipe-output".
  */
-public class LineSplit {
+public class ReverseRecordLambda {
 
     public static void main(String[] args) throws Exception {
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-linesplit");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka.streams-reverserecord-lambda-chiel");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
         final StreamsBuilder builder = new StreamsBuilder();
 
-        // Get a source stream from the topic 'streams-plaintext-input'
-		KStream<String, String> source = builder.stream("streams-plaintext-input");
-		// Split every record into separate words. This results in one or more output record
-        // per input record.
-		source.flatMapValues(
-		            // The regex \\W+ matches on one or more special characters
-                    // and is used to define the delimiter on which to split
-                    // the input records.
-                    // Because there are one or more output
-                    // records per input record we use flatMapValues.
-		            value -> Arrays.asList(value.split("\\W+"))
-                )
-                // Send output records to the 'streams-linesplit-output" topic
-                .to("streams-linesplit-output");
+        // Get a source stream from the topic 'kafka.streams-plaintext-input'
+		KStream<String, String> source = builder.stream("kafka.streams-plaintext-input");
+
+        // reverse the input string using lambda functions and StringBuilder
+        source.mapValues(
+                value -> new StringBuilder(value).reverse().toString())
+                .to("kafka.streams-reverse-lambda-chiel-output");
 
         final Topology topology = builder.build();
 		System.out.println(topology.describe());
@@ -64,7 +56,7 @@ public class LineSplit {
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
-        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
+        Runtime.getRuntime().addShutdownHook(new Thread("kafka.streams-shutdown-hook") {
             @Override
             public void run() {
                 streams.close();
