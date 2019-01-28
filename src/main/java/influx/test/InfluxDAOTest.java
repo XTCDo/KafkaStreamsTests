@@ -1,5 +1,6 @@
-package influx;
+package influx.test;
 
+import influx.InfluxDAO;
 import org.influxdb.dto.Point;
 
 import java.util.ArrayList;
