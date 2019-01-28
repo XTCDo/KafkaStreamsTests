@@ -1,5 +1,9 @@
 package planets;
 
+import org.influxdb.dto.Point;
+
+import java.util.concurrent.TimeUnit;
+
 public class Planet {
     private String name;
     private String capitol;
@@ -45,6 +49,22 @@ public class Planet {
                 .append(gravity).append(":")
                 .append(temperature);
         return new String(builder);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Point toPoint(){
+        Point point = Point.measurement("planets")
+                .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                .addField("capitol", getCapitol())
+                .addField("color", getColor())
+                .addField("gravity", getGravity())
+                .addField("dist_to_sun", getDistanceToSun())
+                .addField("temperature", getTemperature())
+                .build();
+        return point;
     }
 
     /**
