@@ -8,6 +8,11 @@ public class RandomUtils {
         return rand.nextInt((max - min) + 1) + min;
     }
 
+    public static float randomFloat(float min, float max){
+        Random rand = new Random();
+        return min + rand.nextFloat()*(max - min);
+    }
+
     public static String randomString(String[] words, int wordLength){
         String [] wordsArray = new String[wordLength];
 
