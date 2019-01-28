@@ -28,5 +28,7 @@ public class NewPlanetConsumer extends GenericThreadedConsumer<String, String> {
                 e.printStackTrace();
             }
         });
+
+        super.run(consumerThread);
     }
 }
