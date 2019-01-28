@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kafka;
+package streams;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -22,9 +22,8 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.kstream.ValueMapper;
 
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
@@ -33,11 +32,11 @@ import java.util.concurrent.CountDownLatch;
  * that reads from a source topic "streams-plaintext-input", where the values of messages represent lines of text,
  * and writes the messages as-is into a sink topic "streams-pipe-output".
  */
-public class RecordLength {
+public class ReverseRecordLambdaPoter {
 
     public static void main(String[] args) throws Exception {
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-recordlength");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-reverserecordpoter");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -46,12 +45,17 @@ public class RecordLength {
 
         // Get a source stream from the topic 'streams-plaintext-input'
 		KStream<String, String> source = builder.stream("streams-plaintext-input");
-		// Get the length of the string in the input record and then turn
-        // that number into a string. I did this because I'm still figuring the
-        // (de)serialization out.
-		source.mapValues(value -> Integer.toString(value.length()))
-                // Send the records to the output topic 'streams-recordlength-output'
-                .to("streams-recordlength-output");
+
+        source.mapValues(value -> {
+            char[] inputAsCharArray = value.toCharArray();
+            char[] outputAsCharArray = new char[inputAsCharArray.length];
+            for(int i = 0; i < inputAsCharArray.length; i++){
+                outputAsCharArray[inputAsCharArray.length - 1 - i] = inputAsCharArray[i];
+            }
+            return new String(outputAsCharArray);
+        }).to("streams-reverserecordpoter-output");
+
+
 
         final Topology topology = builder.build();
 		System.out.println(topology.describe());

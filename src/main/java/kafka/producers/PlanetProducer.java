@@ -1,5 +1,7 @@
-package kafka;
+package kafka.producers;
 
+import planets.Planet;
+import planets.PlanetProvider;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -33,7 +35,6 @@ public class PlanetProducer {
                                 p.getName(), p.toString()));
                         Thread.sleep(100);
                     }
-                    //Thread.sleep(1000);
                 }
 
             } catch (Exception e){

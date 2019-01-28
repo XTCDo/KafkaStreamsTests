@@ -1,4 +1,4 @@
-package kafka;
+package planets;
 
 public class Planet {
     private String name;
@@ -33,7 +33,7 @@ public class Planet {
     }
 
     /**
-     * Turns the planet into a structured String
+     * Turns the planets into a structured String
      * @return The structured String
      */
     public String toString(){

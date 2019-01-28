@@ -1,4 +1,4 @@
-package kafka;
+package kafka.producers;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;

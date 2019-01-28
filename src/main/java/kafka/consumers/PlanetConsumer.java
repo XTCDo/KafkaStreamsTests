@@ -1,6 +1,7 @@
-package kafka;
+package kafka.consumers;
 
 import influx.InfluxDAO;
+import planets.Planet;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.influxdb.dto.Point;

@@ -1,4 +1,6 @@
-package kafka;
+package kafka.test;
+
+import kafka.producers.NewPlanetProducer;
 
 public class TestNewPlanetProducer {
     public static void main(String[] args){

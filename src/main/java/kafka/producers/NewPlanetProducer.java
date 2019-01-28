@@ -1,5 +1,7 @@
-package kafka;
+package kafka.producers;
 
+import planets.Planet;
+import planets.PlanetProvider;
 import kafka.generic.producers.GenericThreadedProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 

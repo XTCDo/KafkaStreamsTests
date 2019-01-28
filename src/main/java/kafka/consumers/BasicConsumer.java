@@ -1,4 +1,4 @@
-package kafka;
+package kafka.consumers;
 
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.serialization.Serdes;

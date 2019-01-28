@@ -1,4 +1,4 @@
-package kafka;
+package planets;
 
 import java.util.ArrayList;
 import java.util.List;
