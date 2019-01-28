@@ -5,6 +5,7 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
+import util.RandomUtils;
 
 import java.util.Properties;
 import java.util.Random;
@@ -36,7 +37,7 @@ public class RandomWordProducer {
                     final int WORD_LENGTH = 4;
 
                     while(true){
-                        String generatedWord = randomString(WORDS, WORD_LENGTH);
+                        String generatedWord = RandomUtils.randomString(WORDS, WORD_LENGTH);
 
                         // Send the random word to the topic
                         producer.send(new ProducerRecord<String, String>("streams-plaintext-input",
@@ -69,20 +70,5 @@ public class RandomWordProducer {
         }
 
         System.exit(0);
-    }
-
-	private static int randomInteger(int min, int max) {
-		Random rand = new Random();
-		return rand.nextInt((max - min) + 1) + min;
-	}
-
-	private static String randomString(String[] words, int wordLength){
-        String [] wordsArray = new String[wordLength];
-
-        for(int i = 0; i < wordLength; i++){
-            wordsArray[i] = words[randomInteger(0, words.length - 1)];
-        }
-
-        return String.join(" ", wordsArray);
     }
 }
