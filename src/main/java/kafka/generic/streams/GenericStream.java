@@ -80,8 +80,8 @@ public class GenericStream<K, V> {
         System.exit(0);
     }
 
-    public static void invoke(Method method, String[] args) throws InvocationTargetException, IllegalAccessException {
-        method.invoke(args);
+    public static void invoke(Method method, String arg) throws InvocationTargetException, IllegalAccessException {
+        method.invoke(arg);
     }
 
 }

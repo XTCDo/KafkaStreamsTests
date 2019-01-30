@@ -7,7 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 public class GenericStreamTest {
     public static void  main(String[] args){
         try {
-            GenericStream.invoke(GenericStreamTest.class.getMethod("reverse", String.class), new String[]{"hello world"});
+            GenericStream.invoke(GenericStreamTest.class.getMethod("reverse", String.class), );
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
