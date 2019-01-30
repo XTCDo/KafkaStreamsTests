@@ -43,11 +43,11 @@ public class RecordLength {
         final StreamsBuilder builder = new StreamsBuilder();
 
         // Get a source stream from the topic 'kafka.streams-plaintext-input'
-		KStream<String, String> source = builder.stream("streams-plaintext-input");
-		// Get the length of the string in the input record and then turn
+        KStream<String, String> source = builder.stream("streams-plaintext-input");
+        // Get the length of the string in the input record and then turn
         // that number into a string. I did this because I'm still figuring the
         // (de)serialization out.
-		source.mapValues(value -> Integer.toString(value.length()))
+        source.mapValues(value -> Integer.toString(value.length()))
                 // Send the records to the output topic 'streams-recordlength-output'
                 .to("streams-recordlength-output");
 
