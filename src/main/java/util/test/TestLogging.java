@@ -23,11 +23,15 @@ public class TestLogging {
         logThis.put(Level.FINE, "This is fine");
         logThis.put(Level.FINER, "This is finer");
         logThis.put(Level.FINEST, "This is finest");
-        logger = Logger.getLogger(Logging.class.getName());
+
+        logger = Logger.getLogger(TestLogging.class.getName());
         logger.setUseParentHandlers(false);
+
         ConsoleHandler consoleHandler = new ConsoleHandler();
         consoleHandler.setFormatter(new LoggingFormatter());
+
         logger.addHandler(consoleHandler);
-        logThis.forEach((key, value) -> {logger.log(key, String.format("%s: %s", key.getName(), value));});
+        logger.info("test");
+        //logThis.forEach((key, value) -> {logger.log(key, String.format("%s: %s", key.getName(), value));});
     }
 }
