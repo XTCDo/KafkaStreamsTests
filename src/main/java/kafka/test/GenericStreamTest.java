@@ -4,9 +4,6 @@ import kafka.generic.streams.GenericStream;
 import planets.Planet;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class GenericStreamTest {
     public static void  main(String[] args){
@@ -24,11 +21,11 @@ public class GenericStreamTest {
             System.out.println("planet color:\t"+planet.getColor());
 
             // testing if null return does anything, I suspect not
-            String newColor = "magenta";
+            //String newColor = "magenta";
 
-            System.out.println("changing color to:\t"+newColor);
-            GenericStream.invoke(planet,planet.getClass().getMethod("setColor", String.class),newColor);
-            System.out.println("color is now:\t"+planet.getColor());
+            //System.out.println("changing color to:\t"+newColor);
+            //GenericStream.invoke(planet,planet.getClass().getMethod("setColor", String.class),newColor);
+            //System.out.println("color is now:\t"+planet.getColor());
 
 
             // testing object call with no paramaters passed an error occurs here
@@ -38,7 +35,7 @@ public class GenericStreamTest {
             String color = (String) GenericStream.invoke(planet, planet.getClass().getMethod("getColor"));
             System.out.println("planet color:\t"+color);
 
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -46,8 +43,5 @@ public class GenericStreamTest {
     public static void reverse(String input){
         System.out.println(new StringBuilder(input).reverse().toString());
     }
-
-
-
-
+    
 }
