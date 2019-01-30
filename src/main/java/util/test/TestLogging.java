@@ -2,7 +2,6 @@ package util.test;
 
 import util.Logging;
 
-import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
