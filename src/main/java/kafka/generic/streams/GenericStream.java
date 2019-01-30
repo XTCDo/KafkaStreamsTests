@@ -48,4 +48,8 @@ public class GenericStream<K, V> {
             e.printStackTrace();
         }
     }
+
+    public void close(){
+        streams.close();
+    }
 }
