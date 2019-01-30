@@ -21,8 +21,8 @@ public class TestLogging {
         logThis.put(Level.FINEST, "This is finest");
         logger = Logger.getLogger(Logging.class.getName());
 
-        System.out.println(logger.getClass().getClassLoader().getResource("logging.properties"));
-
         logThis.forEach((key, value) -> {logger.log(key, String.format("%s: %s", key.getName(), value));});
+
+        System.out.println(logger.getClass().getClassLoader().getResource("logging.properties"));
     }
 }
