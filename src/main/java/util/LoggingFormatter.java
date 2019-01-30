@@ -18,8 +18,8 @@ public class LoggingFormatter extends Formatter {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder//.append("[")
-                //.append(new Date(dateFormat.format(record.getMillis())))
-                //.append("]")
+                .append(new Date(dateFormat.format(record.getMillis())))
+                .append("]")
                 .append("[")
                 .append(record.getLevel())
                 .append("]");
