@@ -31,7 +31,7 @@ public class TestLogging {
         consoleHandler.setFormatter(new LoggingFormatter());
 
         logger.addHandler(consoleHandler);
-        logger.info("test");
+        logger.log(Level.INFO, "test", "A TAG REE");
         //logThis.forEach((key, value) -> {logger.log(key, String.format("%s: %s", key.getName(), value));});
     }
 }
