@@ -80,10 +80,6 @@ public class GenericStream<K, V> {
         System.exit(0);
     }
 
-    // for invoking non-static methods, we require an object to be passed
-    public static Object invoke (Object obj, Method method){
-        return null;
-    }
 
     public static Object invoke (Object obj, Method method, Object... args) throws InvocationTargetException, IllegalAccessException {
         Type returnType = method.getReturnType();
