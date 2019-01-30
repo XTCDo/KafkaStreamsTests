@@ -46,7 +46,7 @@ public class TestPlanetBuilder {
             pb = new PlanetBuilder();
             PlanetVaryingTemperature largerMinimumTemperaturePlanet =
                     pb.setMinimumTemperature(100.0f)
-                        .setMinimumTemperature(0.0f)
+                        .setMaximumTemperature(0.0f)
                         .buildWithVaryingTemperature();
         } catch (InvalidTemperatureRangeException itre){
             itre.printStackTrace();
