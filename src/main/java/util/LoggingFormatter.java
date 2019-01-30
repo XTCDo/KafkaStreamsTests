@@ -17,11 +17,12 @@ public class LoggingFormatter extends Formatter {
     public String format(LogRecord record) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("[")
-                .append(new Date(dateFormat.format(record.getMillis())))
-                .append("]")
+        stringBuilder//.append("[")
+                //.append(new Date(dateFormat.format(record.getMillis())))
+                //.append("]")
                 .append("[")
-                .append(record.getLevel());
+                .append(record.getLevel())
+                .append("]");
         if(record.getParameters().length == 0){
             List<String> parameters = new ArrayList<>();
             Arrays.asList(record.getParameters()).forEach(value -> parameters.add(String.valueOf(value)));
