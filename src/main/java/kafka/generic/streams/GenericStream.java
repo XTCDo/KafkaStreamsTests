@@ -1,5 +1,6 @@
 package kafka.generic.streams;
 
+import jdk.internal.jline.internal.Nullable;
 import org.apache.kafka.common.protocol.types.Field;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -81,13 +82,27 @@ public class GenericStream<K, V> {
         System.exit(0);
     }
 
-    // invoke without passing an object: works ONLY for static methods
-    public static void invoke (Method method, String args)throws InvocationTargetException, IllegalAccessException{
-        invoke(null, method, args);
-    }
-    public static void invoke(Object object, Method method, String arg) throws InvocationTargetException, IllegalAccessException {
-        method.invoke(object, arg);
+    // for invoking non-static methods, we require an object to be passed
+    public static Object invoke (Object obj, Method method){
+        return null;
     }
 
+    public static Object invoke (Object obj, Method method, Object... args) throws InvocationTargetException, IllegalAccessException {
+        if (method.getReturnType().equals(Void.TYPE)){
+            method.invoke(obj, args);
+            return null;
+        }
+        return method.invoke(obj, args);
+    }
+
+
+    // for invoking static methods
+    public static Object staticinvoke (Method method, Object... args) throws InvocationTargetException, IllegalAccessException {
+        if (method.getReturnType().equals(Void.TYPE)){
+            method.invoke(null, args);
+            return null;
+        }
+        return method.invoke(null, args);
+    }
 
 }
