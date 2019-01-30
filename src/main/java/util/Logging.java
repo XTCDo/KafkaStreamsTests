@@ -10,6 +10,7 @@ public class Logging {
 
     public Logging() {
         try {
+            System.out.println("Printing logging.properties location");
             System.out.println(this.getClass().getClassLoader().getResource("logging.properties"));
             logger = Logger.getLogger(Logging.class.getName());
             fileHandler = new FileHandler("log", true);
