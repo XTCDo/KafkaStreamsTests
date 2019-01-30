@@ -10,7 +10,7 @@ public class Logging {
         logger = Logger.getLogger(Logging.class.getName());
         logger.setUseParentHandlers(false);
 
-        FileHandler fileHandler = new FileHandler("log", true);
+        FileHandler fileHandler = new FileHandler("logs/log", true);
         fileHandler.setFormatter(new LoggingFormatter());
         fileHandler.setLevel(Level.ALL);
         logger.addHandler(fileHandler);
