@@ -12,13 +12,15 @@ public class Logging {
 
         FileHandler fileHandler = new FileHandler("log", true);
         fileHandler.setFormatter(new LoggingFormatter());
+        fileHandler.setLevel(Level.ALL);
         logger.addHandler(fileHandler);
 
         ConsoleHandler consoleHandler = new ConsoleHandler();
         consoleHandler.setFormatter(new LoggingFormatter());
+        consoleHandler.setLevel(Level.ALL);
         logger.addHandler(consoleHandler);
 
-        logger.setLevel(Level.FINEST);
+        logger.setLevel(Level.ALL);
     }
 
     private static Logger getLogger(){
