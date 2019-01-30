@@ -2,19 +2,17 @@ package kafka.generic.streams;
 
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 
 import java.util.Properties;
-import java.util.concurrent.CountDownLatch;
 
 public class GenericStream<K, V> {
     // everything kafka related needs this
     private Properties properties;
+    private KafkaStreams streams;
 
 
     // Class constructor
@@ -35,16 +33,7 @@ public class GenericStream<K, V> {
         System.out.println(topology.describe());
 
         // Make an actual stream out of the defined topology
-        final KafkaStreams streams = new KafkaStreams(topology, properties);
-
-
-        try {
-            // Start the kafka.streams application and stop it on ctrl+c
-            streams.start();
-        } catch (Throwable e) {
-            System.exit(1);
-        }
-        System.exit(0);
+        streams = new KafkaStreams(topology, properties);
     }
 
     // constructor with sensible default
@@ -52,4 +41,7 @@ public class GenericStream<K, V> {
         this(appId, bootStrapServer, Serdes.String().getClass(), Serdes.String().getClass(), builder);
     }
 
+    public void run(){
+        streams.start();
+    }
 }

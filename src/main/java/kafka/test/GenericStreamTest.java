@@ -13,6 +13,7 @@ public class GenericStreamTest {
         builder.stream("streams-plaintext-input").to("streams-pipe-output");
 
         // now use that builder to make a generic Stream
-        new GenericStream<String, String>("streams-generic-pipe","localhost:9092",builder);
+        GenericStream pipeStream = new GenericStream<String, String>("streams-generic-pipe","localhost:9092",builder);
+        pipeStream.run();
     }
 }
