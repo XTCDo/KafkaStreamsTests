@@ -1,5 +1,6 @@
 package kafka.generic.streams;
 
+import org.apache.kafka.common.protocol.types.Field;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -80,8 +81,12 @@ public class GenericStream<K, V> {
         System.exit(0);
     }
 
-    public static void invoke(Method method, String arg) throws InvocationTargetException, IllegalAccessException {
-        method.invoke(null,arg);
+    // invoke without passing an object: works ONLY for static methods
+    public static void invoke (Method method, String args)throws InvocationTargetException, IllegalAccessException{
+        invoke(null, method, args);
+    }
+    public static void invoke(Object object, Method method, String arg) throws InvocationTargetException, IllegalAccessException {
+        method.invoke(object, arg);
     }
 
 }
