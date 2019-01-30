@@ -68,7 +68,7 @@ public class PlanetBuilder {
         return new Planet(name, capitol, color, distanceToSun, gravity, temperature);
     }
 
-    public Planet buildWithVaryingTemperature(){
+    public PlanetVaryingTemperature buildWithVaryingTemperature(){
         if (minimumTemperature > maximumTemperature
                 || minimumTemperature < 0.0f
                 || maximumTemperature < 0.0f) {
