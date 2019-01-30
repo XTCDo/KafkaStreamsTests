@@ -11,11 +11,11 @@ public class InvalidTemperatureRangeException extends RuntimeException {
 
     public String toString(){
         if(minimumTemperature > maximumTemperature){
-            return "minimumTemperature cannot be larger than maximumTemperature";
+            return "InvalidTemperatureRangeException: minimumTemperature cannot be larger than maximumTemperature";
         } else if (minimumTemperature < 0.0f){
-            return "minimumTemperature cannot be lower than 0.0f";
+            return "InvalidTemperatureRangeException: minimumTemperature cannot be lower than 0.0f";
         } else {
-            return "maximumTemperature cannot be lower than 0.0f";
+            return "InvalidTemperatureRangeException: maximumTemperature cannot be lower than 0.0f";
         }
     }
 }
