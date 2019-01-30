@@ -17,6 +17,7 @@ public class Logging {
             plainTextFormatter = new SimpleFormatter();
             fileHandler.setFormatter(plainTextFormatter);
             logger.addHandler(fileHandler);
+            logger.setLevel(Level.FINEST);
         } catch (IOException ioe){
             ioe.printStackTrace();
         }
