@@ -23,7 +23,6 @@ public class TestLogging {
         logThis.put(Level.FINER, "This is finer");
         logThis.put(Level.FINEST, "This is finest");
 
-
-        logThis.forEach((key, value) -> {Logging.log(key, String.format("%s: %s", key.getName(), value));});
+        logThis.forEach((key, value) -> {Logging.log(key, String.format("%s", value), "TEST TAG");});
     }
 }

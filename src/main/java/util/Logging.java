@@ -8,6 +8,8 @@ public class Logging {
 
     private Logging() throws IOException {
         logger = Logger.getLogger(Logging.class.getName());
+        logger.setUseParentHandlers(false);
+
         FileHandler fileHandler = new FileHandler("log", true);
         fileHandler.setFormatter(new LoggingFormatter());
         logger.addHandler(fileHandler);
