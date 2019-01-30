@@ -94,10 +94,12 @@ public class GenericStream<K, V> {
             method.invoke(obj, args);
             return null;
         }
-        Object response = method.invoke(obj, args);
-        System.out.println("invoke got:\t"+response.toString());
-
-        return response;
+        else {
+            System.out.println("invoking method:\t" + method.getName());
+            Object response = method.invoke(obj, args);
+            System.out.println("invoke got:\t" + response.toString());
+            return response;
+        }
     }
 
 

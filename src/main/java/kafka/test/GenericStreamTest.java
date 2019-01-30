@@ -43,5 +43,5 @@ public class GenericStreamTest {
     public static void reverse(String input){
         System.out.println(new StringBuilder(input).reverse().toString());
     }
-    
+
 }
