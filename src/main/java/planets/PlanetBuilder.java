@@ -45,6 +45,16 @@ public class PlanetBuilder {
         return this;
     }
 
+    public PlanetBuilder setMinimumTemperature(float minimumTemperature){
+        this.minimumTemperature = minimumTemperature;
+        return this;
+    }
+
+    public PlanetBuilder setMaximumTemperature(float maximumTemperature){
+        this.maximumTemperature = maximumTemperature;
+        return this;
+    }
+
     public Planet build(){
         if (gravity < 0.0f){
             throw new InvalidGravityException();
