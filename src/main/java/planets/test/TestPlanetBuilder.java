@@ -29,7 +29,7 @@ public class TestPlanetBuilder {
                 .setGravity(9.81f)
                 .setMaximumTemperature(270.0f + 40.0f)
                 .setMinimumTemperature(270.f + 40.0f)
-                .build();
+                .buildWithVaryingTemperature();
 
         for(int i = 0; i < 5; i++){
             randomDjop.describe();
