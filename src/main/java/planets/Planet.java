@@ -71,12 +71,12 @@ public class Planet {
      * Prints out a description of the Planet
      */
     public void describe(){
-        System.out.printf("Planet: %s\n", name);
-        System.out.printf("\tCapitol:\t\t%s\n", capitol);
-        System.out.printf("\tColor:\t\t\t%s\n", color);
-        System.out.printf("\tDistance to Sun:\t%s AU\n", distanceToSun);
-        System.out.printf("\tGravity:\t\t%s m/s^2\n", gravity);
-        System.out.printf("\tTemperature:\t\t%s K\n", temperature);
+        System.out.printf("Planet: %s\n", getName());
+        System.out.printf("\tCapitol:\t\t%s\n", getCapitol());
+        System.out.printf("\tColor:\t\t\t%s\n", getColor());
+        System.out.printf("\tDistance to Sun:\t%s AU\n", getDistanceToSun());
+        System.out.printf("\tGravity:\t\t%s m/s^2\n", getGravity());
+        System.out.printf("\tTemperature:\t\t%s K\n", getTemperature());
     }
 
     private float parseFloatWithDefault(String value, float defaultValue){
