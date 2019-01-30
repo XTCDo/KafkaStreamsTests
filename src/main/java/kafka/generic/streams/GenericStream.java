@@ -42,6 +42,10 @@ public class GenericStream<K, V> {
     }
 
     public void run(){
-        streams.start();
+        try{
+            streams.start();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

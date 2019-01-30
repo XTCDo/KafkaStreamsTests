@@ -14,6 +14,7 @@ public class GenericStreamTest {
 
         // now use that builder to make a generic Stream
         GenericStream pipeStream = new GenericStream<String, String>("streams-generic-pipe","localhost:9092",builder);
+
         pipeStream.run();
     }
 }
