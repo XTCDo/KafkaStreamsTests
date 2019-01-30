@@ -22,7 +22,5 @@ public class TestLogging {
         logger = Logger.getLogger(Logging.class.getName());
 
         logThis.forEach((key, value) -> {logger.log(key, String.format("%s: %s", key.getName(), value));});
-
-        System.out.println(logger.getClass().getClassLoader().getResource("logging.properties"));
     }
 }
