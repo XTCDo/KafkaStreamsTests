@@ -23,7 +23,7 @@ public class LoggingFormatter extends Formatter {
                 .append("[")
                 .append(record.getLevel())
                 .append("]");
-        if(record.getParameters() == null){
+        if(record.getParameters() != null){
             List<String> parameters = new ArrayList<>();
             Arrays.asList(record.getParameters()).forEach(value -> parameters.add(String.valueOf(value)));
             stringBuilder.append("[")
