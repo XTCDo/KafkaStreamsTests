@@ -5,26 +5,40 @@ import java.util.logging.*;
 
 public class Logging {
     static Logger logger;
-    private Handler fileHandler;
-    private Formatter formatter;
 
-    public Logging() {
-        try {
-            System.out.println("Printing logging.properties location");
-            System.out.println(this.getClass().getClassLoader().getResource("logging.properties"));
-            logger = Logger.getLogger(Logging.class.getName());
-            fileHandler = new FileHandler("log", true);
-            formatter = new LoggingFormatter();
-            fileHandler.setFormatter(formatter);
-            /*
-            plainTextFormatter = new SimpleFormatter();
-            fileHandler.setFormatter(plainTextFormatter);
-            */
-            logger.addHandler(fileHandler);
-            logger.setLevel(Level.FINEST);
-        } catch (IOException ioe){
-            ioe.printStackTrace();
-        }
+    private Logging() throws IOException {
+        logger = Logger.getLogger(Logging.class.getName());
+        FileHandler fileHandler = new FileHandler("log", true);
+        fileHandler.setFormatter(new LoggingFormatter());
+        logger.addHandler(fileHandler);
+
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new LoggingFormatter());
+        logger.addHandler(consoleHandler);
+
+        logger.setLevel(Level.FINEST);
     }
 
+    private static Logger getLogger(){
+        if(logger == null){
+            try {
+                new Logging();
+            } catch (IOException ioe){
+                ioe.printStackTrace();
+            }
+        }
+        return logger;
+    }
+
+    public static void log(Level level, String message){
+        getLogger().log(level, message);
+    }
+
+    public static void log(Level level, String message, Object param1){
+        getLogger().log(level, message, param1);
+    }
+
+    public static void log(Level level, String message, Object[] params){
+        getLogger().log(level, message, params);
+    }
 }

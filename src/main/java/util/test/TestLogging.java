@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TestLogging {
-    static Logger logger;
     public static void main(String[] args) {
         Map<Level, String> logThis = new HashMap<Level, String>();
         logThis.put(Level.SEVERE, "This is severe");
@@ -24,14 +23,7 @@ public class TestLogging {
         logThis.put(Level.FINER, "This is finer");
         logThis.put(Level.FINEST, "This is finest");
 
-        logger = Logger.getLogger(TestLogging.class.getName());
-        logger.setUseParentHandlers(false);
 
-        ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setFormatter(new LoggingFormatter());
-
-        logger.addHandler(consoleHandler);
-        logger.log(Level.INFO, "test", "A TAG REE");
-        //logThis.forEach((key, value) -> {logger.log(key, String.format("%s: %s", key.getName(), value));});
+        logThis.forEach((key, value) -> {Logging.log(key, String.format("%s: %s", key.getName(), value));});
     }
 }
