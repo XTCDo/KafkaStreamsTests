@@ -21,9 +21,15 @@ public class GenericStreamTest {
         try{
             System.out.println("planet color:\t"+planet.getColor());
             // testing if null return does anything, I suspect not
-            GenericStream.invoke(planet,planet.getClass().getMethod("setColor", String.class),"magenta");
+            String newColor = "magenta";
+            System.out.println("changing color to:\t"+newColor);
+            GenericStream.invoke(planet,planet.getClass().getMethod("setColor", String.class),newColor);
 
-            // testing object call with no paramaters passed
+
+            // testing object call with no paramaters passed an error occurs here
+            System.out.println("method:\t"+planet.getClass().getMethod("getColor").toString());
+            System.out.println("return type:\t"+planet.getClass().getMethod("getColor").getReturnType().toString());
+
             String color = Objects.requireNonNull(GenericStream.invoke(planet, planet.getClass().getMethod("getColor"))).toString();
             System.out.println("planet color:\t"+color);
 
