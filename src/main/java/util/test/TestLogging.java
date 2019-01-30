@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 public class TestLogging {
     public static void main(String[] args) {
+        // Create a map
         Map<Level, String> logThis = new HashMap<Level, String>();
         logThis.put(Level.SEVERE, "This is severe");
         logThis.put(Level.WARNING, "This is warning");
@@ -23,6 +24,7 @@ public class TestLogging {
         logThis.put(Level.FINER, "This is finer");
         logThis.put(Level.FINEST, "This is finest");
 
+        // Log every element in the map above
         logThis.forEach((key, value) -> {Logging.log(key, String.format("%s", value), "TEST TAG");});
     }
 }
