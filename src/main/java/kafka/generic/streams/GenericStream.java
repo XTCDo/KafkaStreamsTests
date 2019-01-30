@@ -87,12 +87,17 @@ public class GenericStream<K, V> {
 
     public static Object invoke (Object obj, Method method, Object... args) throws InvocationTargetException, IllegalAccessException {
         Type returnType = method.getReturnType();
+        System.out.println("return type is:\t"+returnType.getTypeName());
+
         if (returnType.equals(Void.TYPE)){
+            System.out.println("VOID function, returning null");
             method.invoke(obj, args);
             return null;
         }
+        Object response = method.invoke(obj, args);
+        System.out.println("invoke got:\t"+response.toString());
 
-        return method.invoke(obj, args);
+        return response;
     }
 
 

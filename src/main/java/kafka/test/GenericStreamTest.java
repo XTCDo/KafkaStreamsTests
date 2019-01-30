@@ -22,6 +22,7 @@ public class GenericStreamTest {
         Planet planet = new Planet("zorpflorp-17","Hogenbeek","fuchsia",0f,-20f,(float) Math.PI);
         try{
             System.out.println("planet color:\t"+planet.getColor());
+
             // testing if null return does anything, I suspect not
             String newColor = "magenta";
 
@@ -29,17 +30,6 @@ public class GenericStreamTest {
             GenericStream.invoke(planet,planet.getClass().getMethod("setColor", String.class),newColor);
             System.out.println("color is now:\t"+planet.getColor());
 
-            Object objectString = "test";
-            // testing Object | types interaction:
-            List<Object> objects = new ArrayList<>();
-            objects.add(null); // testing nullobj
-            objects.add(5d); // testing ints
-            objects.add(5f); // testing floats
-            objects.add(objectString); // testing strings
-
-            objects.forEach(System.out::println);
-
-            System.out.println("testing object compat: "+("test"==objectString));
 
             // testing object call with no paramaters passed an error occurs here
             System.out.println("method:\t"+planet.getClass().getMethod("getColor").toString());
