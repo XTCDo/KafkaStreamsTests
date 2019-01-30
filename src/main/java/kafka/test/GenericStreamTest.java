@@ -1,6 +1,5 @@
 package kafka.test;
 
-import com.sun.tools.javac.jvm.Gen;
 import kafka.generic.streams.GenericStream;
 import planets.Planet;
 
@@ -22,7 +21,7 @@ public class GenericStreamTest {
             System.out.println("planet color:\t"+planet.getColor());
             GenericStream.invoke(planet,planet.getClass().getMethod("setColor", String.class),"magenta");
             System.out.println("planet color:\t"+planet.getColor());
-            
+
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
