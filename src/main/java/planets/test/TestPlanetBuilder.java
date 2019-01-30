@@ -2,6 +2,9 @@ package planets.test;
 
 import planets.Planet;
 import planets.PlanetBuilder;
+import planets.exceptions.InvalidDistanceToSunException;
+import planets.exceptions.InvalidGravityException;
+import planets.exceptions.InvalidTemperatureException;
 
 public class TestPlanetBuilder {
     public static void main(String[] args){
@@ -15,5 +18,26 @@ public class TestPlanetBuilder {
                 .build();
 
         djop.describe();
+
+        try {
+            pb = new PlanetBuilder();
+            Planet invalidTemperaturePlanet = pb.setTemperature(-1.0f).build();
+        } catch(InvalidTemperatureException ite){
+            ite.printStackTrace();
+        }
+
+        try {
+            pb = new PlanetBuilder();
+            Planet invalidGravityPlanet = pb.setGravity(-1.0f).build();
+        } catch (InvalidGravityException ige){
+            ige.printStackTrace();
+        }
+
+        try {
+            pb = new PlanetBuilder();
+            Planet invalidDistanceToSunPlanet = pb.setDistanceToSun(-1.0f).build();
+        } catch (InvalidDistanceToSunException idtse){
+            idtse.printStackTrace();
+        }
     }
 }
