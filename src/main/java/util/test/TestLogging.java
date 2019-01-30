@@ -3,7 +3,9 @@ package util.test;
 import util.Logging;
 
 import javax.print.DocFlavor;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,5 +24,31 @@ public class TestLogging {
         logger = Logger.getLogger(Logging.class.getName());
         logger.setLevel(Level.ALL);
         logThis.forEach((key, value) -> {logger.log(key, String.format("%s: %s", key.getName(), value));});
+
+        Thread threadOne = new Thread(() -> {
+            Logger loggerOne = Logger.getLogger(Logging.class.getName());
+            List<String> list = new ArrayList<>();
+            for(int i = 0; i < 100; i++){
+                list.add("one 1");
+                list.add("one 2");
+            }
+
+            list.forEach((value) -> loggerOne.log(Level.INFO, value));
+        });
+
+        Thread threadTwo = new Thread(() -> {
+            Logger loggerTwo = Logger.getLogger(Logging.class.getName());
+            for(int i = 0; i < 50; i++){
+                loggerTwo.log(Level.INFO, String.valueOf(i));
+                try {
+                    Thread.sleep(10);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        threadOne.start();
+        threadTwo.start();
     }
 }
