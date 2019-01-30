@@ -9,6 +9,7 @@ import org.apache.kafka.streams.Topology;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
@@ -85,12 +86,15 @@ public class GenericStream<K, V> {
     }
 
     public static Object invoke (Object obj, Method method, Object... args) throws InvocationTargetException, IllegalAccessException {
-        if (method.getReturnType().equals(Void.TYPE)){
+        Type returnType = method.getReturnType();
+        if (returnType.equals(Void.TYPE)){
             method.invoke(obj, args);
             return null;
         }
+
         return method.invoke(obj, args);
     }
+
 
 
     // for invoking static methods
