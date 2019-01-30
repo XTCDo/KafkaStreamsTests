@@ -28,7 +28,7 @@ public class TestPlanetBuilder {
                 .setDistanceToSun(1.0f)
                 .setGravity(9.81f)
                 .setMaximumTemperature(270.0f + 40.0f)
-                .setMinimumTemperature(270.f + 40.0f)
+                .setMinimumTemperature(270.f - 40.0f)
                 .buildWithVaryingTemperature();
 
         for(int i = 0; i < 5; i++){
