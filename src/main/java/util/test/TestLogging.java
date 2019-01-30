@@ -20,7 +20,7 @@ public class TestLogging {
         logThis.put(Level.FINER, "This is finer");
         logThis.put(Level.FINEST, "This is finest");
         logger = Logger.getLogger(Logging.class.getName());
-
+        logger.setLevel(Level.ALL);
         logThis.forEach((key, value) -> {logger.log(key, String.format("%s: %s", key.getName(), value));});
     }
 }
