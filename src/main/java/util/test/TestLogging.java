@@ -27,13 +27,7 @@ public class TestLogging {
         logger.setUseParentHandlers(false);
         ConsoleHandler consoleHandler = new ConsoleHandler();
         consoleHandler.setFormatter(new LoggingFormatter());
-        //FileHandler fileHandler = new FileHandler();
-        //fileHandler.setFormatter(new LoggingFormatter());
-
-
-
+        logger.addHandler(consoleHandler);
         logThis.forEach((key, value) -> {logger.log(key, String.format("%s: %s", key.getName(), value));});
-
-
     }
 }
