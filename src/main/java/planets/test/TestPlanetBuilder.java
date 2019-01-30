@@ -2,9 +2,11 @@ package planets.test;
 
 import planets.Planet;
 import planets.PlanetBuilder;
+import planets.PlanetVaryingTemperature;
 import planets.exceptions.InvalidDistanceToSunException;
 import planets.exceptions.InvalidGravityException;
 import planets.exceptions.InvalidTemperatureException;
+import planets.exceptions.InvalidTemperatureRangeException;
 
 public class TestPlanetBuilder {
     public static void main(String[] args){
@@ -39,5 +41,25 @@ public class TestPlanetBuilder {
         } catch (InvalidDistanceToSunException idtse){
             idtse.printStackTrace();
         }
+
+        try {
+            pb = new PlanetBuilder();
+            PlanetVaryingTemperature largerMinimumTemperaturePlanet =
+                    pb.setMinimumTemperature(100.0f)
+                        .setMinimumTemperature(0.0f)
+                        .buildWithVaryingTemperature();
+        } catch (InvalidTemperatureRangeException itre){
+            itre.printStackTrace();
+        }
+
+        try {
+            pb = new PlanetBuilder();
+            PlanetVaryingTemperature invalidMinimumTemperaturePlanet =
+                    pb.setMinimumTemperature(-1.0f)
+                    .buildWithVaryingTemperature();
+        } catch (InvalidTemperatureRangeException itre){
+            itre.printStackTrace();
+        }
+
     }
 }
