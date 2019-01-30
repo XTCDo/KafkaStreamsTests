@@ -3,10 +3,14 @@ package kafka.generic.streams;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.streams.StreamsConfig;
 
+import java.util.List;
 import java.util.Properties;
 
 public class GenericStream<K, V> {
     private Properties properties;
+    private List<String> inputTopics;
+    private List<String> outputTopics;
+
     public GenericStream(String applicationId, String bootStrapServer,
                          Class<? extends Serde> keySerdeClass, Class<? extends Serde> valueSerdeClass){
         properties = new Properties();
@@ -16,5 +20,6 @@ public class GenericStream<K, V> {
         properties.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, valueSerdeClass);
 
     }
+    
 
 }
