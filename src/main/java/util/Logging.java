@@ -6,7 +6,7 @@ import java.util.logging.*;
 public class Logging {
     static Logger logger;
     private Handler fileHandler;
-    private Formatter plainTextFormatter;
+    private Formatter formatter;
 
     public Logging() {
         try {
@@ -14,8 +14,12 @@ public class Logging {
             System.out.println(this.getClass().getClassLoader().getResource("logging.properties"));
             logger = Logger.getLogger(Logging.class.getName());
             fileHandler = new FileHandler("log", true);
+            formatter = new LoggingFormatter();
+            fileHandler.setFormatter(formatter);
+            /*
             plainTextFormatter = new SimpleFormatter();
             fileHandler.setFormatter(plainTextFormatter);
+            */
             logger.addHandler(fileHandler);
             logger.setLevel(Level.FINEST);
         } catch (IOException ioe){
