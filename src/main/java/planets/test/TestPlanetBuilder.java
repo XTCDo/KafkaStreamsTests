@@ -21,6 +21,20 @@ public class TestPlanetBuilder {
 
         djop.describe();
 
+        pb = new PlanetBuilder();
+        Planet randomDjop = pb.setName("Diepenbeek")
+                .setCapitol("Toekomststraat")
+                .setColor("grey")
+                .setDistanceToSun(1.0f)
+                .setGravity(9.81f)
+                .setMaximumTemperature(270.0f + 40.0f)
+                .setMinimumTemperature(270.f + 40.0f)
+                .build();
+
+        for(int i = 0; i < 5; i++){
+            randomDjop.describe();
+        }
+
         try {
             pb = new PlanetBuilder();
             Planet invalidTemperaturePlanet = pb.setTemperature(-1.0f).build();
