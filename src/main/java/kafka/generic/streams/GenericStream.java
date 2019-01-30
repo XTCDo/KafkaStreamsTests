@@ -89,4 +89,5 @@ public class GenericStream<K, V> {
         method.invoke(object, arg);
     }
 
+
 }
