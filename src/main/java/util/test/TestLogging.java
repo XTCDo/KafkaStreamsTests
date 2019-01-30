@@ -24,6 +24,9 @@ public class TestLogging {
         logger.setLevel(Level.ALL);
         logThis.forEach((key, value) -> {logger.log(key, String.format("%s: %s", key.getName(), value));});
 
+        System.out.println(logger.getClass());
+        System.out.println(logger.getHandlers());
+
         Thread threadOne = new Thread(() -> {
             Logger loggerOne = Logger.getLogger(Logging.class.getName());
             List<String> list = new ArrayList<>();
