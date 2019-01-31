@@ -16,6 +16,7 @@ public class TestLoggingProducer extends GenericThreadedProducer<String, String>
     }
 
     public void run(){
+        final String TAG = "TestLoggingProducer.run";
         Thread testLoggingProducerThread = new Thread(() -> {
             List<Level> levels = new ArrayList<>();
             levels.add(Level.FINEST);
@@ -40,7 +41,7 @@ public class TestLoggingProducer extends GenericThreadedProducer<String, String>
                     Level randomLevel = levels.get(RandomUtils.randomInteger(0, levels.size() - 1));
                     String randomWord = words.get(RandomUtils.randomInteger(0, words.size() - 1));
                     getProducer().send(new ProducerRecord(randomLevel.getName(), randomWord));
-                    Logging.log(randomLevel, randomWord);
+                    Logging.log(randomLevel, randomWord, TAG);
                     Thread.sleep(100);
                 } catch (Exception e){
                     e.printStackTrace();
