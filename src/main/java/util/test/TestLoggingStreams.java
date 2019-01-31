@@ -10,12 +10,12 @@ public class TestLoggingStreams {
         final String TAG = "TestLoggingStreams.main";
         Logging.log(Level.INFO, "Creating testLoggingProducer", TAG);
         TestLoggingProducer testLoggingProducer = new TestLoggingProducer();
-        Logging.log(Level.INFO, "Creating testLoggingConsumer");
+        Logging.log(Level.INFO, "Creating testLoggingConsumer", TAG);
         TestLoggingConsumer testLoggingConsumer = new TestLoggingConsumer();
 
-        Logging.log(Level.INFO, "Starting testLoggingProducer");
+        Logging.log(Level.INFO, "Starting testLoggingProducer", TAG);
         testLoggingProducer.run();
-        Logging.log(Level.INFO, "Starting testLoggingConsumer");
+        Logging.log(Level.INFO, "Starting testLoggingConsumer", TAG);
         testLoggingConsumer.run();
     }
 }
