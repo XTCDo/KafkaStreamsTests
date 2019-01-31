@@ -4,5 +4,7 @@ kafka.streams.examples.iml
 .*
 src/cola/
 runclass
-log
+logs/
+tests/
 maketest
+get
