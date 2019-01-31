@@ -29,5 +29,6 @@ public class TestLoggingConsumer extends GenericThreadedConsumer<String, String>
                 Logging.log(Level.WARNING, e.getMessage());
             }
         });
+        super.run(consumerThread);
     }
 }
