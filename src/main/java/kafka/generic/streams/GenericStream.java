@@ -50,6 +50,7 @@ public class GenericStream<K, V> {
     }
 
     public void close(){
+        System.out.println("Keyboard interrupt, shutting down thread");
         streams.close();
     }
 }

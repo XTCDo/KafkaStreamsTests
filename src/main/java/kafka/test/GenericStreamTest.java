@@ -38,5 +38,5 @@ public class GenericStreamTest {
         }
         System.exit(0);
     }
-    
+
 }
