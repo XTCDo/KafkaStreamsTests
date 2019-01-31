@@ -10,7 +10,7 @@ import java.util.concurrent.CountDownLatch;
 public class GenericStreamTest {
 
     public static void main(String... args){
-
+        System.out.println("starting test");
         // now use that builder to make a generic Stream
         DefaultGenericStream pipeStream = new DefaultGenericStream("streams-generic-pipe","localhost:9092");
 
