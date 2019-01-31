@@ -5,3 +5,4 @@ kafka.streams.examples.iml
 src/cola/
 runclass
 log
+maketest
