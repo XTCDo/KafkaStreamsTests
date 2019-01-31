@@ -1,19 +1,14 @@
 package kafka.test;
 
-
 import kafka.generic.streams.GenericStream;
-import kafka.streams.DefaultGenericStream;
-import org.apache.kafka.streams.StreamsBuilder;
+import kafka.streams.ReverseRecordGeneric;
 
 import java.util.concurrent.CountDownLatch;
 
-public class GenericStreamTest {
+public class GenerifiedStreamsTest {
+    public static void main(String... varargs){
 
-    public static void main(String... args){
-
-        // now use that builder to make a generic Stream
-        DefaultGenericStream pipeStream = new DefaultGenericStream("streams-generic-pipe","localhost:9092");
-
+        GenericStream ReverseStream = new ReverseRecordGeneric("streams-generic-reverse","localhost:9092");
 
         final CountDownLatch latch = new CountDownLatch(1);
 
@@ -21,20 +16,18 @@ public class GenericStreamTest {
         Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
             @Override
             public void run() {
-                pipeStream.close();
+                ReverseStream.close();
                 latch.countDown();
             }
         });
 
         try {
             // Start the kafka.streams application and stop it on ctrl+c
-            pipeStream.run();
+            ReverseStream.run();
             latch.await();
         } catch (Throwable e) {
             System.exit(1);
         }
         System.exit(0);
-
     }
-
 }

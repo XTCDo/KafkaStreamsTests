@@ -2,21 +2,29 @@ package kafka.generic.streams;
 
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.*;
 
 import java.util.Properties;
 
-public class GenericStream<K, V> {
+public abstract class GenericStream<K, V> {
     // everything kafka related needs this
     private Properties properties;
     private KafkaStreams streams;
 
-
-    // Class constructor
+    // publically available constructors
     public GenericStream(String applicationId, String bootStrapServer,
+                         Class<? extends Serde> keySerdeClass, Class<? extends Serde> valueSerdeClass){
+        this(applicationId, bootStrapServer, keySerdeClass, valueSerdeClass, new StreamsBuilder());
+    }
+
+    // public constructor with sensible default
+    public GenericStream(String appId,String bootStrapServer){
+        this(appId, bootStrapServer, new StreamsBuilder());
+    }
+
+    // private because only this class is allowed to run these constructors
+    // Class constructor
+    private GenericStream(String applicationId, String bootStrapServer,
                          Class<? extends Serde> keySerdeClass, Class<? extends Serde> valueSerdeClass,
                          StreamsBuilder builder){
 
@@ -28,6 +36,7 @@ public class GenericStream<K, V> {
         properties.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, valueSerdeClass);
 
         // we already have a builder provided HAHA
+        builderSetup(builder);
         final Topology topology = builder.build();
 
         System.out.println(topology.describe());
@@ -36,10 +45,18 @@ public class GenericStream<K, V> {
         streams = new KafkaStreams(topology, properties);
     }
 
-    // constructor with sensible default
-    public GenericStream(String appId,String bootStrapServer, StreamsBuilder builder){
+
+    private GenericStream(String appId,String bootStrapServer, StreamsBuilder builder){
         this(appId, bootStrapServer, Serdes.String().getClass(), Serdes.String().getClass(), builder);
     }
+
+
+    /**
+     * this method declares what the builder will do:
+     * what topics it will listen to, and output, and what happens in between (preferrably lambda functions)
+     * @param builder
+     */
+    public abstract void builderSetup(StreamsBuilder builder);
 
     public void run(){
         try{
@@ -53,4 +70,5 @@ public class GenericStream<K, V> {
         System.out.println("Keyboard interrupt, shutting down thread");
         streams.close();
     }
+
 }
