@@ -1,7 +1,6 @@
 package kafka.streams;
 
 import kafka.generic.streams.GenericStream;
-import org.apache.kafka.common.protocol.types.Field;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
 

@@ -4,7 +4,9 @@ import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.*;
 
+import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
 
 public abstract class GenericStream<K, V> {
     // everything kafka related needs this
@@ -45,7 +47,6 @@ public abstract class GenericStream<K, V> {
         streams = new KafkaStreams(topology, properties);
     }
 
-
     private GenericStream(String appId,String bootStrapServer, StreamsBuilder builder){
         this(appId, bootStrapServer, Serdes.String().getClass(), Serdes.String().getClass(), builder);
     }
@@ -58,6 +59,10 @@ public abstract class GenericStream<K, V> {
      */
     public abstract void builderSetup(StreamsBuilder builder);
 
+
+    /**
+     * start this stream
+     */
     public void run(){
         try{
             streams.start();
@@ -66,9 +71,10 @@ public abstract class GenericStream<K, V> {
         }
     }
 
+    /**
+     * gracefully terminating
+     */
     public void close(){
-        System.out.println("Keyboard interrupt, shutting down thread");
         streams.close();
     }
-
 }
