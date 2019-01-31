@@ -20,9 +20,8 @@ public class TestLoggingConsumer extends GenericThreadedConsumer<String, String>
                 while(true){
                     ConsumerRecords<String, String> records = getConsumer().poll(Duration.ofMillis(10));
                     records.forEach((record) -> {
-                        Level level = Level.parse(record.key());
                         String word = record.value();
-                        Logging.log(level, word, TAG);
+                        Logging.log(Level.INFO, word, TAG);
                     });
                 }
             } catch (Exception e){
