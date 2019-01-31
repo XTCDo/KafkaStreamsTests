@@ -48,5 +48,7 @@ public class TestLoggingProducer extends GenericThreadedProducer<String, String>
                 }
             }
         });
+
+        super.run(testLoggingProducerThread);
     }
 }
