@@ -58,6 +58,7 @@ public class Planet {
     public Point toPoint(){
         Point point = Point.measurement("planets")
                 .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                .addField("name", getName())
                 .addField("capitol", getCapitol())
                 .addField("color", getColor())
                 .addField("gravity", getGravity())
