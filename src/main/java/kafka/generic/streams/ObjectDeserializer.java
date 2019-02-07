@@ -2,10 +2,13 @@ package kafka.generic.streams;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
+import util.Logging;
 
 import java.util.Map;
+import java.util.logging.Level;
 
 public class ObjectDeserializer implements Deserializer {
+    private static final String TAG = "Deserializer";
 
     /**
      * configure deserializer, does nothing for the moment
@@ -23,6 +26,7 @@ public class ObjectDeserializer implements Deserializer {
      */
     @Override
     public Object deserialize(String topic, byte[] serializedData) {
+        Logging.log(Level.INFO,"received: "+ serializedData, TAG);
         // input may be null, recommended to catch early
         if (serializedData == null){
             return null;
@@ -32,9 +36,10 @@ public class ObjectDeserializer implements Deserializer {
         Object obj = null;
         try {
             obj = mapper.readValue(serializedData, Object.class); // parse input to generic object
+            Logging.log(Level.INFO,"parsed to: "+ obj.toString(), TAG);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Logging.log(Level.SEVERE,e.toString(), TAG);
         }
 
         return obj;
