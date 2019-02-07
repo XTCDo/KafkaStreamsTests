@@ -10,6 +10,7 @@ import util.Logging;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -104,9 +105,31 @@ public class GenericStreamTest {
         log("generic stream constructed");
 
         log("starting generic pipe stream");
-        pipeStream.run();
 
-        log("pipeStream successfully started\n");
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        // attach shutdown handler to catch control-c
+        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
+            @Override
+            public void run() {
+                try {
+                    pipeStream.run();
+                } catch (Throwable e) {
+                    error(e);
+                }
+            }
+        });
+
+        try {
+            // Start the kafka.streams application and stop it on ctrl+c
+            pipeStream.run();
+            log("pipeStream successfully started\n");
+            latch.await();
+        } catch (Throwable e) {
+            System.exit(1);
+        }
+
+        System.exit(0);
     }
-
+    
 }
