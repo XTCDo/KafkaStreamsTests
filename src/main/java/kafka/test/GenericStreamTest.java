@@ -32,18 +32,22 @@ public class GenericStreamTest {
                     .setGravity(1f)
                     .setTemperature(300f).build();
             log("created planet:" + planet.toString());
+            float pi = (float) Math.PI;
 
             log("using ObjectSerde to serialize planet into ByteArray");
+            byte[] serializedFloat = objectSerde.serializer().serialize("topic",pi);
             byte[] serializedPlanet = objectSerde.serializer().serialize("topic",planet);
 
             log("de-serializing result");
             Object obj = objectSerde.deserializer().deserialize("topic", serializedPlanet);
+            Object pi_obj = objectSerde.deserializer().deserialize("topic", serializedFloat);
             log("de-serialed to:" +obj.getClass().getName()+"\t" + obj.toString());
+            log("de-serialed to:" +pi_obj.getClass().getName()+"\t" + pi_obj.toString());
 
             log("casting to planet");
 
             Planet deserializedPlanet = (Planet) obj;
-
+            float repi = (float) pi_obj;
             log("planet de-serialized:" + deserializedPlanet.toString());
 
             log("building simple pipe Stream:");
