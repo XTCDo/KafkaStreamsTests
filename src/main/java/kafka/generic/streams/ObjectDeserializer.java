@@ -19,6 +19,7 @@ public class ObjectDeserializer implements Deserializer {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return obj;
     }
 
