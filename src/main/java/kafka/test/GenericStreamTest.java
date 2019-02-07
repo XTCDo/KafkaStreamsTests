@@ -5,11 +5,9 @@ import kafka.generic.streams.GenericStream;
 import kafka.generic.streams.ObjectSerde;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
-import planets.Planet;
 import planets.PlanetBuilder;
 import util.Logging;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -19,29 +17,14 @@ public class GenericStreamTest {
     private static final String TAG = "GenericStreamTest";
     public static void main(String... args){
         try {
-            log("commencing test");
+            log("commencing test\n\n");
 
             serdeTest();
+
+            pipeTest();
             // first steps to setting up a stream is buildin the topic:
             // in this instance a simple pipe
 
-
-            log("building simple pipe Stream:");
-
-            log("constructing toplogy with streamsBuilder");
-            StreamsBuilder builder = new StreamsBuilder();
-            builder.stream("streams-generic-input").to("streams-generic-output");
-            final Topology topology = builder.build();
-
-            log("topology constructed: "+topology.describe());
-
-            log("creating generic Stream with constructed topology...");
-            GenericStream pipeStream = new GenericStream("streams-pipe", "localhost:9092", topology);
-            log("generic stream constructed");
-
-            log("starting generic pipe stream");
-            pipeStream.run();
-            log("pipeStream successfully started");
 
 
             log("testing concluded");
@@ -60,7 +43,8 @@ public class GenericStreamTest {
     }
 
     public static void serdeTest(){
-        log("initiating Serde test");
+        log("initiating Serde test:\n");
+
         log("ObjectSerde setup");
         ObjectSerde objectSerde = new ObjectSerde();
 
@@ -101,6 +85,28 @@ public class GenericStreamTest {
         log("result: ["+deserializedObjects.stream().map(Object::toString)
                 .collect(Collectors.joining(" | ")) + "]");
 
-        log("Serde test concluded");
+        log("Serde test concluded\n");
     }
+
+    public static void pipeTest(){
+        log("Initiating generic streams test\n");
+
+        log("constructing pipe topology with streamsBuilder");
+
+        StreamsBuilder builder = new StreamsBuilder();
+        builder.stream("streams-generic-input").to("streams-generic-output");
+        final Topology topology = builder.build();
+
+        log("topology constructed: "+topology.describe());
+
+        log("creating generic Stream with constructed topology...");
+        GenericStream pipeStream = new GenericStream("streams-pipe", "localhost:9092", topology);
+        log("generic stream constructed");
+
+        log("starting generic pipe stream");
+        pipeStream.run();
+
+        log("pipeStream successfully started\n");
+    }
+
 }
