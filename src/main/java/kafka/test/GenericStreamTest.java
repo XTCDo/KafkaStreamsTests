@@ -37,7 +37,7 @@ public class GenericStreamTest {
             byte[] serializedPlanet = objectSerde.serializer().serialize("topic",planet);
 
             log("de-serializing result");
-            Planet deserializedPlanet = (Planet) objectSerde.deserializer().deserialize(null, serializedPlanet);
+            Planet deserializedPlanet = (Planet) objectSerde.deserializer().deserialize("topic", serializedPlanet);
 
             log("planet de-serialized:" + deserializedPlanet.toString());
 

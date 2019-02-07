@@ -15,7 +15,7 @@ public class ObjectDeserializer implements Deserializer {
         ObjectMapper mapper = new ObjectMapper(); // this will read JSON as POJO
         Object obj = null;
         try {
-            obj = mapper.readValue(topic, Object.class); // parse input to generic object
+            obj = mapper.readValue(serializedObject, Object.class); // parse input to generic object
         } catch (Exception e) {
             e.printStackTrace();
         }
