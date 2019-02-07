@@ -1,67 +1,52 @@
 package kafka.generic.streams;
 
+import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.*;
+import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.Topology;
 
-import java.util.Map;
+import java.io.Serializable;
 import java.util.Properties;
-import java.util.concurrent.CountDownLatch;
 
-public abstract class GenericStream<K, V> {
+
+public class GenericStream {
     // everything kafka related needs this
     private Properties properties;
-    private KafkaStreams streams;
+    private KafkaStreams streams; // --> this object is very necessary
 
-    // publically available constructors
-    public GenericStream(String applicationId, String bootStrapServer,
-                         Class<? extends Serde> keySerdeClass, Class<? extends Serde> valueSerdeClass){
-        this(applicationId, bootStrapServer, keySerdeClass, valueSerdeClass, new StreamsBuilder());
-    }
 
-    // public constructor with sensible default
-    public GenericStream(String appId,String bootStrapServer){
-        this(appId, bootStrapServer, new StreamsBuilder());
-    }
-
-    // private because only this class is allowed to run these constructors
     // Class constructor
-    private GenericStream(String applicationId, String bootStrapServer,
-                         Class<? extends Serde> keySerdeClass, Class<? extends Serde> valueSerdeClass,
-                         StreamsBuilder builder){
+    public GenericStream(String applicationId, String bootStrapServer,
+                         Class<? extends Serde> defaultKeySerdeClass, Class<? extends Serde> defaultValueSerdeClass,
+                         Topology topology){
 
         // first step: define properties
         properties = new Properties();
+
+        // name and server address
         properties.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
         properties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapServer);
-        properties.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, keySerdeClass);
-        properties.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, valueSerdeClass);
 
-        // we already have a builder provided HAHA
-        builderSetup(builder);
-        final Topology topology = builder.build();
+        // default serializer/deserializers
+        properties.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, defaultKeySerdeClass);
+        properties.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, defaultValueSerdeClass);
 
-        System.out.println(topology.describe());
-
-        // Make an actual stream out of the defined topology
-        streams = new KafkaStreams(topology, properties);
+       this.streams = new KafkaStreams(topology, properties);
     }
 
-    private GenericStream(String appId,String bootStrapServer, StreamsBuilder builder){
-        this(appId, bootStrapServer, Serdes.String().getClass(), Serdes.String().getClass(), builder);
+     public GenericStream(String appId,String bootStrapServer, Topology topology){
+        this(appId, bootStrapServer, Serdes.String().getClass(), ObjectSerde.class, topology);
     }
 
 
-    /**
-     * this method declares what the builder will do:
-     * what topics it will listen to, and output, and what happens in between (preferrably lambda functions)
-     * @param builder
-     */
-    public abstract void builderSetup(StreamsBuilder builder);
 
 
+    // function calls
+
     /**
-     * start this stream
+     * start the streams this object holds
      */
     public void run(){
         try{
@@ -72,7 +57,7 @@ public abstract class GenericStream<K, V> {
     }
 
     /**
-     * gracefully terminating
+     * gracefully terminating streams
      */
     public void close(){
         streams.close();
