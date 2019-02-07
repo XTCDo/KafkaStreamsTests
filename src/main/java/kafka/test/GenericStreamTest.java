@@ -9,7 +9,11 @@ import planets.Planet;
 import planets.PlanetBuilder;
 import util.Logging;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class GenericStreamTest {
     private static final String TAG = "GenericStreamTest";
@@ -17,38 +21,10 @@ public class GenericStreamTest {
         try {
             log("commencing test");
 
+            serdeTest();
             // first steps to setting up a stream is buildin the topic:
             // in this instance a simple pipe
 
-            log("testing ObjectSerde");
-            log("ObjectSerde setup...");
-            ObjectSerde objectSerde = new ObjectSerde();
-
-            Planet planet = new PlanetBuilder()
-                    .setName("Super-Earth")
-                    .setCapitol("UN HQ ONE")
-                    .setColor("silver")
-                    .setDistanceToSun(10f)
-                    .setGravity(1f)
-                    .setTemperature(300f).build();
-            log("created planet:" + planet.toString());
-            float pi = (float) Math.PI;
-
-            log("using ObjectSerde to serialize planet into ByteArray");
-            byte[] serializedFloat = objectSerde.serializer().serialize("topic",pi);
-            byte[] serializedPlanet = objectSerde.serializer().serialize("topic",planet);
-
-            log("de-serializing result");
-            Object obj = objectSerde.deserializer().deserialize("topic", serializedPlanet);
-            Object pi_obj = objectSerde.deserializer().deserialize("topic", serializedFloat);
-            log("de-serialed to:" +obj.getClass().getName()+"\t" + obj.toString());
-            log("de-serialed to:" +pi_obj.getClass().getName()+"\t" + pi_obj.toString());
-
-            log("casting to planet");
-
-            Planet deserializedPlanet = (Planet) obj;
-            float repi = (float) pi_obj;
-            log("planet de-serialized:" + deserializedPlanet.toString());
 
             log("building simple pipe Stream:");
 
@@ -83,4 +59,48 @@ public class GenericStreamTest {
         Logging.log(Level.INFO, err.toString(), TAG);
     }
 
+    public static void serdeTest(){
+        log("initiating Serde test");
+        log("ObjectSerde setup");
+        ObjectSerde objectSerde = new ObjectSerde();
+
+        log("generating objects");
+
+        List<Object> objects= new ArrayList<>();
+        objects.add("lorem ipsum dolor amet...");
+        objects.add(123);
+        objects.add(-200);
+        objects.add(42f);
+        objects.add(true);
+        objects.add('b');
+        objects.add(0xCCFF33);
+        objects.add(new PlanetBuilder()
+                .setName("Super-Earth")
+                .setCapitol("UN HQ ONE")
+                .setColor("silver")
+                .setDistanceToSun(10f)
+                .setGravity(1f)
+                .setTemperature(300f).build());
+        log("created list of various objects of types: ["+objects.stream().map(obj -> obj.getClass().getName()).collect(Collectors.joining(" | "))+"]");
+
+
+        log("using ObjectSerde to serialize objects into ByteArray");
+        List<byte[]> serializedObjects = objects.stream()
+                .map(object-> objectSerde.serializer().serialize("topic",object))
+                .collect(Collectors.toList());
+
+        log("using ObjectSerde to de-serialize results back into Objects");
+        List<Object> deserializedObjects = serializedObjects.stream()
+                .map(serializedObject-> objectSerde.deserializer().deserialize("topic", serializedObject))
+                .collect(Collectors.toList());
+
+        log("deserialized into list of various objects of types: ["+deserializedObjects.stream()
+                .map(obj -> obj.getClass().getName())
+                .collect(Collectors.joining(" | ")) + "]");
+
+        log("result: ["+deserializedObjects.stream().map(Object::toString)
+                .collect(Collectors.joining(" | ")) + "]");
+
+        log("Serde test concluded");
+    }
 }
