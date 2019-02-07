@@ -2,13 +2,10 @@ package kafka.test;
 
 
 import kafka.generic.streams.GenericStream;
-import kafka.streams.DefaultGenericStream;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
-import sun.rmi.runtime.Log;
 import util.Logging;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 
 public class GenericStreamTest {
