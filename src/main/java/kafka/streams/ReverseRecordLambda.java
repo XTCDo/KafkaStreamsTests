@@ -16,7 +16,6 @@
  */
 package kafka.streams;
 
-import jdk.internal.joptsimple.internal.Strings;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
