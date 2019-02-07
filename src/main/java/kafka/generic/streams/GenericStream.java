@@ -6,23 +6,36 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
+import util.Logging;
 
 import java.io.Serializable;
 import java.util.Properties;
+import java.util.logging.Level;
 
 
 public class GenericStream {
+    private static final String TAG = GenericStream.class.getName();
     // everything kafka related needs this
+    private String applicationId;
     private Properties properties;
-    private KafkaStreams streams; // --> this object is very necessary
+    private KafkaStreams streams;
 
 
-    // Class constructor
+    /**
+     * generic stream constructor
+     * @param applicationId the name of this stream
+     * @param bootStrapServer location of broker server this stream will listen to/ be registered to
+     * @param defaultKeySerdeClass default class for key serializer/deserializer
+     * @param defaultValueSerdeClass default class for value serializer/deserializer
+     * @param topology topology this stream will be built according to: defines input topic, process and output topic.
+     */
     public GenericStream(String applicationId, String bootStrapServer,
                          Class<? extends Serde> defaultKeySerdeClass, Class<? extends Serde> defaultValueSerdeClass,
                          Topology topology){
 
-        // first step: define properties
+        this.applicationId= applicationId;
+
+        // first define properties
         properties = new Properties();
 
         // name and server address
@@ -36,23 +49,28 @@ public class GenericStream {
        this.streams = new KafkaStreams(topology, properties);
     }
 
+    /**
+     * generic stream constructor with sensible defaults
+     * @param appId the name of this stream
+     * @param bootStrapServer location of broker server this stream will listen to/ be registered to
+     * @param topology topology this stream will be built according to, defines: input topics, processes and output topics
+     */
      public GenericStream(String appId,String bootStrapServer, Topology topology){
         this(appId, bootStrapServer, Serdes.String().getClass(), ObjectSerde.class, topology);
     }
 
 
-
-
     // function calls
 
     /**
-     * start the streams this object holds
+     * start the streams defined in this object's constructor
      */
     public void run(){
         try{
+            Logging.log(Level.INFO,"starting stream: "+applicationId,TAG);
             streams.start();
         }catch (Exception e){
-            e.printStackTrace();
+            Logging.log(Level.SEVERE, e.toString(), TAG);
         }
     }
 
@@ -60,6 +78,8 @@ public class GenericStream {
      * gracefully terminating streams
      */
     public void close(){
+        Logging.log(Level.INFO,"terminating stream: "+applicationId,TAG);
         streams.close();
     }
+
 }
