@@ -38,7 +38,7 @@ public class LoggingFormatter extends Formatter {
         }
 
         // Then, add the logging message
-        stringBuilder.append(" ").append(record.getMessage()).append("\n");
+        stringBuilder.append(": ").append(record.getMessage()).append("\n");
 
         // if an error was logged, append this to the message
         if (record.getThrown() != null){
@@ -47,7 +47,7 @@ public class LoggingFormatter extends Formatter {
             // follow up with a listing of stack trace elements
             .append(Arrays.stream(record.getThrown().getStackTrace())
                     .map(StackTraceElement::toString)
-                    .collect(Collectors.joining("\n\t\\└")))
+                    .collect(Collectors.joining("\n\t"+'└')))
                     .append("\n");
         }
 
