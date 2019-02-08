@@ -47,7 +47,7 @@ public class LoggingFormatter extends Formatter {
             // follow up with a listing of stack trace elements
             .append(Arrays.stream(record.getThrown().getStackTrace())
                     .map(StackTraceElement::toString)
-                    .collect(Collectors.joining("\n\t"+'└')))
+                    .collect(Collectors.joining("\n\t\\\\_")))
                     .append("\n");
         }
 
