@@ -1,5 +1,6 @@
 package util;
 
+import javax.sound.sampled.LineEvent;
 import java.io.IOException;
 import java.util.logging.*;
 
@@ -53,6 +54,8 @@ public class Logging {
         return logger;
     }
 
+
+
     public static void log(Level level, String message){
         getLogger().log(level, message);
     }
@@ -64,4 +67,29 @@ public class Logging {
     public static void log(Level level, String message, Object[] params){
         getLogger().log(level, message, params);
     }
+
+    public static void log(Level level, String message, Throwable err ){
+        getLogger().log(level, message, err);
+    }
+
+    // above functions overloaded to sensible defaults
+
+    /**
+     * default log will print to info level
+     * @param message   log message
+     * @param params    log parameters
+     */
+    public static void log(String message, Object ...params){
+        log(Level.INFO, message, params);
+    }
+
+    /**
+     * default errors happen at severe level
+     * @param message   log message
+     * @param err       object of instance throwable
+     */
+    public static void error(String message, Throwable err){
+        log(Level.SEVERE, message, err);
+    }
+
 }
