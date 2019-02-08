@@ -3,12 +3,15 @@ package kafka.test;
 
 import kafka.generic.streams.GenericStream;
 import kafka.generic.streams.ObjectSerde;
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import planets.PlanetBuilder;
 import util.Logging;
 
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
@@ -19,13 +22,13 @@ public class GenericStreamTest {
     public static void main(String... args){
         try {
             log("commencing test\n\n");
-
+            simpleSerdeTest();
             serdeTest();
 
             //pipeTest();
             // first steps to setting up a stream is buildin the topic:
             // in this instance a simple pipe
-            
+
             log("testing concluded");
         }
         catch (Throwable e){
@@ -39,6 +42,30 @@ public class GenericStreamTest {
 
     public static void error(Throwable err){
         Logging.log(Level.INFO, err.toString(), TAG);
+    }
+
+    public static void simpleSerdeTest(){
+        log("initiating simple Serde test:\n");
+
+        ObjectSerde objectSerde = new ObjectSerde();
+        testObject(objectSerde, 42);
+        testObject(objectSerde, -200);
+        testObject(objectSerde, -200);
+        testObject(objectSerde, "strings");
+
+    }
+
+    public static void testObject(ObjectSerde serde, Object testObject){
+        log("testing object:" +testObject.toString());
+        try {
+            byte[] serialized = serde.serializer().serialize("topic", 123f);
+            log("serialized to:" + Arrays.toString(serialized));
+
+            Object returnObject = serde.deserializer().deserialize("topic", serialized);
+            log("de-serialized back into:" + returnObject.toString());
+        }catch (Exception e){
+            error(e);
+        }
     }
 
     public static void serdeTest(){

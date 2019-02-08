@@ -40,8 +40,8 @@ public class ObjectSerializer implements Serializer {
                 ObjectOutputStream out = new ObjectOutputStream(outputStream)){
 
             out.writeObject(object);
+            //bArray = outputStream.toByteArray();
             bArray = outputStream.toByteArray();
-
         } catch (Exception e){
             Logging.log(Level.SEVERE, Arrays.toString(e.getStackTrace()),TAG);
         }
