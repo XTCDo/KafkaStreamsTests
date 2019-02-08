@@ -42,7 +42,7 @@ public class LoggingFormatter extends Formatter {
 
         // if an error was logged, append this to the message
         if (record.getThrown() != null){
-            stringBuilder.append("\t").append(record.getThrown().getMessage()).append("\n\t\t")
+            stringBuilder.append("\t").append(record.getThrown().getMessage()).append(" at: \n\t\t")
             .append(Arrays.stream(record.getThrown().getStackTrace())
                     .map(StackTraceElement::toString)
                     .collect(Collectors.joining("\n\t\t")))

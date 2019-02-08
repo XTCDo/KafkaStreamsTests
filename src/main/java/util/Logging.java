@@ -1,5 +1,8 @@
 package util;
 
+import org.apache.kafka.common.protocol.types.Field;
+import org.apache.kafka.connect.data.SchemaProjector;
+
 import javax.sound.sampled.LineEvent;
 import java.io.IOException;
 import java.util.logging.*;
@@ -55,7 +58,7 @@ public class Logging {
     }
 
 
-
+    // todo: evaluate wether or not this function is redundant due to ...params
     public static void log(Level level, String message){
         getLogger().log(level, message);
     }
@@ -66,6 +69,20 @@ public class Logging {
 
     public static void log(Level level, String message, Object[] params){
         getLogger().log(level, message, params);
+    }
+
+    /**
+     * for logging errors WITH tags
+     * @param level logging level (preferably SEVERE)
+     * @param message message to log
+     * @param thrown throwable object
+     * @param params logging tags
+     */
+    public static void log(Level level, String message, Throwable thrown, Object ... params){
+        LogRecord record = new LogRecord(level, message);
+        record.setParameters(params);
+        record.setThrown(thrown);
+        getLogger().log(record);
     }
 
     public static void log(Level level, String message, Throwable err ){
@@ -97,7 +114,7 @@ public class Logging {
      * @param thrown what went wrong
      */
     public static void error(Throwable thrown){
-        error(thrown.getMessage(),thrown);
+        error("An error occurred, printing stacktrace below:",thrown);
     }
 
 }

@@ -32,9 +32,8 @@ public class TestLogging {
             new String().charAt(5);
         }
         catch (Throwable err){
-            Logging.log(Level.SEVERE, "an error occured:",  err);
-            Logging.error("this is the same error", err);
             Logging.error(err);
+            Logging.log(Level.SEVERE, "logging detailed error stuff", err, "TEST TAG 1", "TEST TAG 2");
         }
     }
 }
