@@ -24,7 +24,17 @@ public class TestLogging {
         logThis.put(Level.FINER, "This is finer");
         logThis.put(Level.FINEST, "This is finest");
 
+
         // Log every element in the map above
         logThis.forEach((key, value) -> {Logging.log(key, String.format("%s", value), "TEST TAG");});
+
+        try{
+            new String().charAt(5);
+        }
+        catch (Throwable err){
+            Logging.error(err);
+            Logging.error(err, "TEST_TAG_X");
+            Logging.log(Level.SEVERE, "logging detailed error stuff", err, "TEST TAG 1", "TEST TAG 2");
+        }
     }
 }
