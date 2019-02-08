@@ -23,7 +23,7 @@ public class GenericStreamTest {
         try {
             log("commencing test\n\n");
             simpleSerdeTest();
-            serdeTest();
+            //serdeTest();
 
             //pipeTest();
             // first steps to setting up a stream is buildin the topic:
@@ -58,7 +58,7 @@ public class GenericStreamTest {
     public static void testObject(ObjectSerde serde, Object testObject){
         log("testing object:" +testObject.toString());
         try {
-            byte[] serialized = serde.serializer().serialize("topic", 123f);
+            byte[] serialized = serde.serializer().serialize("topic", testObject);
             log("serialized to:" + Arrays.toString(serialized));
 
             Object returnObject = serde.deserializer().deserialize("topic", serialized);
