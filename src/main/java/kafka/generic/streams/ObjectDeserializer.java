@@ -1,9 +1,10 @@
 package kafka.generic.streams;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
 import util.Logging;
 
+import java.io.*;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -26,22 +27,25 @@ public class ObjectDeserializer implements Deserializer {
      */
     @Override
     public Object deserialize(String topic, byte[] serializedData) {
-        Logging.log(Level.INFO,"received: "+ serializedData, TAG);
         // input may be null, recommended to catch early
         if (serializedData == null){
             return null;
         }
 
-        ObjectMapper mapper = new ObjectMapper(); // this will read JSON as POJO
+        Logging.log(Level.FINER,"received: "+ Arrays.toString(serializedData), TAG);
         Object obj = null;
-        try {
-            obj = mapper.readValue(serializedData, Object.class); // parse input to generic object
-            Logging.log(Level.INFO,"parsed to: "+ obj.toString(), TAG);
-        }
-        catch (Exception e) {
-            Logging.log(Level.SEVERE,e.toString(), TAG);
+
+        // try-with-resources auto-closes the resources we create
+        try(    ByteArrayInputStream inputStream = new ByteArrayInputStream(serializedData);
+                ObjectInputStream in = new ObjectInputStream(inputStream)){
+
+            obj = in.read();
+
+        }catch (Exception e){
+            Logging.log(Level.SEVERE, Arrays.toString(e.getStackTrace()),TAG);
         }
 
+        Logging.log(Level.FINER,"parsed to: "+ (obj != null ? obj.toString() : "null Object"), TAG);
         return obj;
     }
 

@@ -14,7 +14,7 @@ import java.util.logging.Level;
 
 
 public class GenericStream {
-    private static final String TAG = GenericStream.class.getName();
+    private static final String TAG = "GenericStream";
     // everything kafka related needs this
     private String applicationId;
     private Properties properties;

@@ -1,9 +1,10 @@
 package kafka.generic.streams;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serializer;
 import util.Logging;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
@@ -28,20 +29,26 @@ public class ObjectSerializer implements Serializer {
      */
     @Override
     public byte[] serialize(String topic, Object object) {
+        // catch null objects early
         if (object == null){
             return null;
         }
-        Logging.log(Level.INFO,"received: "+ object.toString(), TAG);
-        ObjectMapper mapper = new ObjectMapper(); // this will write POJO to JSON
-        byte[] ObjectAsByteArray = null;
-        try {
-            ObjectAsByteArray = mapper.writeValueAsString(object).getBytes();   // convert JSON to byteArray
-            Logging.log(Level.INFO,"serialized to: "+ ObjectAsByteArray, TAG);
-        } catch (Exception e) {
-            Logging.log(Level.SEVERE, Arrays.toString(e.getStackTrace()), TAG);
+        Logging.log(Level.FINER,"received: "+ object.toString(), TAG);
+
+        byte[] bArray = null;
+        try (   ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ObjectOutputStream out = new ObjectOutputStream(outputStream)){
+
+            out.writeObject(object);
+            bArray = outputStream.toByteArray();
+
+        } catch (Exception e){
+            Logging.log(Level.SEVERE, Arrays.toString(e.getStackTrace()),TAG);
         }
-        return ObjectAsByteArray;
-    }
+
+        Logging.log(Level.FINER,"parsed to: "+ Arrays.toString(bArray), TAG);
+        return bArray;
+}
 
     /**
      * does nothing temporarily

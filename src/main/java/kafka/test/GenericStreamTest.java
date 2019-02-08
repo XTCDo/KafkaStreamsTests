@@ -22,12 +22,10 @@ public class GenericStreamTest {
 
             serdeTest();
 
-            pipeTest();
+            //pipeTest();
             // first steps to setting up a stream is buildin the topic:
             // in this instance a simple pipe
-
-
-
+            
             log("testing concluded");
         }
         catch (Throwable e){
