@@ -104,7 +104,7 @@ public class Logging {
      * @param thrown what went wrong
      */
     public static void error(Throwable thrown, Object ...params){
-        log(Level.SEVERE, "Error found at: ", thrown, params);
+        log(Level.SEVERE, "Error thrown: ", thrown, params);
     }
 
     /**
