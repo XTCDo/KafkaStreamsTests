@@ -42,6 +42,7 @@ public class LoggingFormatter extends Formatter {
         // if an error was logged, append this to the message
         if (record.getThrown() != null){
             stringBuilder.append(" ").append(Arrays.toString(record.getThrown().getStackTrace()));
+            stringBuilder.append(" ").append(Arrays.toString(record.getThrown().getStackTrace()));
         }
 
         // Finally, append a newline character

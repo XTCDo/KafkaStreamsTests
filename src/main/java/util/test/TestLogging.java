@@ -33,6 +33,8 @@ public class TestLogging {
         }
         catch (Throwable err){
             Logging.log(Level.SEVERE, "an error occured:",  err);
+            Logging.error("this is the same error", err);
+            Logging.error(err);
         }
     }
 }

@@ -86,10 +86,18 @@ public class Logging {
     /**
      * default errors happen at severe level
      * @param message   log message
-     * @param err       object of instance throwable
+     * @param thrown       object of instance throwable
      */
-    public static void error(String message, Throwable err){
-        log(Level.SEVERE, message, err);
+    public static void error(String message, Throwable thrown){
+        log(Level.SEVERE, message, thrown);
+    }
+
+    /**
+     * log a throwable object and nothing else
+     * @param thrown what went wrong
+     */
+    public static void error(Throwable thrown){
+        error(thrown.getMessage(),thrown);
     }
 
 }
