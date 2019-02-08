@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
+import java.util.stream.Collectors;
 
 public class LoggingFormatter extends Formatter {
     /**
@@ -37,16 +38,16 @@ public class LoggingFormatter extends Formatter {
         }
 
         // Then, add the logging message
-        stringBuilder.append(" ").append(record.getMessage());
+        stringBuilder.append(" ").append(record.getMessage()).append("\n");
 
         // if an error was logged, append this to the message
         if (record.getThrown() != null){
-            stringBuilder.append(" ").append(Arrays.toString(record.getThrown().getStackTrace()));
-            stringBuilder.append(" ").append(Arrays.toString(record.getThrown().getStackTrace()));
+            stringBuilder.append("\t").append(record.getThrown().getMessage()).append("\n\t\t")
+            .append(Arrays.stream(record.getThrown().getStackTrace())
+                    .map(StackTraceElement::toString)
+                    .collect(Collectors.joining("\n\t\t")))
+                    .append("\n");
         }
-
-        // Finally, append a newline character
-        stringBuilder.append('\n');
 
         // Return our beautiful string
         return new String(stringBuilder);
