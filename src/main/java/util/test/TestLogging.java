@@ -33,6 +33,7 @@ public class TestLogging {
         }
         catch (Throwable err){
             Logging.error(err);
+            Logging.error(err, "TEST_TAG_X");
             Logging.log(Level.SEVERE, "logging detailed error stuff", err, "TEST TAG 1", "TEST TAG 2");
         }
     }

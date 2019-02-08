@@ -34,7 +34,7 @@ public class LoggingFormatter extends Formatter {
         if(record.getParameters() != null){
             List<String> parameters = new ArrayList<>();
             Arrays.asList(record.getParameters()).forEach(value -> parameters.add(String.valueOf(value)));
-            stringBuilder.append("[").append(String.join("|", parameters)).append("]");
+            stringBuilder.append("[").append(String.join(" | ", parameters)).append("]");
         }
 
         // Then, add the logging message

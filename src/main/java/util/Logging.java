@@ -1,5 +1,6 @@
 package util;
 
+import jdk.internal.jline.internal.Nullable;
 import org.apache.kafka.common.protocol.types.Field;
 import org.apache.kafka.connect.data.SchemaProjector;
 
@@ -58,16 +59,13 @@ public class Logging {
     }
 
 
-    // todo: evaluate wether or not this function is redundant due to ...params
-    public static void log(Level level, String message){
-        getLogger().log(level, message);
-    }
-
-    public static void log(Level level, String message, Object param1){
-        getLogger().log(level, message, param1);
-    }
-
-    public static void log(Level level, String message, Object[] params){
+    /**
+     * log a message with these parameters, base for other util functions in this class
+     * @param level     logger level
+     * @param message   message to send to logger
+     * @param params    logging tags
+     */
+    public static void log(Level level, String message, Object ...params){
         getLogger().log(level, message, params);
     }
 
@@ -85,9 +83,6 @@ public class Logging {
         getLogger().log(record);
     }
 
-    public static void log(Level level, String message, Throwable err ){
-        getLogger().log(level, message, err);
-    }
 
     // above functions overloaded to sensible defaults
 
@@ -101,20 +96,39 @@ public class Logging {
     }
 
     /**
-     * default errors happen at severe level
+     * log an error with a header message
      * @param message   log message
-     * @param thrown       object of instance throwable
+     * @param thrown    thrown error
      */
-    public static void error(String message, Throwable thrown){
-        log(Level.SEVERE, message, thrown);
+    public static void error(String message, Throwable thrown, Object ...params){
+        log(Level.SEVERE, message, thrown, params);
     }
 
     /**
-     * log a throwable object and nothing else
+     * log an error without message
      * @param thrown what went wrong
      */
-    public static void error(Throwable thrown){
-        error("An error occurred, printing stacktrace below:",thrown);
+    public static void error(Throwable thrown, Object ...params){
+        log(Level.SEVERE, "Error found at: ", thrown, params);
     }
+
+    /**
+     * log a warning
+     * @param message   logging message
+     * @param params    logging tags
+     */
+    public static void warn(String message, Object ...params){
+        log(Level.WARNING, message, params);
+    }
+
+    /**
+     * log a debug message
+     * @param message   logging message
+     * @param params    logging tags
+     */
+    public static void debug(String message, Object ...params){
+        log(Level.FINE, message, params);
+    }
+
 
 }
