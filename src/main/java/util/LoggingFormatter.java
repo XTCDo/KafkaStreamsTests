@@ -43,11 +43,11 @@ public class LoggingFormatter extends Formatter {
         // if an error was logged, append this to the message
         if (record.getThrown() != null){
             // first element of stacktrace is always error message
-            stringBuilder.append("\t").append(record.getThrown().getMessage()).append(" at: \n\t└")
+            stringBuilder.append("\t").append(record.getThrown().getMessage()).append(" at: \n\t")
             // follow up with a listing of stack trace elements
             .append(Arrays.stream(record.getThrown().getStackTrace())
                     .map(StackTraceElement::toString)
-                    .collect(Collectors.joining("\n\t\\\\_")))
+                    .collect(Collectors.joining("\n\t")))
                     .append("\n");
         }
 
