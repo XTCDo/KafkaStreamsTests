@@ -2,9 +2,10 @@ package planets;
 
 import org.influxdb.dto.Point;
 
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
-public class Planet {
+public class Planet{
     private String name;
     private String capitol;
     private String color;
