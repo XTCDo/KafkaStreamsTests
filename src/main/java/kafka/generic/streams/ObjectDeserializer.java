@@ -31,8 +31,7 @@ public class ObjectDeserializer implements Deserializer {
         if (serializedData == null){
             return null;
         }
-
-        Logging.log(Level.FINER,"received: "+ Arrays.toString(serializedData), TAG);
+        //Logging.log(Level.FINER,"received: "+ Arrays.toString(serializedData), TAG);
         Object obj = null;
 
         // try-with-resources auto-closes the resources we create
@@ -45,7 +44,7 @@ public class ObjectDeserializer implements Deserializer {
             Logging.log(Level.SEVERE, Arrays.toString(e.getStackTrace()),TAG);
         }
 
-        Logging.log(Level.FINER,"parsed to: "+ (obj != null ? obj.toString() : "null Object"), TAG);
+        //Logging.log(Level.FINER,"parsed to: "+ (obj != null ? obj.toString() : "null Object"), TAG);
         return obj;
     }
 

@@ -33,7 +33,7 @@ public class ObjectSerializer implements Serializer {
         if (object == null){
             return null;
         }
-        Logging.log(Level.FINER,"received: "+ object.toString(), TAG);
+        //Logging.log(Level.FINER,"received: "+ object.toString(), TAG);
 
         byte[] bArray = null;
         try (   ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -42,12 +42,12 @@ public class ObjectSerializer implements Serializer {
             out.writeObject(object);
             bArray = outputStream.toByteArray();
 
-            Logging.log(Level.FINER,"parsed to(string): "+ outputStream.toString(), TAG);
+            //Logging.log(Level.FINER,"parsed to(string): "+ outputStream.toString(), TAG);
         } catch (Exception e){
             Logging.log(Level.SEVERE, Arrays.toString(e.getStackTrace()),TAG);
         }
 
-        Logging.log(Level.FINER,"parsed to: "+ Arrays.toString(bArray), TAG);
+        //Logging.log(Level.FINER,"parsed to: "+ Arrays.toString(bArray), TAG);
         return bArray;
 }
 
