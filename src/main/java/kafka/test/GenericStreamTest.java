@@ -48,9 +48,13 @@ public class GenericStreamTest {
         log("initiating simple Serde test:\n");
 
         ObjectSerde objectSerde = new ObjectSerde();
+        // testing primitive types
         testObject(objectSerde, 42);
         testObject(objectSerde, -200);
-        testObject(objectSerde, -200);
+        testObject(objectSerde, -200f);
+        testObject(objectSerde, true);
+        testObject(objectSerde, false);
+        testObject(objectSerde, new Thread());
         testObject(objectSerde, "strings");
 
     }
