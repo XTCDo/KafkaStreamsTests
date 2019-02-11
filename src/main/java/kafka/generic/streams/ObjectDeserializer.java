@@ -39,7 +39,7 @@ public class ObjectDeserializer implements Deserializer {
         try(    ByteArrayInputStream inputStream = new ByteArrayInputStream(serializedData);
                 ObjectInputStream in = new ObjectInputStream(inputStream)){
 
-            obj = in.read();
+            obj = in.readObject();
 
         }catch (Exception e){
             Logging.log(Level.SEVERE, Arrays.toString(e.getStackTrace()),TAG);

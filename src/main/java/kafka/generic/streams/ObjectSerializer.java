@@ -41,7 +41,7 @@ public class ObjectSerializer implements Serializer {
 
             out.writeObject(object);
             bArray = outputStream.toByteArray();
-            
+
             Logging.log(Level.FINER,"parsed to(string): "+ outputStream.toString(), TAG);
         } catch (Exception e){
             Logging.log(Level.SEVERE, Arrays.toString(e.getStackTrace()),TAG);
