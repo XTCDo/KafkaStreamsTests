@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, String> {
     private static final String TAG = "PiMessageConsumer";
     public PiMessageConsumer(){
-        super("http:///localhost:8086","python-input", Config.getLocalBootstrapServersConfig(), "PiMessageConsumer");
+        super("http://localhost:8086","python-input", Config.getLocalBootstrapServersConfig(), "PiMessageConsumer");
     }
 
     public void run(){
@@ -33,7 +33,12 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        String values = record.value(); // confirmed OK -> is JSON
                        Map map = gson.fromJson(values, Map.class);
                        Logging.log("parsed JSON to map of size "+map.size(),TAG);
-
+                       /*
+                       Point point = Point.measurement("test-measurements")
+                               .time(System.currentTimeMillis(),TimeUnit.MILLISECONDS)
+                               .tag("mac-address",map.get("mac_address").toString())
+                               .fields(map.get("atm_data"))
+                               .
                        /*
                        Point point = Point.measurement("")
                                .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
