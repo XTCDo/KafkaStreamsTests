@@ -7,6 +7,7 @@ import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import planets.PlanetBuilder;
+import util.Config;
 import util.Logging;
 
 import java.io.ObjectInputStream;
@@ -130,7 +131,7 @@ public class GenericStreamTest {
         log("topology constructed: "+topology.describe());
 
         log("creating generic Stream with constructed topology...");
-        GenericStream pipeStream = new GenericStream("streams-pipe", "localhost:9092", topology);
+        GenericStream pipeStream = new GenericStream("streams-pipe", Config.getLocalBootstrapServersConfig(), topology);
         log("generic stream constructed");
 
         log("starting generic pipe stream");
