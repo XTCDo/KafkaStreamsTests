@@ -38,14 +38,14 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        Map atm_data = (Map) map.get("atm_data");
                        Logging.debug("atmospheric data: "+ atm_data.toString(),TAG);
                        Map inertia_data= (Map) map.get("atm_data");
-                       Map accelerometer_data = (Map) inertia_data.get("acellerometer");
+                       Map accelerometer_data = (Map) inertia_data.get("accelerometer");
                        Logging.debug("accelerometer data: "+ accelerometer_data.toString(),TAG);
                        Map gyroscope_data =  (Map) inertia_data.get("gyroscope");
                        Logging.debug("gyroscope data: "+ gyroscope_data.toString(),TAG);
 
                        Point point = Point.measurement("test-measurements")
                                .time(System.currentTimeMillis(),TimeUnit.MILLISECONDS)
-                               .tag("mac-address",map.get("mac_address").toString())
+                               .tag("mac-address", map.get("mac_address").toString())
                                .fields(atm_data)
                                .fields(accelerometer_data)
                                .fields(gyroscope_data)
