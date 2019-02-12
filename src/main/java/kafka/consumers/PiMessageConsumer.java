@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, String> {
     private static final String TAG = "PiMessageConsumer";
     public PiMessageConsumer(){
-        super("localhost:8086","python-input", Config.getLocalBootstrapServersConfig(), "PiMessageConsumer");
+        super("http:///localhost:8086","python-input", Config.getLocalBootstrapServersConfig(), "PiMessageConsumer");
     }
 
     public void run(){
@@ -50,7 +50,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        getInfluxDAO().writePoint("kafka_test", point);
                        */
 
-                       
+
                        Logging.log("received message: " + map.toString(), TAG);
                    });
 
