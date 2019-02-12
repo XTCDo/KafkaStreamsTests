@@ -35,7 +35,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
 
                        Logging.log("received message: " + map.toString(), TAG);
 
-                       Map atm_data = (Map) map.get("atm_data");
+                       Map atm_data = (Map) map.get("atmospheric_data");
                        Logging.debug("atmospheric data: "+ atm_data.toString(),TAG);
                        Map inertia_data= (Map) map.get("atm_data");
                        Map accelerometer_data = (Map) inertia_data.get("accelerometer");
