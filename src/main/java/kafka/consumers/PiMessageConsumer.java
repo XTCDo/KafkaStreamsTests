@@ -43,7 +43,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                                .fields((Map)((Map)map.get("inertia_data")).get("gyroscope"))
                                .build();
 
-                       getInfluxDAO().writePoint("kafka_test", point);
+                       getInfluxDAO().writePoint("Pi_Measurements", point);
 
                        Logging.log("received message: " + map.toString(), TAG);
                    });
