@@ -18,15 +18,17 @@ public class PiMessageConsumer extends GenericThreadedConsumer<String, String> {
 
     public void run(){
         Thread consumerThread = new Thread(() -> {
-           try {
-               ConsumerRecords<String,String> records = getConsumer().poll(Duration.ofMillis(10));
-               records.forEach(record-> {
-                   String values = record.value();
-                   Logging.log("received message: " + values);
-               });
-               Thread.sleep(100);
-           } catch (Exception e) {
-               Logging.error(e);
+            while (true) {
+                try {
+                   ConsumerRecords<String,String> records = getConsumer().poll(Duration.ofMillis(10));
+                   records.forEach(record-> {
+                       String values = record.value();
+                       Logging.log("received message: " + values);
+                   });
+                   Thread.sleep(100);
+               } catch (Exception e) {
+                   Logging.error(e);
+               }
            }
         });
         Logging.log("starting consumer", TAG);
