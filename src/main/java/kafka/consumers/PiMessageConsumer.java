@@ -35,12 +35,12 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        Logging.log("parsed JSON to map of size "+map.size(),TAG);
 
                        Point point = Point.measurement("test-measurements")
-                               .time(record.timestamp(),)
+                               .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                                .time(System.currentTimeMillis(),TimeUnit.MILLISECONDS)
                                .tag("mac-address",map.get("mac_address").toString())
-                               .fields(map.get("atm_data"))
-                               .fields(((Map)map.get("inertia_data")).get("accelerometer"))
-                               .fields(((Map)map.get("inertia_data")).get("gyroscope"))
+                               .fields((Map)map.get("atm_data"))
+                               .fields((Map)((Map)map.get("inertia_data")).get("accelerometer"))
+                               .fields((Map)((Map)map.get("inertia_data")).get("gyroscope"))
                                .build();
 
                        getInfluxDAO().writePoint("kafka_test", point);
