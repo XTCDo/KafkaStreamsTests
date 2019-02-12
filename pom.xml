@@ -124,6 +124,7 @@
     </build>
 
     <dependencies>
+        <!-- GSON -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
