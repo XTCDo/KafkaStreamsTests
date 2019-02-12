@@ -32,20 +32,29 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                    records.forEach(record-> {
                        String values = record.value(); // confirmed OK -> is JSON
                        Map map = gson.fromJson(values, Map.class);
-                       Logging.log("parsed JSON to map of size "+map.size(),TAG);
+
+                       Logging.log("received message: " + map.toString(), TAG);
+
+                       Map atm_data = (Map) map.get("atm_data");
+                       Logging.debug("atmospheric data: "+ atm_data.toString(),TAG);
+                       Map inertia_data= (Map) map.get("atm_data");
+                       Map accelerometer_data = (Map) inertia_data.get("acellerometer");
+                       Logging.debug("accelerometer data: "+ accelerometer_data.toString(),TAG);
+                       Map gyroscope_data =  (Map) inertia_data.get("gyroscope");
+                       Logging.debug("gyroscope data: "+ gyroscope_data.toString(),TAG);
 
                        Point point = Point.measurement("test-measurements")
                                .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                                .time(System.currentTimeMillis(),TimeUnit.MILLISECONDS)
                                .tag("mac-address",map.get("mac_address").toString())
-                               .fields((Map)map.get("atm_data"))
-                               .fields((Map)((Map)map.get("inertia_data")).get("accelerometer"))
-                               .fields((Map)((Map)map.get("inertia_data")).get("gyroscope"))
+                               .fields(atm_data)
+                               .fields(accelerometer_data)
+                               .fields(gyroscope_data)
                                .build();
 
+                       Logging.debug("converted to Point: "+point.toString(),TAG);
                        getInfluxDAO().writePoint("Pi_Measurements", point);
-
-                       Logging.log("received message: " + map.toString(), TAG);
+                       Logging.log("written to database",TAG);
                    });
 
                    Thread.sleep(2000);
