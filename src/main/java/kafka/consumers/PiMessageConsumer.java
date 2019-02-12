@@ -33,28 +33,17 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        String values = record.value(); // confirmed OK -> is JSON
                        Map map = gson.fromJson(values, Map.class);
                        Logging.log("parsed JSON to map of size "+map.size(),TAG);
-                       /*
+
                        Point point = Point.measurement("test-measurements")
+                               .time(record.timestamp(),)
                                .time(System.currentTimeMillis(),TimeUnit.MILLISECONDS)
                                .tag("mac-address",map.get("mac_address").toString())
                                .fields(map.get("atm_data"))
-                               .
-                       /*
-                       Point point = Point.measurement("")
-                               .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-                               .tag(map.get("mac_address").toString())
-                               .addField("name", getName())
-                               .addField("capitol", getCapitol())
-                               .addField("color", getColor())
-                               .addField("gravity", getGravity())
-                               .addField("dist_to_sun", getDistanceToSun())
-                               .addField("temperature", getTemperature())
+                               .fields(((Map)map.get("inertia_data")).get("accelerometer"))
+                               .fields(((Map)map.get("inertia_data")).get("gyroscope"))
                                .build();
 
-
                        getInfluxDAO().writePoint("kafka_test", point);
-                       */
-
 
                        Logging.log("received message: " + map.toString(), TAG);
                    });
