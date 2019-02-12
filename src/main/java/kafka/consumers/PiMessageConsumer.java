@@ -11,7 +11,7 @@ import util.Logging;
 import java.time.Duration;
 
 public class PiMessageConsumer extends GenericThreadedConsumer<String, String> {
-
+    private static final String TAG = "PiMessageConsumer";
     public PiMessageConsumer(){
         super("python-input", Config.getLocalBootstrapServersConfig(), "PiMessageConsumer");
     }
@@ -29,6 +29,7 @@ public class PiMessageConsumer extends GenericThreadedConsumer<String, String> {
                Logging.error(e);
            }
         });
+        Logging.log("starting consumer", TAG);
         super.run(consumerThread);
     }
 }
