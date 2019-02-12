@@ -4,12 +4,13 @@ import kafka.generic.producers.GenericThreadedProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import planets.Planet;
 import planets.PlanetProvider;
+import util.Config;
 
 import java.util.List;
 
 public class PlanetVaryingTemperatureProducer extends GenericThreadedProducer<String, String> {
     public PlanetVaryingTemperatureProducer(){
-        super("streams-planets-input", "localhost:9092");
+        super("streams-planets-input", Config.getLocalBootstrapServersConfig());
     }
 
     public void run(){

@@ -21,6 +21,7 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
+import util.Config;
 
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
@@ -38,7 +39,7 @@ public class Pipe {
         // Name the Streams application
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-pipe");
         // Point it towards the correct kafka broker
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, Config.getLocalBootstrapServersConfig());
         // Define in what way the Key of each record should be (de)serialized
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         // Define in what way the Value of each record should be (de)serialized

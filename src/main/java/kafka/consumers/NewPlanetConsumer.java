@@ -4,12 +4,13 @@ import kafka.generic.consumers.GenericThreadedConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import planets.Planet;
+import util.Config;
 
 import java.time.Duration;
 
 public class NewPlanetConsumer extends GenericThreadedConsumer<String, String> {
     public NewPlanetConsumer(){
-        super("streams-planets-input", "localhost:9092", "NewPlanetConsumer");
+        super("streams-planets-input", Config.getLocalBootstrapServersConfig(), "NewPlanetConsumer");
     }
 
     public void run(){

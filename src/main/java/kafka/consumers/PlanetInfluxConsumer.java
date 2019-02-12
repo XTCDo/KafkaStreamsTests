@@ -5,12 +5,13 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.influxdb.dto.Point;
 import planets.Planet;
+import util.Config;
 
 import java.time.Duration;
 
 public class PlanetInfluxConsumer extends GenericThreadedInfluxConsumer<String, String> {
     public PlanetInfluxConsumer(){
-        super("http://localhost:8086", "streams-planets-input","localhost:9092", "PlanetInfluxConsumer");
+        super("http://localhost:8086", "streams-planets-input", Config.getLocalBootstrapServersConfig(), "PlanetInfluxConsumer");
     }
 
     public void run(){
