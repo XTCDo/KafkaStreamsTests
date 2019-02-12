@@ -15,6 +15,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, String> {
     private static final String TAG = "PiMessageConsumer";
@@ -34,12 +35,16 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        Map map = gson.fromJson(values, Map.class);
 
                        Logging.log("received message: " + map.toString(), TAG);
-
+                        // extract atmospheric data
                        Map atm_data = (Map) map.get("atmospheric_data");
                        Logging.debug("atmospheric data: "+ atm_data.toString(),TAG);
-                       Map inertia_data= (Map) map.get("atm_data");
+
+                       // extract inertia data and delegate to sub-maps
+                       Map inertia_data= (Map) map.get("inertia_data");
+                       // accelerometer stuff
                        Map accelerometer_data = (Map) inertia_data.get("accelerometer");
                        Logging.debug("accelerometer data: "+ accelerometer_data.toString(),TAG);
+                       // gyroscope stuff
                        Map gyroscope_data =  (Map) inertia_data.get("gyroscope");
                        Logging.debug("gyroscope data: "+ gyroscope_data.toString(),TAG);
 
