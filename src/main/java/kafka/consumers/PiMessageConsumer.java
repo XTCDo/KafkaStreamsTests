@@ -13,7 +13,7 @@ public class PiMessageConsumer extends GenericThreadedConsumer<String, String> {
     public void run(){
         Thread consumerThread = new Thread(() -> {
            try {
-               
+
            } catch (Exception e) {
                Logging.error(e);
            }
