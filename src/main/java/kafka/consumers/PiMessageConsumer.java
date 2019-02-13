@@ -44,11 +44,11 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        String values = record.value(); // confirmed OK -> is JSON
 
                        Map map = gson.fromJson(values, Map.class);
-                       Logging.debug("got message containing: "+ map.entrySet().toString());
-                       
+                       Logging.debug("got message containing: "+ map.entrySet().toString(),TAG);
+
                        Set<Map.Entry> flatSet = flattenEntrySet(map.entrySet());
 
-                       Logging.debug("flattened set:" + flatSet.toString() );
+                       Logging.debug("flattened set:" + flatSet.toString() , TAG);
 
                        /*
                         // extract atmospheric data
@@ -97,6 +97,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                     Object value = entry.getValue();
                     return (value instanceof Map)? flattenEntrySet(((Map)value).entrySet()):entry;
                 })
+                .flatMap(Set::stream)
                 .collect(Collectors.toSet());
 
         return (Set<Map.Entry>) outputEntrySet;
