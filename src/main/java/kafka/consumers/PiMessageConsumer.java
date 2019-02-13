@@ -47,7 +47,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        // gyroscope stuff
                        Map gyroscope_data =  (Map) inertia_data.get("gyroscope");
                        Logging.debug("gyroscope data: "+ gyroscope_data.toString(),TAG);
-
+                        
                        Point point = Point.measurement("test-measurements")
                                .time(System.currentTimeMillis(),TimeUnit.MILLISECONDS)
                                .tag("mac-address", map.get("mac_address").toString())
