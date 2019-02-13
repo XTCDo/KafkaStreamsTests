@@ -24,7 +24,7 @@ public class PlanetConsumer extends GenericThreadedConsumer<String, String> {
                     for(ConsumerRecord<String, String> record : records){
                         Planet planet = new Planet(record.value());
                         planet.describe();
-                        System.out.println("");
+                        System.out.println();
                     }
                 }
             } catch (Exception e){
