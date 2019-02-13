@@ -58,6 +58,10 @@ public class HelldiversAPIWrapper {
     public static Map getAttackEvents() {
         return (Map) doHTTPRequest("get_campaign_status").get("attack_event");
     }
+
+    public static Map getDefendEvents() {
+        return (Map) doHTTPRequest("get_campaign_status").get("defend_event");
+    }
 }
 
 class ParameterStringBuilder {
