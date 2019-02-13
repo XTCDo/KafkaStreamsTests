@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class HelldiversAPIWrapper {
             Gson gson = new Gson();
             Map apiResponse = gson.fromJson(content.toString(), Map.class);
 
-            Map campaignStatus = (Map) apiResponse.get("campaign_status");
+            ArrayList campaignStatus = (ArrayList) apiResponse.get("campaign_status");
 
             Logging.log(campaignStatus.toString(), TAG);
 
