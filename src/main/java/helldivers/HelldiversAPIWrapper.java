@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.logging.Level;
 
 public class HelldiversAPIWrapper {
+    // Link to API
+    // https://docs.google.com/document/d/11BH152Tx7YpWOlfT69Ad2anG8wwlt6xOE3VO_YHC2mQ/edit#heading=h.trtt0zalsa2
     public  static Map doHTTPRequest(String action){
         final String TAG = "HelldiversAPIWrapper";
         try {
