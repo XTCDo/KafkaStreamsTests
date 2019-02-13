@@ -33,7 +33,8 @@ public class RandomWordProducer {
                 try {
                     // List of random words
                     final String[] WORDS = {
-                        "test", "random", "word", "java", "kafka", "apache", "zoom", "speed", "Tim", "Berglund", "papa", "copypasta"
+                        "test", "random", "word", "java", "kafka", "apache",
+                            "zoom", "speed", "Tim", "Berglund", "papa", "copypasta"
                     };
                     final int WORD_LENGTH = 4;
 

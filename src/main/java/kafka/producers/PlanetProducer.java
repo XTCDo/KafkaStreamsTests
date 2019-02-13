@@ -8,7 +8,8 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import java.util.List;
 
 public class PlanetProducer extends GenericThreadedProducer<String, String> {
-    public PlanetProducer(String topic, String bootStrapServer, Object keySerializerClass, Object valueSerializerClass, String acks, int retries, int batchSize, int lingerMS, int bufferMemory) {
+    public PlanetProducer(String topic, String bootStrapServer, Object keySerializerClass, Object valueSerializerClass,
+                          String acks, int retries, int batchSize, int lingerMS, int bufferMemory) {
         super(topic, bootStrapServer, keySerializerClass, valueSerializerClass, acks, retries, batchSize, lingerMS, bufferMemory);
     }
 
@@ -19,9 +20,12 @@ public class PlanetProducer extends GenericThreadedProducer<String, String> {
     public void run(){
         Thread producerThread = new Thread(() -> {
             try {
+                // PlanetProvider provides a list of planets
                 List<Planet> planets = PlanetProvider.getPlanets();
 
                 while(true) {
+
+                    // Keep sending these planets to Kafka
                     for(Planet p : planets){
                         getProducer().send(new ProducerRecord<String, String>(getTopic(), p.getName(), p.toString()));
                         Thread.sleep(100);
