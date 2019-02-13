@@ -1,6 +1,7 @@
 package kafka.consumers;
 
 import com.google.gson.Gson;
+import com.sun.tools.javac.util.ArrayUtils;
 import kafka.generic.consumers.GenericThreadedConsumer;
 import kafka.generic.consumers.GenericThreadedInfluxConsumer;
 import kafka.generic.streams.ObjectDeserializer;
@@ -43,11 +44,23 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        Map map = gson.fromJson(values, Map.class);
                        Logging.debug("got message containing: "+ map.entrySet().toString(),TAG);
 
-                       Set<Map.Entry> setTwo = (Set<Map.Entry>) flatten(map.entrySet().stream())
+                       String mac_address = map.get("mac_address").toString();
+                       // flatten the map into an entrySet
+
+                       Set<Map.Entry> flatSet = (Set<Map.Entry>) flatten(map.entrySet().stream())
+                               .filter(entry-> !((Map.Entry)entry).getKey().equals("mac_address"))
                                .collect(Collectors.toSet());
 
-                       
-                       Logging.debug("set 2:" + setTwo.toString());
+                       // cast entrySet
+                       Map fieldmap = flatSet.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+                       Point point = Point.measurement("test-measurements")
+                               .time(System.currentTimeMillis(),TimeUnit.MILLISECONDS)
+                               .tag("mac-address",mac_address)
+                               .fields(fieldmap)
+                               .build();
+
+                       Logging.debug("converted to point: "+point.toString());
 
                        /*
                         // extract atmospheric data
