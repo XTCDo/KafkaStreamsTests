@@ -26,8 +26,7 @@ public class HelldiversAPIWrapper {
             outputStream.flush();
             outputStream.close();
         } catch (Exception e){
-            e.printStackTrace();
-            Logging.log(Level.SEVERE, e.getMessage(), TAG);
+            Logging.error(e, TAG);
         }
     }
 }
