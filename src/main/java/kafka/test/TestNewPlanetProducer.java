@@ -1,9 +1,10 @@
 package kafka.test;
 
-import kafka.producers.NewPlanetProducer;
+import kafka.producers.PlanetProducer;
+import util.Config;
 
 public class TestNewPlanetProducer {
     public static void main(String[] args){
-        new NewPlanetProducer("streams-planets-input", "localhost:9092").run();
+        new PlanetProducer("streams-planets-input", Config.getLocalBootstrapServersConfig()).run();
     }
 }

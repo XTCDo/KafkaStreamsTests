@@ -2,63 +2,39 @@ package kafka.producers;
 
 import planets.Planet;
 import planets.PlanetProvider;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerConfig;
+import kafka.generic.producers.GenericThreadedProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.StringSerializer;
 
-import java.util.*;
-import java.util.concurrent.CountDownLatch;
+import java.util.List;
 
-public class PlanetProducer {
-    public static void main(String[] args){
-        Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.ACKS_CONFIG, "all");
-        props.put(ProducerConfig.RETRIES_CONFIG, 0);
-        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
-        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
-        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
+public class PlanetProducer extends GenericThreadedProducer<String, String> {
+    public PlanetProducer(String topic, String bootStrapServer, Object keySerializerClass, Object valueSerializerClass,
+                          String acks, int retries, int batchSize, int lingerMS, int bufferMemory) {
+        super(topic, bootStrapServer, keySerializerClass, valueSerializerClass, acks, retries, batchSize, lingerMS, bufferMemory);
+    }
 
+    public PlanetProducer(String topic, String bootStrapServer){
+        super(topic, bootStrapServer);
+    }
 
-        Producer<String, String> producer = new KafkaProducer<String, String>(props);
+    public void run(){
         Thread producerThread = new Thread(() -> {
             try {
+                // PlanetProvider provides a list of planets
                 List<Planet> planets = PlanetProvider.getPlanets();
 
                 while(true) {
+
+                    // Keep sending these planets to Kafka
                     for(Planet p : planets){
-                        producer.send(new ProducerRecord<String, String>("streams-planets-input",
-                                p.getName(), p.toString()));
+                        getProducer().send(new ProducerRecord<String, String>(getTopic(), p.getName(), p.toString()));
                         Thread.sleep(100);
                     }
                 }
-
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-
-        final CountDownLatch latch = new CountDownLatch(1);
-        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook"){
-            @Override
-            public void run(){
-                producer.close();
-                latch.countDown();
-            }
-        });
-
-        try {
-            producerThread.start();
-            latch.await();
-        } catch(Throwable e){
-            e.printStackTrace();
-            System.exit(1);
-        }
-        System.exit(0);
+        super.run(producerThread);
     }
-
 }

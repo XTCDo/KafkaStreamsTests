@@ -16,14 +16,14 @@
  */
 package kafka.streams;
 
+import kafka.generic.streams.GenericStream;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
+import util.Config;
+import util.Logging;
 
-import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -32,41 +32,43 @@ import java.util.concurrent.CountDownLatch;
  * and writes the messages as-is into a sink topic "kafka.streams-pipe-output".
  */
 public class RecordLength {
+    private static final String TAG = "RecordLength";
 
     public static void main(String[] args) throws Exception {
-        Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-recordlength");
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
-        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
-        final StreamsBuilder builder = new StreamsBuilder();
+        // as always, start with a streamsBuilder
+        StreamsBuilder builder = new StreamsBuilder();
 
         // Get a source stream from the topic 'kafka.streams-plaintext-input'
         KStream<String, String> source = builder.stream("streams-plaintext-input");
-        // Get the length of the string in the input record and then turn
-        // that number into a string. I did this because I'm still figuring the
-        // (de)serialization out.
-        source.mapValues(value -> Integer.toString(value.length()))
-                // Send the records to the output topic 'streams-recordlength-output'
-                .to("streams-recordlength-output");
 
+        // Get the length of the string in the input record and then turn
+        // that number into a string
+        source.mapValues(value -> Integer.toString(value.length())) // calculate the length
+                .to("streams-recordlength-output"); // send to output topic
+
+        // finally, construct the topology using the streams builder
         final Topology topology = builder.build();
-		System.out.println(topology.describe());
-        final KafkaStreams streams = new KafkaStreams(topology, props);
+
+        Logging.log(topology.describe().toString(),TAG);
+
+        GenericStream RecordLengthStream = new GenericStream("streams-recordlength", Config.getLocalBootstrapServersConfig(),
+                Serdes.String().getClass(), Serdes.String().getClass(),topology);
+
+        // creating countDownLatch for Thread handling
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
         Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
             @Override
             public void run() {
-                streams.close();
+                RecordLengthStream.close();
                 latch.countDown();
             }
         });
 
         try {
-            streams.start();
+            RecordLengthStream.run();
             latch.await();
         } catch (Throwable e) {
             System.exit(1);
