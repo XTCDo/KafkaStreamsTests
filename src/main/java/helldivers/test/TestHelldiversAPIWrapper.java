@@ -11,5 +11,6 @@ public class TestHelldiversAPIWrapper {
     public static void main(String[] args){
         final String TAG = "TestHelldiversAPIWrapper";
         Logging.log(HelldiversAPIWrapper.getCampaignStatus().toString(), TAG);
+        Logging.log(HelldiversAPIWrapper.getAttackEvents().toString(), TAG);
     }
 }
