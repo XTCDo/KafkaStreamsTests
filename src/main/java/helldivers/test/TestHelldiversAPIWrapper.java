@@ -1,5 +1,6 @@
 package helldivers.test;
 
+import com.google.gson.internal.LinkedTreeMap;
 import helldivers.HelldiversAPIWrapper;
 import util.Logging;
 
@@ -11,11 +12,11 @@ public class TestHelldiversAPIWrapper {
         final String TAG = "TestHelldiversAPIWrapper";
         Map response = (Map) HelldiversAPIWrapper.doHTTPRequest("get_status");
         ArrayList campaignStatus = (ArrayList) response.get("campaign_status");
-        ArrayList defendEvents = (ArrayList)  response.get("defend_event");
-        ArrayList attackEvents = (ArrayList) response.get("attack_event");
+        LinkedTreeMap defendEvents = (LinkedTreeMap)  response.get("defend_event");
+        LinkedTreeMap attackEvents = (LinkedTreeMap) response.get("attack_event");
 
         campaignStatus.forEach(faction -> Logging.log(faction.toString(), TAG));
-        defendEvents.forEach(event -> Logging.log(event.toString(), TAG));
-        attackEvents.forEach(event -> Logging.log(event.toString(), TAG));
+        Logging.log(defendEvents.toString(), TAG);
+        Logging.log(attackEvents.toString(), TAG);
     }
 }
