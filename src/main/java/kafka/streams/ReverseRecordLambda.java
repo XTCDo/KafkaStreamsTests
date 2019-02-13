@@ -50,7 +50,9 @@ public class ReverseRecordLambda {
                 value -> new StringBuilder(value).reverse().toString())
                 .to("streams-reverse-lambda-chiel-output");
 
+
         final Topology topology = builder.build();
+
 		System.out.println(topology.describe());
         final KafkaStreams streams = new KafkaStreams(topology, props);
         final CountDownLatch latch = new CountDownLatch(1);

@@ -1,6 +1,5 @@
 package util;
 
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
+import java.util.stream.Collectors;
 
 public class LoggingFormatter extends Formatter {
     /**
@@ -26,26 +26,30 @@ public class LoggingFormatter extends Formatter {
         StringBuilder stringBuilder = new StringBuilder();
 
         // Add the date and the level surrounded by straight braces
-        stringBuilder.append("[")
-                .append(dateFormat.format(new Date()))
-                .append("]")
-                .append("[")
-                .append(record.getLevel())
-                .append("]");
+        stringBuilder.append("[").append(dateFormat.format(new Date())).append("]")
+                .append("[").append(record.getLevel()).append("]");
 
         // Only add tags if there are any
         if(record.getParameters() != null){
             List<String> parameters = new ArrayList<>();
             Arrays.asList(record.getParameters()).forEach(value -> parameters.add(String.valueOf(value)));
-            stringBuilder.append("[")
-                    .append(String.join(" ", parameters))
-                    .append("]");
+            stringBuilder.append("[").append(String.join(" | ", parameters)).append("]");
         }
 
-        // Finally add the log message and a newline
-        stringBuilder.append(" ")
-                .append(record.getMessage())
-                .append("\n");
+        // Then, add the logging message
+        stringBuilder.append(": ").append(record.getMessage()).append("\n");
+
+        // if an error was logged, append this to the message
+        if (record.getThrown() != null){
+            // first element of stacktrace is always error message
+            stringBuilder.append("\t").append(record.getThrown().getMessage()).append(" at: \n\t")
+            // follow up with a listing of stack trace elements
+            .append(Arrays.stream(record.getThrown().getStackTrace())
+                    .map(StackTraceElement::toString)
+                    .collect(Collectors.joining("\n\t")))
+                    .append("\n");
+        }
+
 
         // Return our beautiful string
         return new String(stringBuilder);

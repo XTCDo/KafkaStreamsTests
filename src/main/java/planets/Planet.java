@@ -2,9 +2,10 @@ package planets;
 
 import org.influxdb.dto.Point;
 
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
-public class Planet {
+public class Planet{
     private String name;
     private String capitol;
     private String color;
@@ -58,6 +59,7 @@ public class Planet {
     public Point toPoint(){
         Point point = Point.measurement("planets")
                 .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                .addField("name", getName())
                 .addField("capitol", getCapitol())
                 .addField("color", getColor())
                 .addField("gravity", getGravity())
