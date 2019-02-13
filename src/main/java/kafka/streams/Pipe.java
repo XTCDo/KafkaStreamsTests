@@ -16,14 +16,13 @@
  */
 package kafka.streams;
 
+import kafka.generic.streams.GenericStream;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import util.Config;
+import util.Logging;
 
-import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -32,46 +31,38 @@ import java.util.concurrent.CountDownLatch;
  * and writes the messages as-is into a sink topic "streams-pipe-output".
  */
 public class Pipe {
+    private static final String TAG = "Pipe";
 
     public static void main(String[] args) throws Exception {
-        // Start of by defining the properties for the Stream
-        Properties props = new Properties();
-        // Name the Streams application
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-pipe");
-        // Point it towards the correct kafka broker
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, Config.getLocalBootstrapServersConfig());
-        // Define in what way the Key of each record should be (de)serialized
-        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
-        // Define in what way the Value of each record should be (de)serialized
-        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
         // Create a StreamsBuilder
         final StreamsBuilder builder = new StreamsBuilder();
 
-        // Stream records in the topic 'kafka.streams-plaintext-input' to the topic
-        //  'kafka.streams-pipe-output'
+        // Stream records from input topic directly to output topic
         builder.stream("streams-plaintext-input").to("streams-pipe-output");
 
-        // Create the Topology defined above
+        // create topology
         final Topology topology = builder.build();
-        System.out.println(topology.describe());
+        Logging.log(topology.describe().toString(),TAG);
 
-        // Make an actual stream out of the defined topology
-        final KafkaStreams streams = new KafkaStreams(topology, props);
+        // create a generic stream with declared topology
+        GenericStream pipeStream = new GenericStream("streams-pipe",Config.getLocalBootstrapServersConfig(),
+                Serdes.String().getClass(),Serdes.String().getClass(),topology);
+
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
         Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
             @Override
             public void run() {
-                streams.close();
+                pipeStream.close();
                 latch.countDown();
             }
         });
 
         try {
             // Start the kafka.streams application and stop it on ctrl+c
-            streams.start();
+            pipeStream.run();
             latch.await();
         } catch (Throwable e) {
             System.exit(1);
