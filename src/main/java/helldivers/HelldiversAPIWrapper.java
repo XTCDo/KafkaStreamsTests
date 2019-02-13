@@ -43,7 +43,7 @@ public class HelldiversAPIWrapper {
             Map apiResponse = gson.fromJson(content.toString(), Map.class);
 
             ArrayList campaignStatus = (ArrayList) apiResponse.get("campaign_status");
-
+            campaignStatus.forEach(value -> Logging.log(value.toString(), TAG));
             Logging.log(campaignStatus.toString(), TAG);
 
             in.close();
