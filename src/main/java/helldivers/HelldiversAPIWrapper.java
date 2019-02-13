@@ -1,5 +1,6 @@
 package helldivers;
 
+import com.google.gson.Gson;
 import util.Logging;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -35,6 +36,12 @@ public class HelldiversAPIWrapper {
             while((inputLine = in.readLine()) != null){
                 content.append(inputLine);
             }
+
+            Gson gson = new Gson();
+            Map apiResponse = gson.fromJson(content.toString(), Map.class);
+
+            Logging.log(apiResponse.toString(), TAG);
+
             Logging.log(content.toString(), TAG);
             in.close();
         } catch (Exception e){
