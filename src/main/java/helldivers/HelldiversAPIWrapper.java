@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 public class HelldiversAPIWrapper {
-    public static void main(String[] args){
+    public  static Map doHTTPRequest(String action){
         final String TAG = "HelldiversAPIWrapper";
         try {
             URL url = new URL("https://api.helldiversgame.com/1.0/");
@@ -41,14 +41,11 @@ public class HelldiversAPIWrapper {
 
             Gson gson = new Gson();
             Map apiResponse = gson.fromJson(content.toString(), Map.class);
-
-            ArrayList campaignStatus = (ArrayList) apiResponse.get("campaign_status");
-            campaignStatus.forEach(value -> Logging.log(value.toString(), TAG));
-            Logging.log(campaignStatus.toString(), TAG);
-
             in.close();
+            return apiResponse;
         } catch (Exception e){
             Logging.error(e, TAG);
+            return null;
         }
     }
 }
