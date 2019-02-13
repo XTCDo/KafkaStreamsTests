@@ -42,10 +42,8 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        Map map = gson.fromJson(values, Map.class);
                        Stream<Object> objectStream = flatten(map.entrySet().stream());
 
-                       String mac_address = objectStream
-                               .filter(entry -> ((Map.Entry) entry).getKey().equals("mac-address"))
-                               .collect(Collectors.toList()).get(0).toString();
-
+                       String mac_address = map.get("mac-address").toString();
+                       
                        List fieldEntrySet = objectStream
                                .filter(entry -> !((Map.Entry)entry).getKey().equals("mac-address"))
                                .collect(Collectors.toList());
