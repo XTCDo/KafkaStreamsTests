@@ -17,18 +17,14 @@
 package kafka.streams;
 
 import kafka.generic.streams.GenericStream;
-import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
 import util.Config;
 import util.Logging;
 
 import java.util.Arrays;
-import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -57,7 +53,7 @@ public class LineSplit {
 
         GenericStream lineSplitStream = new GenericStream("streams-linesplit", Config.getLocalBootstrapServersConfig(),
                 Serdes.String().getClass(), Serdes.String().getClass(), topology);
-        
+
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c

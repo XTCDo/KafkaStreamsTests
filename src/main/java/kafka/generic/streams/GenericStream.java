@@ -1,6 +1,5 @@
 package kafka.generic.streams;
 
-import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -8,7 +7,6 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import util.Logging;
 
-import java.io.Serializable;
 import java.util.Properties;
 import java.util.logging.Level;
 
