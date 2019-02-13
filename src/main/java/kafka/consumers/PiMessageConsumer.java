@@ -3,6 +3,7 @@ package kafka.consumers;
 import com.google.gson.Gson;
 import kafka.generic.consumers.GenericThreadedConsumer;
 import kafka.generic.consumers.GenericThreadedInfluxConsumer;
+import kafka.generic.streams.ObjectDeserializer;
 import kafka.generic.streams.ObjectSerde;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -15,11 +16,14 @@ import util.Config;
 import util.Logging;
 
 import java.awt.geom.FlatteningPathIterator;
+import java.security.cert.CollectionCertStoreParameters;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,16 +44,10 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        String values = record.value(); // confirmed OK -> is JSON
 
                        Map map = gson.fromJson(values, Map.class);
-                       Stream<Object> objectStream = flatten(map.entrySet().stream());
+                       Set<Map.Entry> flatSet = flattenEntrySet(map.entrySet());
 
-                       String mac_address = map.get("mac_address").toString();
-
-                       List fieldEntrySet = objectStream
-                               .filter(entry -> !((Map.Entry)entry).getKey().equals("mac_address"))
-                               .collect(Collectors.toList());
-                       Logging.debug("received mac address:" + mac_address,TAG);
-                       Logging.debug("fields: "+fieldEntrySet.toString(),TAG);
-
+                       Logging.debug("flattened set:" + flatSet.toString() );
+                        
                        /*
                         // extract atmospheric data
                        Map atm_data = (Map) map.get("atmospheric_data");
@@ -80,7 +78,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        */
                    });
 
-                   Thread.sleep(2000);
+                   Thread.sleep(1000);
                } catch (Exception e) {
                    Logging.error(e);
                }
@@ -90,16 +88,16 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
         super.run(consumerThread);
     }
 
-    static Stream<Object> flatten(Stream<Object> stream){
-        return stream.flatMap(object ->{
-            if (object instanceof Map){
-                Stream<Object> mapStream = ((Map)object).entrySet().stream();
-                return flatten(mapStream);
-            }
-            else{
-                return Stream.of(object);
-            }
-        });
-    }
 
+    private static Set<Map.Entry> flattenEntrySet(Set<Map.Entry> inputEntrySet){
+        Set outputEntrySet= inputEntrySet.stream()
+                .map(entry -> {
+                    Object value = entry.getValue();
+                    return (value instanceof Map)? flattenEntrySet(((Map)value).entrySet()):entry;
+                })
+                .collect(Collectors.toSet());
+
+        return (Set<Map.Entry>) outputEntrySet;
+
+    }
 }
