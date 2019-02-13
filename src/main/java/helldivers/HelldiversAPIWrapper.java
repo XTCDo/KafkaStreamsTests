@@ -50,7 +50,6 @@ public class HelldiversAPIWrapper {
         }
     }
 
-
     public static List getCampaignStatus(){
         return (List) doHTTPRequest("get_campaign_status").get("campaign_status");
     }
@@ -62,6 +61,7 @@ public class HelldiversAPIWrapper {
     public static Map getDefendEvents() {
         return (Map) doHTTPRequest("get_campaign_status").get("defend_event");
     }
+
 }
 
 class ParameterStringBuilder {
