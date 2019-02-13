@@ -30,23 +30,23 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                 try {
                    ConsumerRecords<String,String> records = getConsumer().poll(Duration.ofMillis(10));
 
-                   records.forEach(record-> {
+                   records.forEach(record -> {
                        String values = record.value(); // confirmed OK -> is JSON
                        Map map = gson.fromJson(values, Map.class);
 
                        Logging.log("received message: " + map.toString(), TAG);
                         // extract atmospheric data
                        Map atm_data = (Map) map.get("atmospheric_data");
-                       Logging.debug("atmospheric data: "+ atm_data.toString(),TAG);
+                       Logging.debug("atmospheric data: " + atm_data.toString(),TAG);
 
                        // extract inertia data and delegate to sub-maps
-                       Map inertia_data= (Map) map.get("inertia_data");
+                       Map inertia_data = (Map) map.get("inertia_data");
                        // accelerometer stuff
                        Map accelerometer_data = (Map) inertia_data.get("accelerometer");
-                       Logging.debug("accelerometer data: "+ accelerometer_data.toString(),TAG);
+                       Logging.debug("accelerometer data: " + accelerometer_data.toString(),TAG);
                        // gyroscope stuff
-                       Map gyroscope_data =  (Map) inertia_data.get("gyroscope");
-                       Logging.debug("gyroscope data: "+ gyroscope_data.toString(),TAG);
+                       Map gyroscope_data = (Map) inertia_data.get("gyroscope");
+                       Logging.debug("gyroscope data: " + gyroscope_data.toString(),TAG);
                         
                        Point point = Point.measurement("test-measurements")
                                .time(System.currentTimeMillis(),TimeUnit.MILLISECONDS)
@@ -56,7 +56,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                                .fields(gyroscope_data)
                                .build();
 
-                       Logging.debug("converted to Point: "+point.toString(),TAG);
+                       Logging.debug("converted to Point: " + point.toString(),TAG);
                        getInfluxDAO().writePoint("Pi_Measurements", point);
                        Logging.log("written to database",TAG);
                    });
