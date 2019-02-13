@@ -13,9 +13,7 @@ public class TestHelldiversAPIWrapper {
         Map response = (Map) HelldiversAPIWrapper.doHTTPRequest("get_status");
         ArrayList campaignStatus = (ArrayList) response.get("campaign_status");
         LinkedTreeMap defendEvents = (LinkedTreeMap)  response.get("defend_event");
-        LinkedTreeMap attackEvents = (LinkedTreeMap) response.get("attack_event");
 
         Logging.log(response.get("defend_event").toString());
-        Logging.log(response.get("attack_event").toString());
     }
 }
