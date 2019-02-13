@@ -9,13 +9,11 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 public class HelldiversAPIWrapper {
@@ -53,8 +51,8 @@ public class HelldiversAPIWrapper {
     }
 
 
-    public static Map getCampaignStatus(){
-        return (Map) doHTTPRequest("get_campaign_status").get("campaign_status");
+    public static List getCampaignStatus(){
+        return (List) doHTTPRequest("get_campaign_status").get("campaign_status");
     }
 }
 
