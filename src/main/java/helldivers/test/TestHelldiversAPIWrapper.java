@@ -15,8 +15,7 @@ public class TestHelldiversAPIWrapper {
         LinkedTreeMap defendEvents = (LinkedTreeMap)  response.get("defend_event");
         LinkedTreeMap attackEvents = (LinkedTreeMap) response.get("attack_event");
 
-        campaignStatus.forEach(faction -> Logging.log(faction.toString(), TAG));
-        Logging.log(defendEvents.toString(), TAG);
-        Logging.log(attackEvents.toString(), TAG);
+        Logging.log(response.get("defend_event").toString());
+        Logging.log(response.get("attack_event").toString());
     }
 }
