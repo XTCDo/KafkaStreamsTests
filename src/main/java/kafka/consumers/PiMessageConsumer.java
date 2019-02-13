@@ -1,27 +1,16 @@
 package kafka.consumers;
 
 import com.google.gson.Gson;
-import com.sun.tools.javac.util.ArrayUtils;
-import kafka.generic.consumers.GenericThreadedConsumer;
 import kafka.generic.consumers.GenericThreadedInfluxConsumer;
-import kafka.generic.streams.ObjectDeserializer;
-import kafka.generic.streams.ObjectSerde;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.common.serialization.Serde;
-import org.apache.kafka.streams.StreamsBuilder;
 import org.influxdb.dto.Point;
-import planets.Planet;
-import sun.rmi.runtime.Log;
 import util.Config;
 import util.Logging;
 
-import java.awt.geom.FlatteningPathIterator;
-import java.security.cert.CollectionCertStoreParameters;
 import java.time.Duration;
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
