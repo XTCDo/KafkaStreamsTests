@@ -2,6 +2,7 @@ package helldivers;
 
 import util.Logging;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.DataOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -16,7 +17,7 @@ public class HelldiversAPIWrapper {
         final String TAG = "HelldiversAPIWrapper";
         try {
             URL url = new URL("https://api.helldiversgame.com/1.0/");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             Map<String, String> parameters = new HashMap<>();
             parameters.put("action", "get_campaign_status");
