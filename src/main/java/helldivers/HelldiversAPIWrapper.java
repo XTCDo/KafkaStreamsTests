@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -38,9 +39,9 @@ public class HelldiversAPIWrapper {
             }
 
             Gson gson = new Gson();
-            Map apiResponse = gson.fromJson(content.toString(), Map.class);
+            Map<String, String> apiResponse = gson.fromJson(content.toString(), Map.class);
 
-            Logging.log(apiResponse.toString(), TAG);
+            Logging.log(new PrettyPrintingMap<String, String>(apiResponse).toString(), TAG);
 
             Logging.log(content.toString(), TAG);
             in.close();
@@ -66,5 +67,30 @@ class ParameterStringBuilder {
         return resultString.length() > 0
                 ? resultString.substring(0, resultString.length() - 1)
                 : resultString;
+    }
+}
+
+class PrettyPrintingMap<K, V> {
+    private Map<K, V> map;
+
+    public PrettyPrintingMap(Map<K, V> map) {
+        this.map = map;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<Map.Entry<K, V>> iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<K, V> entry = iter.next();
+            sb.append(entry.getKey());
+            sb.append('=').append('"');
+            sb.append(entry.getValue());
+            sb.append('"');
+            if (iter.hasNext()) {
+                sb.append(',').append(' ');
+            }
+        }
+        return sb.toString();
+
     }
 }
