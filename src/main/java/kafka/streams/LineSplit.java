@@ -16,6 +16,8 @@
  */
 package kafka.streams;
 
+import kafka.generic.streams.GenericStream;
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -23,6 +25,7 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
 import util.Config;
+import util.Logging;
 
 import java.util.Arrays;
 import java.util.Properties;
@@ -34,47 +37,40 @@ import java.util.concurrent.CountDownLatch;
  * and writes the messages as-is into a sink topic "streams-pipe-output".
  */
 public class LineSplit {
-
+    private static final String TAG = "LineSplit";
     public static void main(String[] args) throws Exception {
-        Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-linesplit");
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, Config.getLocalBootstrapServersConfig());
-        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
-        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
-
         final StreamsBuilder builder = new StreamsBuilder();
 
         // Get a source stream from the topic 'kafka.streams-plaintext-input'
-		KStream<String, String> source = builder.stream("streams-plaintext-input");
-		// Split every record into separate words. This results in one or more output record
-        // per input record.
-		source.flatMapValues(
-		            // The regex \\W+ matches on one or more special characters
-                    // and is used to define the delimiter on which to split
-                    // the input records.
-                    // Because there are one or more output
-                    // records per input record we use flatMapValues.
-		            value -> Arrays.asList(value.split("\\W+"))
-                )
+        KStream<String, String> source = builder.stream("streams-plaintext-input");
+
+        // Split every record into separate words with delimiter \\W+.
+        // This may result in multiple output records per input record.
+        source.flatMapValues(
+                value -> Arrays.asList(value.split("\\W+")))
                 // Send output records to the 'kafka.streams-linesplit-output" topic
                 .to("streams-linesplit-output");
 
+        // build and describe topology
         final Topology topology = builder.build();
-		System.out.println(topology.describe());
-        final KafkaStreams streams = new KafkaStreams(topology, props);
+        Logging.log(topology.describe().toString(),TAG);
+
+        GenericStream lineSplitStream = new GenericStream("streams-linesplit", Config.getLocalBootstrapServersConfig(),
+                Serdes.String().getClass(), Serdes.String().getClass(), topology);
+        
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
         Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
             @Override
             public void run() {
-                streams.close();
+                lineSplitStream.close();
                 latch.countDown();
             }
         });
 
         try {
-            streams.start();
+            lineSplitStream.run();
             latch.await();
         } catch (Throwable e) {
             System.exit(1);

@@ -55,7 +55,7 @@ public class GenericStream {
      * @param bootStrapServer location of broker server this stream will listen to/ be registered to
      * @param topology topology this stream will be built according to, defines: input topics, processes and output topics
      */
-     public GenericStream(String appId,String bootStrapServer, Topology topology){
+     public GenericStream(String appId, String bootStrapServer, Topology topology){
         this(appId, bootStrapServer, Serdes.String().getClass(), ObjectSerde.class, topology);
     }
 
