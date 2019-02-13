@@ -10,9 +10,11 @@ import util.Config;
 import java.time.Duration;
 
 public class PlanetInfluxConsumer extends GenericThreadedInfluxConsumer<String, String> {
+    static final String topic = "streams-planets-input";
+    static final String influxURL = "http://localhost:8086";
+
     public PlanetInfluxConsumer(){
-        super("http://localhost:8086", "streams-planets-input",
-                Config.getLocalBootstrapServersConfig(), "PlanetInfluxConsumer");
+        super(influxURL, topic, Config.getLocalBootstrapServersConfig(), "PlanetInfluxConsumer");
     }
 
     public void run(){

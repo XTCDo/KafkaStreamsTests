@@ -10,7 +10,7 @@ import java.time.Duration;
 
 public class PlanetConsumer extends GenericThreadedConsumer<String, String> {
     final static String topic = "streams-planets-input";
-    
+
     public PlanetConsumer(){
         super(topic, Config.getLocalBootstrapServersConfig(), "PlanetConsumer");
     }
