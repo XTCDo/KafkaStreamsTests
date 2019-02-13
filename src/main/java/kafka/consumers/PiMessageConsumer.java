@@ -3,18 +3,24 @@ package kafka.consumers;
 import com.google.gson.Gson;
 import kafka.generic.consumers.GenericThreadedConsumer;
 import kafka.generic.consumers.GenericThreadedInfluxConsumer;
+import kafka.generic.streams.ObjectSerde;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.common.serialization.Serde;
+import org.apache.kafka.streams.StreamsBuilder;
 import org.influxdb.dto.Point;
 import planets.Planet;
 import sun.rmi.runtime.Log;
 import util.Config;
 import util.Logging;
 
+import java.awt.geom.FlatteningPathIterator;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, String> {
@@ -32,9 +38,21 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
 
                    records.forEach(record -> {
                        String values = record.value(); // confirmed OK -> is JSON
-                       Map map = gson.fromJson(values, Map.class);
 
-                       Logging.log("received message: " + map.toString(), TAG);
+                       Map map = gson.fromJson(values, Map.class);
+                       Stream<Object> objectStream = flatten(map.entrySet().stream());
+
+                       String mac_address = objectStream
+                               .filter(entry -> ((Map.Entry) entry).getKey().equals("mac-address"))
+                               .collect(Collectors.toList()).get(0).toString();
+
+                       List fieldEntrySet = objectStream
+                               .filter(entry -> !((Map.Entry)entry).getKey().equals("mac-address"))
+                               .collect(Collectors.toList());
+                       Logging.debug("received mac-address:" + mac_address,TAG);
+                       Logging.debug("fields: "+fieldEntrySet.toString(),TAG);
+
+                       /*
                         // extract atmospheric data
                        Map atm_data = (Map) map.get("atmospheric_data");
                        Logging.debug("atmospheric data: " + atm_data.toString(),TAG);
@@ -57,8 +75,11 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                                .build();
 
                        Logging.debug("converted to Point: " + point.toString(),TAG);
+
+
                        getInfluxDAO().writePoint("Pi_Measurements", point);
                        Logging.log("written to database",TAG);
+                       */
                    });
 
                    Thread.sleep(2000);
@@ -70,4 +91,17 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
         Logging.log("starting consumer", TAG);
         super.run(consumerThread);
     }
+
+    static Stream<Object> flatten(Stream<Object> stream){
+        return stream.flatMap(object ->{
+            if (object instanceof Map){
+                Stream<Object> mapStream = ((Map)object).entrySet().stream();
+                return flatten(mapStream);
+            }
+            else{
+                return Stream.of(object);
+            }
+        });
+    }
+
 }
