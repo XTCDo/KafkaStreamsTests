@@ -16,36 +16,22 @@ public class InfluxDAO {
     private InfluxDB influxDB;
     private static final String DEFAULT_RP = "autogen";
 
-    // class constructor
     public InfluxDAO(String urlString){
         targetUrl = urlString;
         influxDB = connect();
     }
 
-    // private functions
     private InfluxDB connect() {
         return InfluxDBFactory.connect(targetUrl);
     }
-
-    // public functions
-    /*  todo add more general functions for specific queries/operations
-        write batch of points
-        CREATE
-        SELECT
-        DROP
-        EXISTS?
-        DELETE
-     */
 
     /**
      * pings the target URL of this object
      */
     public void ping(){
-        System.out.println("sending ping request to:\t"+ targetUrl);
-        System.out.println("response time:\t"+influxDB.ping().getResponseTime());
+        System.out.println("sending ping request to:\t" + targetUrl);
+        System.out.println("response time:\t" + influxDB.ping().getResponseTime());
     }
-
-
 
     public String select(String database, String target, String table){
         String selectQuery = new StringBuilder()
@@ -100,24 +86,22 @@ public class InfluxDAO {
     /**
      * performs a simple query on a given database
      * @param database      database name
-     * @param inputquery    query to perform
+     * @param inputQuery    query to perform
      */
-    public String query(String database, String inputquery){
+    public String query(String database, String inputQuery){
         // connect to influxdb
-
-        // connect
         influxDB.setDatabase(database); // is this necessary?
         influxDB.enableBatch(BatchOptions.DEFAULTS); // todo figure out if this needs to exist
 
         // prepare query
-        Query query = new Query(inputquery, database);
+        Query query = new Query(inputQuery, database);
         System.out.println("performing query:\t"+query.getCommand());
 
         // perform query and immediately process response as a string
-        QueryResult result= influxDB.query(query);  // todo improve this to better process responses
+        QueryResult result = influxDB.query(query);  // todo improve this to better process responses
 
         String responseString = result.getResults().toString();
-        System.out.println("got response:\t"+responseString);
+        System.out.println("got response:\t" + responseString);
 
         //ifdb.flush();   // put in comments to test if it can be removed
         // close connection
