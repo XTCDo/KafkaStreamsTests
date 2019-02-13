@@ -35,6 +35,7 @@ public class HelldiversAPIWrapper {
             while((inputLine = in.readLine()) != null){
                 content.append(inputLine);
             }
+            Logging.log(content.toString(), TAG);
             in.close();
         } catch (Exception e){
             Logging.error(e, TAG);
