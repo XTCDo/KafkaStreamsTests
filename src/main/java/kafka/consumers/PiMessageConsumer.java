@@ -18,10 +18,7 @@ import util.Logging;
 import java.awt.geom.FlatteningPathIterator;
 import java.security.cert.CollectionCertStoreParameters;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -46,10 +43,16 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        Map map = gson.fromJson(values, Map.class);
                        Logging.debug("got message containing: "+ map.entrySet().toString(),TAG);
 
-                       Set<Map.Entry> flatSet = flattenEntrySet(map.entrySet());
+                       Object set = map.entrySet().stream()
+                               .flatMap(entry-> flatten(Stream.of((Map.Entry)entry)))
+                               .collect(Collectors.toSet());
 
-                       Logging.debug("flattened set:" + flatSet.toString() , TAG);
+                       Object setTwo = flatten(map.entrySet().stream())
+                               .collect(Collectors.toSet());
 
+                       Logging.debug("set 1:" + set.toString());
+                       Logging.debug("set 2:" + setTwo.toString());
+                       
                        /*
                         // extract atmospheric data
                        Map atm_data = (Map) map.get("atmospheric_data");
@@ -90,17 +93,15 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
         super.run(consumerThread);
     }
 
-
-    private static Set<Map.Entry> flattenEntrySet(Set<Map.Entry> inputEntrySet){
-        Set outputEntrySet= inputEntrySet.stream()
-                .map(entry -> {
-                    Object value = entry.getValue();
-                    return (value instanceof Map)? flattenEntrySet(((Map)value).entrySet()):entry;
-                })
-                .flatMap(Set::stream)
-                .collect(Collectors.toSet());
-
-        return (Set<Map.Entry>) outputEntrySet;
-
+    private Stream<Map.Entry> flatten(Stream<Map.Entry> input){
+        return input.flatMap(entry -> {
+            if (entry.getValue() instanceof Map){
+                return flatten(((Map) entry.getValue()).entrySet().stream());
+            }
+            else {
+                return Stream.of( entry);
+            }
+        });
     }
+
 }
