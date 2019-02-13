@@ -1,6 +1,7 @@
 package helldivers;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import util.Logging;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -27,7 +28,7 @@ public class HelldiversAPIWrapper {
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("action", "get_campaign_status");
+            parameters.put("action", action);
             connection.setDoOutput(true);
             DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
             outputStream.writeBytes(ParameterStringBuilder.getParamsString(parameters));
@@ -49,6 +50,11 @@ public class HelldiversAPIWrapper {
             Logging.error(e, TAG);
             return null;
         }
+    }
+
+
+    public static Map getCampaignStatus(){
+        return (Map) doHTTPRequest("get_campaign_status").get("campaign_status");
     }
 }
 

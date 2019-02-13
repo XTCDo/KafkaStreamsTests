@@ -10,10 +10,6 @@ import java.util.Map;
 public class TestHelldiversAPIWrapper {
     public static void main(String[] args){
         final String TAG = "TestHelldiversAPIWrapper";
-        Map response = (Map) HelldiversAPIWrapper.doHTTPRequest("get_status");
-        ArrayList campaignStatus = (ArrayList) response.get("campaign_status");
-        LinkedTreeMap defendEvents = (LinkedTreeMap)  response.get("defend_event");
-
-        Logging.log(response.get("defend_event").toString());
+        Logging.log(HelldiversAPIWrapper.getCampaignStatus().toString(), TAG);
     }
 }
