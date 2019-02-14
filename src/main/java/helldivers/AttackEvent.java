@@ -33,6 +33,7 @@ public class AttackEvent {
                        String status, int playersAtStart, int maxEventId){
         this.eventId = eventId;
         this.endTime = endTime;
+        this.startTime = startTime;
         this.region = region;
         this.enemy = enemy;
         this.points = points;
