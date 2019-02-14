@@ -175,6 +175,10 @@ public class Statistics {
     }
 
 
+    /**
+     * Returns a String describing the Statistics
+     * @return a String describing the Statistics
+     */
     public String getDescription(){
         StringBuilder description = new StringBuilder();
         description.append(this.toString()).append("\n")

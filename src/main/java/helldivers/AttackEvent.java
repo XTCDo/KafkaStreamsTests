@@ -122,8 +122,8 @@ public class AttackEvent {
     }
 
     /**
-     * Returns a String describing the DefendEvent
-     * @return a String describing the DefendEvent
+     * Returns a String describing the AttackEvent
+     * @return a String describing the AttackEvent
      */
     public String getDescription(){
         StringBuilder description = new StringBuilder();
