@@ -11,7 +11,7 @@ public class Status {
 
     public Status(){
         Map httpApiResponseObject = HelldiversAPIWrapper.getStatus();
-        this.campaignStatuses = HelldiversAPIWrapper.getCampaignStatus(httpApiResponseObject.get("status"));
+        this.campaignStatuses = HelldiversAPIWrapper.getCampaignStatus(httpApiResponseObject.get("campaign_status"));
         this.defendEvents = HelldiversAPIWrapper.getDefendEvents(httpApiResponseObject.get("defend_event"));
         this.attackEvents = HelldiversAPIWrapper.getAttackEvents(httpApiResponseObject.get("attack_event"));
         this.statistics = HelldiversAPIWrapper.getStatistics(httpApiResponseObject.get("statistics"));
