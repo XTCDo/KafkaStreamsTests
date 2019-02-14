@@ -58,7 +58,7 @@ public class AttackEvent {
     /**
      * Constructor for AttackEvent that takes a Map containing values returned by the
      * helldivers API
-     * @param values
+     * @param values Map containing values returned by the helldivers API
      */
     public AttackEvent(Map values){
         this(
