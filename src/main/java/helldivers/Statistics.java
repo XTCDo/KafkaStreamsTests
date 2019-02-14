@@ -70,7 +70,7 @@ public class Statistics {
         this.hits = hits;
         this.kills = kills;
     }
-g
+
     public String getEnemyName(){
         String[] enemies = new String[] {"Bugs", "Cyborgs", "Illuminate"};
         return enemies[getEnemy()];
