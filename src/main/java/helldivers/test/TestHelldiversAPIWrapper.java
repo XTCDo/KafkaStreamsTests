@@ -3,6 +3,7 @@ package helldivers.test;
 import com.google.gson.internal.LinkedTreeMap;
 import helldivers.CampaignStatus;
 import helldivers.HelldiversAPIWrapper;
+import sun.rmi.runtime.Log;
 import util.Logging;
 
 import java.util.ArrayList;
@@ -17,15 +18,16 @@ public class TestHelldiversAPIWrapper {
             Map attackEvents = HelldiversAPIWrapper.getAttackEvents();
             Logging.debug(attackEvents.toString(), TAG);
         } catch (Exception e){
-            Logging.warn("No Attack Events at the moment");
+            Logging.warn("No Attack Events at the moment", TAG);
             Logging.error(e, TAG);
         }
 
         try {
-            Map attackEvents = HelldiversAPIWrapper.getDefendEvents();
-            Logging.debug(attackEvents.toString(), TAG);
+            Map defendEvents = HelldiversAPIWrapper.getDefendEvents();
+            Logging.debug(defendEvents.toString(), TAG);
+            Logging.log(defendEvents.toString(), TAG);
         } catch (Exception e){
-            Logging.warn("No Defend Events at the moment");
+            Logging.warn("No Defend Events at the moment", TAG);
             Logging.error(e, TAG);
         }
 

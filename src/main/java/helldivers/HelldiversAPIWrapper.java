@@ -1,6 +1,7 @@
 package helldivers;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedHashTreeMap;
 import com.google.gson.internal.LinkedTreeMap;
 import util.Logging;
 
@@ -53,17 +54,23 @@ public class HelldiversAPIWrapper {
     public static List<CampaignStatus> getCampaignStatus(){
         List<Map> campaignStatusList = (List) doHTTPRequest("get_campaign_status").get("campaign_status");
         List<CampaignStatus> campaignStatusObjectList = new ArrayList<>();
-        campaignStatusList.forEach(status ->{
+        campaignStatusList.forEach(status -> {
             campaignStatusObjectList.add(new CampaignStatus(status));
         });
         return campaignStatusObjectList;
     }
 
     public static Map getAttackEvents() {
+
         return (Map) doHTTPRequest("get_campaign_status").get("attack_event");
     }
 
     public static Map getDefendEvents() {
+        List<Map> defendEventsList = (List) doHTTPRequest("get_campaign_status").get("defend_event");
+        List<DefendEvent> defendEventsObjectList = new ArrayList<>();
+        defendEventsList.forEach(defendEvent ->{
+            defendEventsObjectList.add(new DefendEvent(defendEvent));
+        });
         return (Map) doHTTPRequest("get_campaign_status").get("defend_event");
     }
 
