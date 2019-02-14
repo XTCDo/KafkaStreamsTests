@@ -20,14 +20,14 @@ import java.util.logging.Level;
 public class HelldiversAPIWrapper {
     // Link to API
     // https://docs.google.com/document/d/11BH152Tx7YpWOlfT69Ad2anG8wwlt6xOE3VO_YHC2mQ/edit#heading=h.trtt0zalsa2
-    public  static Map doHTTPRequest(String action){
+    public  static Map doHTTPRequest(){
         final String TAG = "HelldiversAPIWrapper";
         try {
             URL url = new URL("https://api.helldiversgame.com/1.0/");
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("action", action);
+            parameters.put("action", "get_campaign_status");
             connection.setDoOutput(true);
             DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
             outputStream.writeBytes(ParameterStringBuilder.getParamsString(parameters));
@@ -52,7 +52,7 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<CampaignStatus> getCampaignStatus(){
-        List<Map> campaignStatusList = (List) doHTTPRequest("get_campaign_status").get("campaign_status");
+        List<Map> campaignStatusList = (List) doHTTPRequest().get("campaign_status");
         List<CampaignStatus> campaignStatusObjectList = new ArrayList<>();
         campaignStatusList.forEach(status -> {
             campaignStatusObjectList.add(new CampaignStatus(status));
@@ -61,7 +61,7 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<AttackEvent> getAttackEvents() {
-        Object returnValue = doHTTPRequest("get_campaign_status").get("attack_event");
+        Object returnValue = doHTTPRequest().get("attack_event");
         if (returnValue == null){
             return null;
         }
@@ -81,7 +81,7 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<DefendEvent> getDefendEvents() {
-        Object returnValue = doHTTPRequest("get_campaign_status").get("defend_event");
+        Object returnValue = doHTTPRequest().get("defend_event");
 
         if (returnValue == null) {
             return null;
