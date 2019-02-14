@@ -182,7 +182,7 @@ public class Statistics {
     public String getDescription(){
         StringBuilder description = new StringBuilder();
         description.append(this.toString()).append("\n")
-                .append("Enemy:                    ").append(getEnemyName())
+                .append("Enemy:                    ").append(getEnemyName()).append("\n")
                 .append("War:                      ").append(getSeason()).append("\n")
                 .append("Season duration:          ").append(getSeasonDuration()).append("s\n")
                 .append("Players:                  ").append(getPlayers()).append("\n")
