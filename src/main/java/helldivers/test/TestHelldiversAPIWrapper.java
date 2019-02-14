@@ -41,7 +41,7 @@ public class TestHelldiversAPIWrapper {
         List<Statistics> statisticsList = status.getStatistics();
 
         try {
-            campaignStatusList.forEach(campaignStatus -> Logging.log(campaignStatus.toString(), TAG));
+            campaignStatusList.forEach(campaignStatus -> Logging.log("\n" + campaignStatus.toString(), TAG));
         } catch (NullPointerException e) {
             Logging.error(e, TAG);
             Logging.log(Level.SEVERE,"No CampaignStatuses", TAG);
