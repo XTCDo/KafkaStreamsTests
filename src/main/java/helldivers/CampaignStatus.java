@@ -69,6 +69,21 @@ public class CampaignStatus {
         this.introductionOrder = introductionOrder;
     }
 
+    /**
+     * Returns a String describing the CampaignStatus
+     * @return a String describing the CampaignStatus
+     */
+    public String getDescription(){
+        StringBuilder description = new StringBuilder();
+        description.append(this.toString()).append("\n")
+                .append("War:                ").append(getSeason()).append("\n")
+                .append("Points:             ").append(getPoints()).append("\n")
+                .append("Points Max:         ").append(getPointsMax()).append("\n")
+                .append("Status:             ").append(getPointsMax()).append("\n")
+                .append("Introduction order: ").append(getIntroductionOrder()).append("\n");
+        return description.toString();
+    }
+
     public int getSeason() {
         return season;
     }
