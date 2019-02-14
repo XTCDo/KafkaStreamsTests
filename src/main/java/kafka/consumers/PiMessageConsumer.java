@@ -60,7 +60,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                 fields: {field1: value1, field2, value2,...}
             }
          */
-        long time = Math.round(inputMap.get("time"));
+        long time = Math.round((double) inputMap.get("time"));
         Map<String, String> tags = (Map<String, String>) inputMap.get("tags");
         Map<String, Object> fields = (Map<String, Object>)inputMap.get("fields");
 
