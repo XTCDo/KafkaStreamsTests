@@ -66,11 +66,12 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<DefendEvent> getDefendEvents() {
+        Object returnValue = doHTTPRequest("get_campaign_status").get("defend_event");
         List<DefendEvent> defendEventsObjectList = new ArrayList<>();
-        if (doHTTPRequest("get_campaign_status").get("defend_event") instanceof Map){
-            defendEventsObjectList.add(new DefendEvent((Map) doHTTPRequest("get_campaign_status").get("defend_event")));
+        if (returnValue instanceof Map){
+            defendEventsObjectList.add(new DefendEvent((Map) returnValue));
         } else {
-            List<Map> defendEventsList = (List) doHTTPRequest("get_campaign_status").get("defend_event");
+            List<Map> defendEventsList = (List) returnValue;
 
             defendEventsList.forEach(defendEvent ->{
                 defendEventsObjectList.add(new DefendEvent(defendEvent));
