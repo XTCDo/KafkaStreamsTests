@@ -3,6 +3,7 @@ package helldivers.test;
 import com.google.gson.internal.LinkedTreeMap;
 import helldivers.CampaignStatus;
 import helldivers.HelldiversAPIWrapper;
+import helldivers.Status;
 import sun.rmi.runtime.Log;
 import util.Logging;
 
@@ -31,7 +32,7 @@ public class TestHelldiversAPIWrapper {
             Logging.warn("No Defend Events at the moment", TAG);
             Logging.error(e, TAG);
         }
-        
+
 
         try {
             HelldiversAPIWrapper.getStatistics().forEach(stats -> Logging.log(stats.toString(), TAG));
@@ -39,5 +40,7 @@ public class TestHelldiversAPIWrapper {
             Logging.error(e, TAG);
         }
 
+
+        Status status = new Status();
     }
 }
