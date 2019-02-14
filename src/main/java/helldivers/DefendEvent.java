@@ -14,8 +14,8 @@ public class DefendEvent {
 
     public DefendEvent(Map values){
         this.eventId = (int) Math.round((double) values.get("event_id"));
-        this.startTime = (long) values.get("start_time");
-        this.endTime = (long) values.get("end_time");
+        this.startTime = (long) Math.round((double) values.get("start_time"));
+        this.endTime = (long) Math.round((double) values.get("end_time"));
         this.region = (int) Math.round((double) values.get("region"));
         this.enemy = (int) Math.round((double) values.get("enemy"));
         this.points = (int) Math.round((double) values.get("points"));
