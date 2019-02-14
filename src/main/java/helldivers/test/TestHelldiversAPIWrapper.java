@@ -40,7 +40,11 @@ public class TestHelldiversAPIWrapper {
             Logging.error(e, TAG);
         }
 
-
         Status status = new Status();
+
+        status.getCampaignStatuses().forEach(campaignStatus -> Logging.log(campaignStatus.toString(), TAG));
+        status.getAttackEvents().forEach(attackEvent -> Logging.log(attackEvent.toString(), TAG));
+        status.getDefendEvents().forEach(defendEvent -> Logging.log(defendEvent.toString(), TAG));
+        status.getStatistics().forEach(statistics -> Logging.log(statistics.toString(), TAG));
     }
 }

@@ -20,4 +20,20 @@ public class Status {
         this.attackEvents = HelldiversAPIWrapper.getAttackEvents(httpApiResponseObject.get("attack_event"));
         this.statistics = HelldiversAPIWrapper.getStatistics(httpApiResponseObject.get("statistics"));
     }
+
+    public List<CampaignStatus> getCampaignStatuses() {
+        return campaignStatuses;
+    }
+
+    public List<DefendEvent> getDefendEvents() {
+        return defendEvents;
+    }
+
+    public List<AttackEvent> getAttackEvents() {
+        return attackEvents;
+    }
+
+    public List<Statistics> getStatistics() {
+        return statistics;
+    }
 }
