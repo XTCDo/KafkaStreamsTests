@@ -13,14 +13,16 @@ public class DefendEvent {
     private static String status;
 
     public DefendEvent(Map values){
-        this.eventId = (int) Math.round((double) values.get("event_id"));
-        this.startTime = (long) Math.round((double) values.get("start_time"));
-        this.endTime = (long) Math.round((double) values.get("end_time"));
-        this.region = (int) Math.round((double) values.get("region"));
-        this.enemy = (int) Math.round((double) values.get("enemy"));
-        this.points = (int) Math.round((double) values.get("points"));
-        this.pointsMax = (int) Math.round((double) values.get("points_max"));
-        this.status = (String) values.get("status");
+        this(
+            (int) Math.round((double) values.get("event_id")),
+            (long) Math.round((double) values.get("start_time")),
+            (long) Math.round((double) values.get("end_time")),
+            (int) Math.round((double) values.get("region")),
+            (int) Math.round((double) values.get("enemy")),
+            (int) Math.round((double) values.get("points")),
+            (int) Math.round((double) values.get("points_max")),
+            (String) values.get("status")
+        );
     }
 
     public DefendEvent(int eventId, long startTime, long endTime, int region,

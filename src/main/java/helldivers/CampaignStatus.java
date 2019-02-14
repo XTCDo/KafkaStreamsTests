@@ -11,12 +11,14 @@ public class CampaignStatus {
     private int introductionOrder;
 
     public CampaignStatus(Map values){
-        this.season = (int) Math.round((double) values.get("season"));
-        this.points = (int) Math.round((double) values.get("points"));
-        this.pointsTaken = (int) Math.round((double) values.get("points_taken"));
-        this.pointsMax = (int) Math.round((double) values.get("points_max"));
-        this.status = (String) values.get("status");
-        this.introductionOrder = (int) Math.round((double) values.get("introduction_order"));
+        this(
+            (int) Math.round((double) values.get("season")),
+            (int) Math.round((double) values.get("points")),
+            (int) Math.round((double) values.get("points_taken")),
+            (int) Math.round((double) values.get("points_max")),
+            (String) values.get("status"),
+            (int) Math.round((double) values.get("introduction_order"))
+        );
     }
 
     public CampaignStatus(int season, int points, int pointsTaken, int pointsMax, String status, int introductionOrder){
