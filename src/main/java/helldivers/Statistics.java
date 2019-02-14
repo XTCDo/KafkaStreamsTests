@@ -1,7 +1,5 @@
 package helldivers;
 
-import org.apache.kafka.common.metrics.Stat;
-
 import java.util.Map;
 
 public class Statistics {
