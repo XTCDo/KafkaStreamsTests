@@ -42,8 +42,8 @@ public class DefendEvent {
         StringBuilder description = new StringBuilder();
         description.append("Enemy:      ").append(getEnemyName()).append("\n")
                 .append("Status:     ").append(getStatus()).append("\n")
-                .append("Start time: ").append(new Date(getStartTime())).append("\n")
-                .append("End time:   ").append(new Date(getEndTime())).append("\n")
+                .append("Start time: ").append(new Date(getStartTime()*1000)).append("\n")
+                .append("End time:   ").append(new Date(getEndTime()*1000)).append("\n")
                 .append("Region      ").append(getRegion()).append("\n")
                 .append("Points:     ").append(getPoints()).append("\n")
                 .append("Points Max: ").append(getPointsMax()).append("\n");
