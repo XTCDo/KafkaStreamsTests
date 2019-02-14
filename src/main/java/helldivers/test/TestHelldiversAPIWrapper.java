@@ -34,7 +34,7 @@ public class TestHelldiversAPIWrapper {
         */
 
         try {
-            Logging.log(HelldiversAPIWrapper.getStatistics().toString());
+            HelldiversAPIWrapper.getStatistics().forEach(stats -> Logging.log(stats.toString(), TAG));
         } catch (Exception e){
             Logging.error(e, TAG);
         }

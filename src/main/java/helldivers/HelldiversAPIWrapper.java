@@ -3,6 +3,7 @@ package helldivers;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedHashTreeMap;
 import com.google.gson.internal.LinkedTreeMap;
+import org.apache.kafka.common.metrics.Stat;
 import util.Logging;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -51,8 +52,14 @@ public class HelldiversAPIWrapper {
         }
     }
 
-    public static List getStatistics(){
-        return (List) doHTTPRequest().get("statistics");
+    public static List<Statistics> getStatistics(){
+        List<Map> statisticsList = (List) doHTTPRequest().get("statistics");
+        List<Statistics> statisticsObjectList = new ArrayList<>();
+        statisticsList.forEach(statistics -> {
+            statisticsObjectList.add(new Statistics(statistics));
+        });
+
+        return statisticsObjectList;
     }
 
     public static List<CampaignStatus> getCampaignStatus(){
