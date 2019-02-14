@@ -1,6 +1,7 @@
 package helldivers.test;
 
 import helldivers.*;
+import sun.rmi.runtime.Log;
 import util.Logging;
 
 import java.util.List;
@@ -11,17 +12,16 @@ public class TestHelldiversAPIWrapper {
         final String TAG = "TestHelldiversAPIWrapper";
 
         try {
-            List attackEvents = HelldiversAPIWrapper.getAttackEvents();
-            Logging.debug(attackEvents.toString(), TAG);
+            List<AttackEvent> attackEvents = HelldiversAPIWrapper.getAttackEvents();
+            attackEvents.forEach(attackEvent -> Logging.log(attackEvent.getDescription(), TAG));
         } catch (Exception e){
             Logging.warn("No Attack Events at the moment", TAG);
             Logging.error(e, TAG);
         }
 
         try {
-            List defendEvents = HelldiversAPIWrapper.getDefendEvents();
-            Logging.debug(defendEvents.toString(), TAG);
-            Logging.log(defendEvents.toString(), TAG);
+            List<DefendEvent> defendEvents = HelldiversAPIWrapper.getDefendEvents();
+            defendEvents.forEach(defendEvent -> Logging.log(defendEvent.getDescription(), TAG));
         } catch (Exception e){
             Logging.warn("No Defend Events at the moment", TAG);
             Logging.error(e, TAG);

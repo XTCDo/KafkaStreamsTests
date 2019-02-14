@@ -1,5 +1,6 @@
 package helldivers;
 
+import java.sql.Date;
 import java.util.Map;
 
 public class AttackEvent {
@@ -118,6 +119,26 @@ public class AttackEvent {
     public String getEnemyName(){
         String[] enemies = new String[] {"Bugs", "Cyborgs", "Illuminate"};
         return enemies[getEnemy()];
+    }
+
+    /**
+     * Returns a String describing the DefendEvent
+     * @return a String describing the DefendEvent
+     */
+    public String getDescription(){
+        StringBuilder description = new StringBuilder();
+        description.append(this.toString()).append("\n")
+                .append("Enemy:            ").append(getEnemyName()).append("\n")
+                .append("Status:           ").append(getStatus()).append("\n")
+                .append("Start time:       ").append(new Date(getStartTime()*1000)).append("\n")
+                .append("End time:         ").append(new Date(getEndTime()*1000)).append("\n")
+                .append("Region:           ").append(getRegion()).append("\n")
+                .append("Points:           ").append(getPoints()).append("\n")
+                .append("PointsMax:        ").append(getPointsMax()).append("\n")
+                .append("Players At Start: ").append(getPlayersAtStart()).append("\n")
+                .append("Event id:         ").append(getEventId()).append("\n")
+                .append("Max Event id:     ").append(getMaxEventId()).append("\n");
+        return description.toString();
     }
 
     public int getEventId() {
