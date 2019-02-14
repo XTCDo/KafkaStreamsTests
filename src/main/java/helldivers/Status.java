@@ -10,6 +10,10 @@ public class Status {
     private List<Statistics> statistics;
 
     public Status(){
+        refresh();
+    }
+
+    public void refresh(){
         Map httpApiResponseObject = HelldiversAPIWrapper.getStatus();
         this.campaignStatuses = HelldiversAPIWrapper.getCampaignStatus(httpApiResponseObject.get("campaign_status"));
         this.defendEvents = HelldiversAPIWrapper.getDefendEvents(httpApiResponseObject.get("defend_event"));
