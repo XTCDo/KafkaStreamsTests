@@ -14,7 +14,7 @@ public class TestHelldiversAPIWrapper {
     public static void main(String[] args){
         final String TAG = "TestHelldiversAPIWrapper";
 
-        /*
+
         try {
             List attackEvents = HelldiversAPIWrapper.getAttackEvents();
             Logging.debug(attackEvents.toString(), TAG);
@@ -31,7 +31,7 @@ public class TestHelldiversAPIWrapper {
             Logging.warn("No Defend Events at the moment", TAG);
             Logging.error(e, TAG);
         }
-        */
+        
 
         try {
             HelldiversAPIWrapper.getStatistics().forEach(stats -> Logging.log(stats.toString(), TAG));
