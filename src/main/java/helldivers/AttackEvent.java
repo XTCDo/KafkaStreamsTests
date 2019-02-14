@@ -42,6 +42,11 @@ public class AttackEvent {
         this.maxEventId = maxEventId;
     }
 
+    public String getEnemyName(){
+        String[] enemies = new String[] {"Bugs", "Cyborgs", "Illuminate"};
+        return enemies[getEnemy()];
+    }
+
     public int getEventId() {
         return eventId;
     }

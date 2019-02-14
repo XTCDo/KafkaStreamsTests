@@ -37,6 +37,11 @@ public class DefendEvent {
         this.status = status;
     }
 
+    public String getEnemyName(){
+        String[] enemies = new String[] {"Bugs", "Cyborgs", "Illuminate"};
+        return enemies[getEnemy()];
+    }
+
     public static int getEventId() {
         return eventId;
     }
