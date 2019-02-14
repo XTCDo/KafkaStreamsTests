@@ -174,6 +174,31 @@ public class Statistics {
         return enemies[getEnemy()];
     }
 
+
+    public String getDescription(){
+        StringBuilder description = new StringBuilder();
+        description.append(this.toString()).append("\n")
+                .append("Enemy:                    ").append(getEnemyName())
+                .append("War:                      ").append(getSeason()).append("\n")
+                .append("Season duration:          ").append(getSeasonDuration()).append("s\n")
+                .append("Players:                  ").append(getPlayers()).append("\n")
+                .append("Total unique players:     ").append(getTotalUniquePlayers()).append("\n")
+                .append("Missions:                 ").append(getMissions()).append("\n")
+                .append("Successful missions:      ").append(getSuccessfulMissions()).append("\n")
+                .append("Total mission difficulty: ").append(getTotalMissionDifficulty()).append("\n")
+                .append("Completed planets:        ").append(getCompletedPlanets()).append("\n")
+                .append("Defend events:            ").append(getDefendEvents()).append("\n")
+                .append("Successful defend events: ").append(getSuccessfulDefendEvents()).append("\n")
+                .append("Attack events:            ").append(getAttackEvents()).append("\n")
+                .append("Successful attack events: ").append(getSuccessfulAttackEvents()).append("\n")
+                .append("Death:                    ").append(getDeaths()).append("\n")
+                .append("Accidentals:              ").append(getAccidentals()).append("\n")
+                .append("Shots fired:              ").append(getShots()).append("\n")
+                .append("Shots hit:                ").append(getHits()).append("\n")
+                .append("Enemies killed:           ").append(getKills()).append("\n");
+        return description.toString();
+    }
+
     public int getSeason() {
         return season;
     }
