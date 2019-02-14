@@ -40,7 +40,8 @@ public class DefendEvent {
 
     public String getDescription(){
         StringBuilder description = new StringBuilder();
-        description.append("Enemy:      ").append(getEnemyName()).append("\n")
+        description.append(this.toString()).append("\n")
+                .append("Enemy:      ").append(getEnemyName()).append("\n")
                 .append("Status:     ").append(getStatus()).append("\n")
                 .append("Start time: ").append(new Date(getStartTime()*1000)).append("\n")
                 .append("End time:   ").append(new Date(getEndTime()*1000)).append("\n")
