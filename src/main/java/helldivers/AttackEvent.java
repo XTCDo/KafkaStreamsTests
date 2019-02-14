@@ -45,7 +45,7 @@ public class AttackEvent {
 
     /**
      * Either 'active', 'success' or 'failure depending on if the event is ongoing,
-     * succesfully ended or ended in a loss
+     * successfully ended or ended in a loss
      */
     private String status;
 

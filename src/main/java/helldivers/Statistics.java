@@ -3,25 +3,100 @@ package helldivers;
 import java.util.Map;
 
 public class Statistics {
+    /**
+     * Season/war number
+     */
     private int season;
+
+    /**
+     * Amount of seconds that the current war has been going on
+     */
     private long seasonDuration;
+
+    /**
+     * The id of the enemy these statistics belong to
+     */
     private int enemy;
+
+    /**
+     * Amount of players currently online (in this region?)
+     */
     private int players;
+
+    /**
+     * Amount of unique players that have fought this season/war
+     */
     private int totalUniquePlayers;
+
+    /**
+     * Amount of missions played
+     */
     private int missions;
+
+    /**
+     * Amount of missions played that were successful
+     */
     private int successfulMissions;
+
+    /**
+     * Sum of the mission difficulties of all successful missions
+     */
     private int totalMissionDifficulty;
+
+    /**
+     * Amount of planets where all missions were finished
+     */
     private int completedPlanets;
+
+    /**
+     * Amount of defend events
+     */
     private int defendEvents;
+
+    /**
+     * Amount of successful defend events
+     */
     private int successfulDefendEvents;
+
+    /**
+     * Amount of attack events
+     */
     private int attackEvents;
+
+    /**
+     * Amount of successful attack events
+     */
     private int successfulAttackEvents;
+
+    /**
+     * Amount of player deaths
+     */
     private int deaths;
+
+    /**
+     * Amount of player-caused deaths
+     */
     private int accidentals;
+
+    /**
+     * Amount of shots fired by players
+     */
     private long shots;
+
+    /**
+     * Amount of shots fired by players that hit
+     */
     private long hits;
+
+    /**
+     * Amount of enemies killed
+     */
     private int kills;
 
+    /**
+     * Constructor for Statistics that takes a Map containing values returned by the helldivers API
+     * @param values
+     */
     public Statistics(Map values){
         this(
                 (int) Math.round((double) values.get("season")),
@@ -45,6 +120,27 @@ public class Statistics {
         );
     }
 
+    /**
+     * Regular constructor fo Statistics
+     * @param season Season/war number
+     * @param seasonDuration Amount of seconds that the current war has been going on
+     * @param enemy The id of the enemy these statistics belong to
+     * @param players Amount of players currently online (in this region?)
+     * @param totalUniquePlayers Amount of unique players that have fought this season/war
+     * @param missions Amount of missions played
+     * @param successfulMissions Amount of missions played that were successful
+     * @param totalMissionDifficulty Sum of the mission difficulties of all successful missions
+     * @param completedPlanets Amount of planets where all missions were finished
+     * @param defendEvents Amount of defend events
+     * @param successfulDefendEvents Amount of successful defend events
+     * @param attackEvents Amount of attack events
+     * @param successfulAttackEvents Amount of successful attack events
+     * @param deaths Amount of player deaths
+     * @param accidentals Amount of player-caused deaths
+     * @param shots Amount of shots fired by players
+     * @param hits Amount of shots fired by players that hit
+     * @param kills Amount of enemies killed
+     */
     public Statistics(int season, long seasonDuration, int enemy, int players, int totalUniquePlayers,
                       int missions, int successfulMissions, int totalMissionDifficulty, int completedPlanets, int defendEvents,
                       int successfulDefendEvents, int attackEvents, int successfulAttackEvents,
@@ -69,6 +165,10 @@ public class Statistics {
         this.kills = kills;
     }
 
+    /**
+     * Returns the name of the enemy that is being attacked in this AttackEvent
+     * @return the name of the enemy that is being attacked in this AttackEvent
+     */
     public String getEnemyName(){
         String[] enemies = new String[] {"Bugs", "Cyborgs", "Illuminate"};
         return enemies[getEnemy()];
