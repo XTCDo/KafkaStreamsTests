@@ -15,7 +15,7 @@ public class TestHelldiversAPIWrapper {
         final String TAG = "TestHelldiversAPIWrapper";
 
         try {
-            Map attackEvents = HelldiversAPIWrapper.getAttackEvents();
+            List attackEvents = HelldiversAPIWrapper.getAttackEvents();
             Logging.debug(attackEvents.toString(), TAG);
         } catch (Exception e){
             Logging.warn("No Attack Events at the moment", TAG);
@@ -23,7 +23,7 @@ public class TestHelldiversAPIWrapper {
         }
 
         try {
-            Map defendEvents = HelldiversAPIWrapper.getDefendEvents();
+            List defendEvents = HelldiversAPIWrapper.getDefendEvents();
             Logging.debug(defendEvents.toString(), TAG);
             Logging.log(defendEvents.toString(), TAG);
         } catch (Exception e){
