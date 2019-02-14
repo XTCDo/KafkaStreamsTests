@@ -13,5 +13,6 @@ public class TestHelldiversAPIWrapper {
         final String TAG = "TestHelldiversAPIWrapper";
         List campaignStatus = HelldiversAPIWrapper.getCampaignStatus();
         campaignStatus.forEach(value -> Logging.log(value.toString(), TAG));
+        campaignStatus.forEach(value -> Logging.log(value.getClass().toString(), TAG));
     }
 }
