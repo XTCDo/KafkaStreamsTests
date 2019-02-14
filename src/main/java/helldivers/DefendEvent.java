@@ -47,7 +47,8 @@ public class DefendEvent {
                 .append("End time:   ").append(new Date(getEndTime()*1000)).append("\n")
                 .append("Region      ").append(getRegion()).append("\n")
                 .append("Points:     ").append(getPoints()).append("\n")
-                .append("Points Max: ").append(getPointsMax()).append("\n");
+                .append("Points Max: ").append(getPointsMax()).append("\n")
+                .append("Event id:   ").append(getEventId());
         return description.toString();
     }
 
