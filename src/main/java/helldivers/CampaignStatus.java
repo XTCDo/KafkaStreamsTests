@@ -2,13 +2,15 @@ package helldivers;
 
 public class CampaignStatus {
     private int season;
+    private int points;
     private int pointsTaken;
     private int pointsMax;
     private String status;
     private int introductionOrder;
 
-    public CampaignStatus(int season, int pointsTaken, int pointsMax, String status, int introductionOrder){
+    public CampaignStatus(int season, int points, int pointsTaken, int pointsMax, String status, int introductionOrder){
         this.season = season;
+        this.points = points;
         this.pointsTaken = pointsTaken;
         this.pointsMax = pointsMax;
         this.status = status;
@@ -53,5 +55,13 @@ public class CampaignStatus {
 
     public void setIntroductionOrder(int introductionOrder) {
         this.introductionOrder = introductionOrder;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

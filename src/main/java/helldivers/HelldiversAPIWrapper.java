@@ -50,10 +50,22 @@ public class HelldiversAPIWrapper {
         }
     }
 
-    public static List getCampaignStatus(){
-        List campaignStatusList = (List) doHTTPRequest("get_campaign_status").get("campaign_status");
+    public static List<CampaignStatus> getCampaignStatus(){
+        List<Map> campaignStatusList = (List) doHTTPRequest("get_campaign_status").get("campaign_status");
+        List<CampaignStatus> campaignStatusObjectList = new ArrayList<>();
+        campaignStatusList.forEach(status ->{
+            CampaignStatus campaignStatus = new CampaignStatus(
+                    (int) status.get("season"),
+                    (int) status.get("points"),
+                    (int) status.get("points_taken"),
+                    (int) status.get("points_max"),
+                    (String) status.get("status"),
+                    (int) status.get("introduction_order")
+            );
+            campaignStatusObjectList.add(campaignStatus);
+        });
 
-        return campaignStatusList;
+        return campaignStatusObjectList;
     }
 
     public static Map getAttackEvents() {
