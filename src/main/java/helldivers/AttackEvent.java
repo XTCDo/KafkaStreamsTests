@@ -1,5 +1,7 @@
 package helldivers;
 
+import java.util.Map;
+
 public class AttackEvent {
     private int eventId;
     private long startTime;
@@ -11,6 +13,21 @@ public class AttackEvent {
     private String status;
     private int playersAtStart;
     private int maxEventId;
+
+    public AttackEvent(Map values){
+        this(
+                (int) Math.round((double) values.get("event_id")),
+                (long) Math.round((double) values.get("start_time")),
+                (long) Math.round((double) values.get("end_time")),
+                (int) Math.round((double) values.get("region")),
+                (int) Math.round((double) values.get("enemy")),
+                (int) Math.round((double) values.get("points")),
+                (int) Math.round((double) values.get("points_max")),
+                (String) values.get("status"),
+                (int) Math.round((double) values.get("players_at_start")),
+                (int) Math.round((double) values.get("max_event_id"))
+        );
+    }
 
     public AttackEvent(int eventId, long startTime, long endTime, int region, int enemy, int points, int pointsMax,
                        String status, int playersAtStart, int maxEventId){
