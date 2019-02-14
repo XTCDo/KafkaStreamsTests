@@ -56,7 +56,6 @@ public class HelldiversAPIWrapper {
         campaignStatusList.forEach(status ->{
             campaignStatusObjectList.add(new CampaignStatus(status));
         });
-
         return campaignStatusObjectList;
     }
 

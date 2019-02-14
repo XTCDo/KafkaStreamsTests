@@ -12,9 +12,23 @@ import java.util.Map;
 public class TestHelldiversAPIWrapper {
     public static void main(String[] args){
         final String TAG = "TestHelldiversAPIWrapper";
-        List<CampaignStatus> campaignStatusList = HelldiversAPIWrapper.getCampaignStatus();
-        campaignStatusList.forEach(status -> {
-            Logging.log(String.valueOf(status.getPoints()), TAG);
-        });
+
+        try {
+            Map attackEvents = HelldiversAPIWrapper.getAttackEvents();
+            Logging.debug(attackEvents.toString(), TAG);
+        } catch (Exception e){
+            Logging.warn("No Attack Events at the moment");
+            Logging.error(e, TAG);
+        }
+
+        try {
+            Map attackEvents = HelldiversAPIWrapper.getDefendEvents();
+            Logging.debug(attackEvents.toString(), TAG);
+        } catch (Exception e){
+            Logging.warn("No Defend Events at the moment");
+            Logging.error(e, TAG);
+        }
+
+
     }
 }
