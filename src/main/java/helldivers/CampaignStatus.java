@@ -1,5 +1,7 @@
 package helldivers;
 
+import java.util.Map;
+
 public class CampaignStatus {
     private int season;
     private int points;
@@ -7,6 +9,15 @@ public class CampaignStatus {
     private int pointsMax;
     private String status;
     private int introductionOrder;
+
+    public CampaignStatus(Map values){
+        this.season = (int) Math.round((double) values.get("season"));
+        this.points = (int) Math.round((double) values.get("points"));
+        this.pointsTaken = (int) Math.round((double) values.get("points_taken"));
+        this.pointsMax = (int) Math.round((double) values.get("points_max"));
+        this.status = (String) values.get("status");
+        this.introductionOrder = (int) Math.round((double) values.get("introduction_order"));
+    }
 
     public CampaignStatus(int season, int points, int pointsTaken, int pointsMax, String status, int introductionOrder){
         this.season = season;
