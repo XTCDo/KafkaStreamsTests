@@ -51,6 +51,10 @@ public class HelldiversAPIWrapper {
         }
     }
 
+    public static List getStatistics(){
+        return (List) doHTTPRequest().get("statistics");
+    }
+
     public static List<CampaignStatus> getCampaignStatus(){
         List<Map> campaignStatusList = (List) doHTTPRequest().get("campaign_status");
         List<CampaignStatus> campaignStatusObjectList = new ArrayList<>();
