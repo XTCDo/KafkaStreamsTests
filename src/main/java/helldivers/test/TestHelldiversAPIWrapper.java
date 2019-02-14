@@ -15,7 +15,7 @@ public class TestHelldiversAPIWrapper {
         final String TAG = "TestHelldiversAPIWrapper";
 
         try {
-            List attackEvents = HelldiversAPIWrapper.getAttackEvents();
+            Map attackEvents = HelldiversAPIWrapper.getAttackEvents();
             Logging.debug(attackEvents.toString(), TAG);
         } catch (Exception e){
             Logging.warn("No Attack Events at the moment", TAG);
