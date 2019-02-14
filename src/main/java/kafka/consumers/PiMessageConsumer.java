@@ -33,7 +33,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
 
                        //Logging.debug("got message containing: "+ input.entrySet().toString(),TAG);
                        try {
-                           Point point = toPoint("test-measurements", input);
+                           Point point = toPoint("experimental-test-measurements", input);
                            Logging.log("received data:" + point.toString(),TAG);
                            getInfluxDAO().writePoint("Pi_Measurements", point);
                        } catch (Exception e){
