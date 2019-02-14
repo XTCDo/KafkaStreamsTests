@@ -46,8 +46,16 @@ public class HelldiversAPIWrapper {
         }
     }
 
+    public static Map getStatus(){
+        return (Map) doHTTPRequest();
+    }
+
     public static List<Statistics> getStatistics(){
-        List<Map> statisticsList = (List) doHTTPRequest().get("statistics");
+        return getStatistics(doHTTPRequest().get("statistics"));
+    }
+
+    public static List<Statistics> getStatistics(Object httpRequestReturnValue){
+        List<Map> statisticsList = (List) httpRequestReturnValue;//doHTTPRequest().get("statistics");
         List<Statistics> statisticsObjectList = new ArrayList<>();
         statisticsList.forEach(statistics -> {
             statisticsObjectList.add(new Statistics(statistics));
@@ -57,7 +65,11 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<CampaignStatus> getCampaignStatus(){
-        List<Map> campaignStatusList = (List) doHTTPRequest().get("campaign_status");
+        return getCampaignStatus(doHTTPRequest().get("campaign_status"));
+    }
+
+    public static List<CampaignStatus> getCampaignStatus(Object httpRequestReturnValue){
+        List<Map> campaignStatusList = (List) httpRequestReturnValue;
         List<CampaignStatus> campaignStatusObjectList = new ArrayList<>();
         campaignStatusList.forEach(status -> {
             campaignStatusObjectList.add(new CampaignStatus(status));
@@ -65,8 +77,12 @@ public class HelldiversAPIWrapper {
         return campaignStatusObjectList;
     }
 
-    public static List<AttackEvent> getAttackEvents() {
-        Object returnValue = doHTTPRequest().get("attack_event");
+    public static List<AttackEvent> getAttackEvents(){
+        return getAttackEvents(doHTTPRequest().get("attack_event"));
+    }
+
+    public static List<AttackEvent> getAttackEvents(Object httpRequestReturnValue) {
+        Object returnValue = httpRequestReturnValue;
         if (returnValue == null){
             return null;
         }
@@ -85,8 +101,12 @@ public class HelldiversAPIWrapper {
         return attackEventsObjectList;
     }
 
-    public static List<DefendEvent> getDefendEvents() {
-        Object returnValue = doHTTPRequest().get("defend_event");
+    public static List<DefendEvent> getDefendEvents(){
+        return getDefendEvents(doHTTPRequest().get("defend_event"));
+    }
+
+    public static List<DefendEvent> getDefendEvents(Object httpRequestReturnValue) {
+        Object returnValue = httpRequestReturnValue;
 
         if (returnValue == null) {
             return null;
