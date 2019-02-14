@@ -56,11 +56,11 @@ public class HelldiversAPIWrapper {
         campaignStatusList.forEach(status ->{
             CampaignStatus campaignStatus = new CampaignStatus(
                     (int) Math.round((double) status.get("season")),
-                    (int) status.get("points"),
-                    (int) status.get("points_taken"),
-                    (int) status.get("points_max"),
+                    (int) Math.round((double) status.get("points")),
+                    (int) Math.round((double) status.get("points_taken")),
+                    (int) Math.round((double) status.get("points_max")),
                     (String) status.get("status"),
-                    (int) status.get("introduction_order")
+                    (int) Math.round((double) status.get("introduction_order"))
             );
             campaignStatusObjectList.add(campaignStatus);
         });
