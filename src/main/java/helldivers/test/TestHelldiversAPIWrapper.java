@@ -1,6 +1,7 @@
 package helldivers.test;
 
 import helldivers.*;
+import org.apache.kafka.common.metrics.Stat;
 import sun.rmi.runtime.Log;
 import util.Logging;
 
@@ -29,7 +30,8 @@ public class TestHelldiversAPIWrapper {
 
 
         try {
-            HelldiversAPIWrapper.getStatistics().forEach(stats -> Logging.log(stats.toString(), TAG));
+            List<Statistics> statistics = HelldiversAPIWrapper.getStatistics();
+            statistics.forEach(stats -> Logging.log(stats.getDescription(), TAG));
         } catch (Exception e){
             Logging.error(e, TAG);
         }
