@@ -55,7 +55,7 @@ public class TestHelldiversAPIWrapper {
         }
 
         try {
-            defendEventList.forEach(defendEvent -> Logging.log(defendEvent.toString(), TAG));
+            defendEventList.forEach(defendEvent -> Logging.log(defendEvent.getDescription(), TAG));
         } catch (NullPointerException e) {
             Logging.error(e, TAG);
             Logging.log(Level.SEVERE,"No DefendEvents", TAG);

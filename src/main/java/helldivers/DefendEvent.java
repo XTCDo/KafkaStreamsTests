@@ -1,5 +1,6 @@
 package helldivers;
 
+import java.util.Date;
 import java.util.Map;
 
 public class DefendEvent {
@@ -35,6 +36,18 @@ public class DefendEvent {
         this.points = points;
         this.pointsMax = pointsMax;
         this.status = status;
+    }
+
+    public String getDescription(){
+        StringBuilder description = new StringBuilder();
+        description.append("Enemy:      ").append(getEnemyName()).append("\n")
+                .append("Status:     ").append(getStatus()).append("\n")
+                .append("Start time: ").append(new Date(getStartTime())).append("\n")
+                .append("End time:   ").append(new Date(getEndTime())).append("\n")
+                .append("Region      ").append(getRegion()).append("\n")
+                .append("Points:     ").append(getPoints()).append("\n")
+                .append("Points Max: ").append(getPointsMax()).append("\n");
+        return description.toString();
     }
 
     public String getEnemyName(){
