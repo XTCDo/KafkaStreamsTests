@@ -47,7 +47,7 @@ public class HelldiversAPIWrapper {
     }
 
     public static Map getStatus(){
-        return (Map) doHTTPRequest();
+        return doHTTPRequest();
     }
 
     public static List<Statistics> getStatistics(){
