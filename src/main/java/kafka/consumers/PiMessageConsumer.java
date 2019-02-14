@@ -31,11 +31,11 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                        String values = record.value(); // confirmed OK -> is JSON
                        Map input = gson.fromJson(values, Map.class);
 
-                       Logging.debug("got message containing: "+ input.entrySet().toString(),TAG);
+                       //Logging.debug("got message containing: "+ input.entrySet().toString(),TAG);
                        try {
                            Point point = toPoint("test-measurements", input);
-                           Logging.log("received data:" +point.toString(),TAG);
-                           //getInfluxDAO().writePoint("Pi_Measurements", point);
+                           Logging.log("received data:" + point.toString(),TAG);
+                           getInfluxDAO().writePoint("Pi_Measurements", point);
                        } catch (Exception e){
                            Logging.error(e, TAG);
                        }
@@ -51,6 +51,13 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
         super.run(consumerThread);
     }
 
+    /**
+     * converts input of type map (from JSON) to a point ready to be input to influxDB
+     * @param table the table where the point is to be logged
+     * @param inputMap  the map extracted from our kafka message
+     * @return a Point object for inecjting into InfluxDB
+     * @throws Exception
+     */
     private Point toPoint(String table, Map inputMap) throws Exception{
         // get standard info from input
         // todo learn about compute()
@@ -66,7 +73,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
         ((Map)inputMap.get("tags")).entrySet().forEach(entry-> tags.put((
                 (Map.Entry) entry).getKey().toString(),
                 ((Map.Entry) entry).getValue().toString()));
-        
+
         Map<String, Object> fields = (Map<String, Object>)inputMap.get("fields");
 
         return Point.measurement(table)
