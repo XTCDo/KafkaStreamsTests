@@ -4,6 +4,11 @@ import java.util.Map;
 
 public class AttackEvent {
     /**
+     * Season/war number
+     */
+    private int season;
+
+    /**
      * Attack event id, presumed to be equal to the total amount of attack events minus 1
      */
     private int eventId;
@@ -62,6 +67,7 @@ public class AttackEvent {
      */
     public AttackEvent(Map values){
         this(
+                (int) Math.round((double) values.get("season")),
                 (int) Math.round((double) values.get("event_id")),
                 (long) Math.round((double) values.get("start_time")),
                 (long) Math.round((double) values.get("end_time")),
@@ -77,6 +83,7 @@ public class AttackEvent {
 
     /**
      * Regular constructor for AttackEvent
+     * @param season Season/war number
      * @param eventId Attack event id, presumed to be equal to the total amount of attack events minus 1
      * @param startTime UNIX Timestamp of when the attack event started
      * @param endTime UNIX Timestamp of when the attack event will end and be lost if the points requirement is not met
@@ -90,7 +97,7 @@ public class AttackEvent {
      *                       the time the attack event started
      * @param maxEventId Unsure what this value is
      */
-    public AttackEvent(int eventId, long startTime, long endTime, int region, int enemy, int points, int pointsMax,
+    public AttackEvent(int season, int eventId, long startTime, long endTime, int region, int enemy, int points, int pointsMax,
                        String status, int playersAtStart, int maxEventId){
         this.eventId = eventId;
         this.endTime = endTime;

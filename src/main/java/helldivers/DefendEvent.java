@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Map;
 
 public class DefendEvent {
+    private static int season;
     private static int eventId;
     private static long startTime;
     private static long endTime;
@@ -15,6 +16,7 @@ public class DefendEvent {
 
     public DefendEvent(Map values){
         this(
+            (int) Math.round((double) values.get("season")),
             (int) Math.round((double) values.get("event_id")),
             (long) Math.round((double) values.get("start_time")),
             (long) Math.round((double) values.get("end_time")),
@@ -26,8 +28,9 @@ public class DefendEvent {
         );
     }
 
-    public DefendEvent(int eventId, long startTime, long endTime, int region,
+    public DefendEvent(int season, int eventId, long startTime, long endTime, int region,
                        int enemy, int points, int pointsMax, String status){
+        this.season = season;
         this.eventId = eventId;
         this.startTime = startTime;
         this.endTime = endTime;
