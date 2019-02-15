@@ -15,10 +15,10 @@ public class HelldiversDataProducer extends GenericThreadedProducer<String, Stri
 
     public void run(){
         Thread producerThread = new Thread(() -> {
-
             while(true){
                 try{
                     getProducer().send(new ProducerRecord(getTopic(), HelldiversAPIWrapper.getAPIResponse()));
+                    Thread.sleep(1000);
                 } catch (Exception e){
                     Logging.error(e, TAG);
                 }
