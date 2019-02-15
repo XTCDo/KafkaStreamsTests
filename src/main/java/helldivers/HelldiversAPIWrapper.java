@@ -108,17 +108,18 @@ public class HelldiversAPIWrapper {
         return campaignStatusObjectList;
     }
 
+    // todo fix this
     public static List<AttackEvent> getAttackEvents(){
         return getAttackEvents(getStatus().get("attack_events"));
     }
 
     public static List<AttackEvent> getAttackEvents(Object httpRequestReturnValue) {
         Object returnValue = httpRequestReturnValue;
-        Logging.log(httpRequestReturnValue.toString(),"getAttackEvents");
+
         if (returnValue == null){
             return null;
         }
-
+        Logging.log(httpRequestReturnValue.toString(),"getAttackEvents");
         List<AttackEvent> attackEventsObjectList = new ArrayList<>();
         if (returnValue instanceof Map){
             attackEventsObjectList.add(new AttackEvent((Map) returnValue));
