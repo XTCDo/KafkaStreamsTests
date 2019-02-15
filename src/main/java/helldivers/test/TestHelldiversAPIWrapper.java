@@ -1,16 +1,19 @@
 package helldivers.test;
 
 import helldivers.*;
-import org.apache.kafka.common.metrics.Stat;
-import sun.rmi.runtime.Log;
 import util.Logging;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class TestHelldiversAPIWrapper {
     public static void main(String[] args){
         final String TAG = "TestHelldiversAPIWrapper";
+
+        Map<String, String> someMap = new HashMap<>();
+        someMap.get("haha");
 
         Status status = new Status();
         List<CampaignStatus> campaignStatusList = status.getCampaignStatuses();
