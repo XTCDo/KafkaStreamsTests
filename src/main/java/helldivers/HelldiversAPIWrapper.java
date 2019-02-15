@@ -71,9 +71,13 @@ public class HelldiversAPIWrapper {
     public static List<CampaignStatus> getCampaignStatus(Object httpRequestReturnValue){
         List<Map> campaignStatusList = (List) httpRequestReturnValue;
         List<CampaignStatus> campaignStatusObjectList = new ArrayList<>();
-        campaignStatusList.forEach(status -> {
-            campaignStatusObjectList.add(new CampaignStatus(status));
-        });
+
+        for(int i = 0; i < campaignStatusList.size(); i++){
+            Map campaignStatus = campaignStatusList.get(i);
+            campaignStatus.put("enemy", i);
+            campaignStatusObjectList.add(new CampaignStatus(campaignStatus));
+        }
+
         return campaignStatusObjectList;
     }
 

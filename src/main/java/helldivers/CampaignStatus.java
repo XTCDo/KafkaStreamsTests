@@ -8,6 +8,8 @@ public class CampaignStatus {
      */
     private int season;
 
+    private int enemy;
+
     /**
      * Current amount of influence points gained by players
      */
@@ -41,6 +43,7 @@ public class CampaignStatus {
     public CampaignStatus(Map values){
         this(
             (int) Math.round((double) values.get("season")),
+            (int) Math.round((double) values.get("enemy")),
             (int) Math.round((double) values.get("points")),
             (int) Math.round((double) values.get("points_taken")),
             (int) Math.round((double) values.get("points_max")),
@@ -60,8 +63,9 @@ public class CampaignStatus {
      * @param introductionOrder Order in which the faction was introduced to the war,
      *                          255 if the faction hasn't been introduced yet
      */
-    public CampaignStatus(int season, int points, int pointsTaken, int pointsMax, String status, int introductionOrder){
+    public CampaignStatus(int season, int enemy, int points, int pointsTaken, int pointsMax, String status, int introductionOrder){
         this.season = season;
+        this.enemy = enemy;
         this.points = points;
         this.pointsTaken = pointsTaken;
         this.pointsMax = pointsMax;
@@ -76,6 +80,7 @@ public class CampaignStatus {
     public String getDescription(){
         StringBuilder description = new StringBuilder();
         description.append(this.toString()).append("\n")
+                .append("Enemy:              ").append(getEnemyName()).append("\n")
                 .append("War:                ").append(getSeason()).append("\n")
                 .append("Points:             ").append(getPoints()).append("\n")
                 .append("Points Max:         ").append(getPointsMax()).append("\n")
@@ -83,6 +88,17 @@ public class CampaignStatus {
                 .append("Introduction order: ").append(getIntroductionOrder()).append("\n");
         return description.toString();
     }
+
+
+    /**
+     * Returns the name of the enemy that is being attacked in this AttackEvent
+     * @return the name of the enemy that is being attacked in this AttackEvent
+     */
+    public String getEnemyName(){
+        String[] enemies = new String[] {"Bugs", "Cyborgs", "Illuminate"};
+        return enemies[getEnemy()];
+    }
+
 
     public int getSeason() {
         return season;
@@ -130,5 +146,16 @@ public class CampaignStatus {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    /**
+     * The id of the enemy this campaignstatus belongs to
+     */
+    public int getEnemy() {
+        return enemy;
+    }
+
+    public void setEnemy(int enemy) {
+        this.enemy = enemy;
     }
 }
