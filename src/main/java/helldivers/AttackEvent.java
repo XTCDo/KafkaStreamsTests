@@ -100,6 +100,7 @@ public class AttackEvent {
      */
     public AttackEvent(int season, int eventId, long startTime, long endTime, int region, int enemy, int points, int pointsMax,
                        String status, int playersAtStart, int maxEventId){
+        this.season = season;
         this.eventId = eventId;
         this.endTime = endTime;
         this.startTime = startTime;

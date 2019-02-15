@@ -12,9 +12,6 @@ public class TestHelldiversAPIWrapper {
     public static void main(String[] args){
         final String TAG = "TestHelldiversAPIWrapper";
 
-        Map<String, String> someMap = new HashMap<>();
-        someMap.get("haha");
-
         Status status = new Status();
         List<CampaignStatus> campaignStatusList = status.getCampaignStatuses();
         List<AttackEvent> attackEventList = status.getAttackEvents();
