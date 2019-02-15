@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Status {
+    private Map httpApiResponseObject;
     private List<CampaignStatus> campaignStatuses;
     private List<DefendEvent> defendEvents;
     private List<AttackEvent> attackEvents;
@@ -14,11 +15,15 @@ public class Status {
     }
 
     public void refresh(){
-        Map httpApiResponseObject = HelldiversAPIWrapper.getStatus();
+        this.httpApiResponseObject = HelldiversAPIWrapper.getStatus();
         this.campaignStatuses = HelldiversAPIWrapper.getCampaignStatus(httpApiResponseObject.get("campaign_status"));
         this.defendEvents = HelldiversAPIWrapper.getDefendEvents(httpApiResponseObject.get("defend_event"));
         this.attackEvents = HelldiversAPIWrapper.getAttackEvents(httpApiResponseObject.get("attack_event"));
         this.statistics = HelldiversAPIWrapper.getStatistics(httpApiResponseObject.get("statistics"));
+    }
+
+    public Map getHttpApiResponseObject(){
+        return httpApiResponseObject;
     }
 
     public List<CampaignStatus> getCampaignStatuses() {

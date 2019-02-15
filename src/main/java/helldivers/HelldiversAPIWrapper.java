@@ -15,7 +15,38 @@ import java.util.*;
 public class HelldiversAPIWrapper {
     // Link to API
     // https://docs.google.com/document/d/11BH152Tx7YpWOlfT69Ad2anG8wwlt6xOE3VO_YHC2mQ/edit#heading=h.trtt0zalsa2
-    public  static Map doHTTPRequest(){
+    public  static String getAPIResponse(){
+        final String TAG = "HelldiversAPIWrapper";
+        try {
+            URL url = new URL("https://api.helldiversgame.com/1.0/");
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("action", "get_campaign_status");
+            connection.setDoOutput(true);
+            DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+            outputStream.writeBytes(ParameterStringBuilder.getParamsString(parameters));
+            outputStream.flush();
+            outputStream.close();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while((inputLine = in.readLine()) != null){
+                content.append(inputLine);
+            }
+
+            in.close();
+            return content.toString();
+        } catch (Exception e){
+            Logging.error(e, TAG);
+            return null;
+        }
+    }
+
+
+
+    public static Map getStatus(){
         final String TAG = "HelldiversAPIWrapper";
         try {
             URL url = new URL("https://api.helldiversgame.com/1.0/");
@@ -46,12 +77,8 @@ public class HelldiversAPIWrapper {
         }
     }
 
-    public static Map getStatus(){
-        return doHTTPRequest();
-    }
-
     public static List<Statistics> getStatistics(){
-        return getStatistics(doHTTPRequest().get("statistics"));
+        return getStatistics(getStatus().get("statistics"));
     }
 
     public static List<Statistics> getStatistics(Object httpRequestReturnValue){
@@ -65,7 +92,7 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<CampaignStatus> getCampaignStatus(){
-        return getCampaignStatus(doHTTPRequest().get("campaign_status"));
+        return getCampaignStatus(getStatus().get("campaign_status"));
     }
 
     public static List<CampaignStatus> getCampaignStatus(Object httpRequestReturnValue){
@@ -82,7 +109,7 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<AttackEvent> getAttackEvents(){
-        return getAttackEvents(doHTTPRequest().get("attack_event"));
+        return getAttackEvents(getStatus().get("attack_event"));
     }
 
     public static List<AttackEvent> getAttackEvents(Object httpRequestReturnValue) {
@@ -106,7 +133,7 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<DefendEvent> getDefendEvents(){
-        return getDefendEvents(doHTTPRequest().get("defend_event"));
+        return getDefendEvents(getStatus().get("defend_event"));
     }
 
     public static List<DefendEvent> getDefendEvents(Object httpRequestReturnValue) {
