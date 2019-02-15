@@ -109,7 +109,7 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<AttackEvent> getAttackEvents(){
-        return getAttackEvents(getStatus().get("attack_event"));
+        return getAttackEvents(getStatus().get("attack_events"));
     }
 
     public static List<AttackEvent> getAttackEvents(Object httpRequestReturnValue) {
