@@ -199,6 +199,7 @@ public class Statistics {
                 .append("Accidentals:              ").append(getAccidentals()).append("\n")
                 .append("Shots fired:              ").append(getShots()).append("\n")
                 .append("Shots hit:                ").append(getHits()).append("\n")
+                .append("Accuracy:                 ").append((100*getHits()/getShots())).append("%\n")
                 .append("Enemies killed:           ").append(getKills()).append("\n");
         return description.toString();
     }
