@@ -197,6 +197,7 @@ public class Statistics {
                 .append("Successful attack events: ").append(getSuccessfulAttackEvents()).append("\n")
                 .append("Death:                    ").append(getDeaths()).append("\n")
                 .append("Accidentals:              ").append(getAccidentals()).append("\n")
+                .append("Accidentals %:            ").append(100*getAccidentals()/getDeaths()).append("%\n")
                 .append("Shots fired:              ").append(getShots()).append("\n")
                 .append("Shots hit:                ").append(getHits()).append("\n")
                 .append("Accuracy:                 ").append((100*getHits()/getShots())).append("%\n")
