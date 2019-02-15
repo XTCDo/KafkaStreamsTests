@@ -10,7 +10,7 @@ import util.Logging;
 public class HelldiversDataProducer extends GenericThreadedProducer<String, String> {
     private final String TAG = "HelldiversDataProducer";
     public HelldiversDataProducer(){
-        super("helldivers-data", "localhost:9092");
+        super("helldivers-data-input", "localhost:9092");
     }
 
     public void run(){
