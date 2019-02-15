@@ -8,6 +8,9 @@ public class CampaignStatus {
      */
     private int season;
 
+    /**
+     * The id of the enemy this CampaignStatus belongs to
+     */
     private int enemy;
 
     /**
