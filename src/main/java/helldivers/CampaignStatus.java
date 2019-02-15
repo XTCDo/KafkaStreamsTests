@@ -43,7 +43,7 @@ public class CampaignStatus {
     public CampaignStatus(Map values){
         this(
             (int) Math.round((double) values.get("season")),
-            (int) Math.round((double) values.get("enemy")),
+            (int) values.get("enemy"),
             (int) Math.round((double) values.get("points")),
             (int) Math.round((double) values.get("points_taken")),
             (int) Math.round((double) values.get("points_max")),
