@@ -203,6 +203,9 @@ public class Statistics {
         return description.toString();
     }
 
+    /**
+     * Season/war number
+     */
     public int getSeason() {
         return season;
     }
@@ -211,6 +214,9 @@ public class Statistics {
         this.season = season;
     }
 
+    /**
+     * Amount of seconds that the current war has been going on
+     */
     public long getSeasonDuration() {
         return seasonDuration;
     }
@@ -219,6 +225,9 @@ public class Statistics {
         this.seasonDuration = seasonDuration;
     }
 
+    /**
+     * The id of the enemy these statistics belong to
+     */
     public int getEnemy() {
         return enemy;
     }
@@ -227,6 +236,9 @@ public class Statistics {
         this.enemy = enemy;
     }
 
+    /**
+     * Amount of players currently online (in this region?)
+     */
     public int getPlayers() {
         return players;
     }
@@ -235,6 +247,9 @@ public class Statistics {
         this.players = players;
     }
 
+    /**
+     * Amount of unique players that have fought this season/war
+     */
     public int getTotalUniquePlayers() {
         return totalUniquePlayers;
     }
@@ -243,6 +258,9 @@ public class Statistics {
         this.totalUniquePlayers = totalUniquePlayers;
     }
 
+    /**
+     * Amount of missions played
+     */
     public int getMissions() {
         return missions;
     }
@@ -251,6 +269,9 @@ public class Statistics {
         this.missions = missions;
     }
 
+    /**
+     * Amount of missions played that were successful
+     */
     public int getSuccessfulMissions() {
         return successfulMissions;
     }
@@ -259,6 +280,9 @@ public class Statistics {
         this.successfulMissions = successfulMissions;
     }
 
+    /**
+     * Sum of the mission difficulties of all successful missions
+     */
     public int getTotalMissionDifficulty() {
         return totalMissionDifficulty;
     }
@@ -267,6 +291,9 @@ public class Statistics {
         this.totalMissionDifficulty = totalMissionDifficulty;
     }
 
+    /**
+     * Amount of planets where all missions were finished
+     */
     public int getCompletedPlanets() {
         return completedPlanets;
     }
@@ -275,6 +302,9 @@ public class Statistics {
         this.completedPlanets = completedPlanets;
     }
 
+    /**
+     * Amount of defend events
+     */
     public int getDefendEvents() {
         return defendEvents;
     }
@@ -283,6 +313,9 @@ public class Statistics {
         this.defendEvents = defendEvents;
     }
 
+    /**
+     * Amount of successful defend events
+     */
     public int getSuccessfulDefendEvents() {
         return successfulDefendEvents;
     }
@@ -291,6 +324,9 @@ public class Statistics {
         this.successfulDefendEvents = successfulDefendEvents;
     }
 
+    /**
+     * Amount of attack events
+     */
     public int getAttackEvents() {
         return attackEvents;
     }

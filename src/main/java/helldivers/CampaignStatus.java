@@ -103,6 +103,9 @@ public class CampaignStatus {
     }
 
 
+    /**
+     * Season/War number
+     */
     public int getSeason() {
         return season;
     }
@@ -111,6 +114,9 @@ public class CampaignStatus {
         this.season = season;
     }
 
+    /**
+     * Total amount of influence points gained by players
+     */
     public int getPointsTaken() {
         return pointsTaken;
     }
@@ -119,6 +125,9 @@ public class CampaignStatus {
         this.pointsTaken = pointsTaken;
     }
 
+    /**
+     * Required amount of influence points in order to start a home planet assault event/attack event
+     */
     public int getPointsMax() {
         return pointsMax;
     }
@@ -127,6 +136,10 @@ public class CampaignStatus {
         this.pointsMax = pointsMax;
     }
 
+    /**
+     * Either 'active' if there are missions available, 'defeated' if the faction has been defeated or
+     * 'hidden' if war has not yet been declared.
+     */
     public String getStatus() {
         return status;
     }
@@ -135,6 +148,9 @@ public class CampaignStatus {
         this.status = status;
     }
 
+    /**
+     * Order in which the faction was introduced to the war, 255 if the faction hasn't been introduced yet
+     */
     public int getIntroductionOrder() {
         return introductionOrder;
     }
@@ -143,6 +159,9 @@ public class CampaignStatus {
         this.introductionOrder = introductionOrder;
     }
 
+    /**
+     * Current amount of influence points gained by players
+     */
     public int getPoints() {
         return points;
     }
@@ -152,6 +171,8 @@ public class CampaignStatus {
     }
 
     /**
+     * The id of the enemy this CampaignStatus belongs to
+     */ /**
      * The id of the enemy this campaignstatus belongs to
      */
     public int getEnemy() {

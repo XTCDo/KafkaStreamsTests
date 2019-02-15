@@ -95,6 +95,17 @@ public class DefendEvent {
     }
 
     /**
+     * Season/war number
+     */
+    public static int getSeason() {
+        return season;
+    }
+
+    public static void setSeason(int season) {
+        DefendEvent.season = season;
+    }
+
+    /**
      * Returns a String describing the DefendEvent
      * @return a String describing the DefendEvent
      */
@@ -121,6 +132,9 @@ public class DefendEvent {
         return enemies[getEnemy()];
     }
 
+    /**
+     * Defence event id, probably equal to the total amount of defense events minus 1
+     */
     public static int getEventId() {
         return eventId;
     }
@@ -129,6 +143,9 @@ public class DefendEvent {
         DefendEvent.eventId = eventId;
     }
 
+    /**
+     * UNIX Timestamp of when the attack event started
+     */
     public static long getStartTime() {
         return startTime;
     }
@@ -137,6 +154,9 @@ public class DefendEvent {
         DefendEvent.startTime = startTime;
     }
 
+    /**
+     * UNIX Timestamp of when the attack event will end and be lost if the points requirement is not met
+     */
     public static long getEndTime() {
         return endTime;
     }
@@ -145,6 +165,9 @@ public class DefendEvent {
         DefendEvent.endTime = endTime;
     }
 
+    /**
+     * Id of the region in which the planet that is being attacked lies
+     */
     public static int getRegion() {
         return region;
     }
@@ -153,6 +176,9 @@ public class DefendEvent {
         DefendEvent.region = region;
     }
 
+    /**
+     * Id of the enemy on the attacked planet
+     */
     public static int getEnemy() {
         return enemy;
     }
@@ -161,6 +187,9 @@ public class DefendEvent {
         DefendEvent.enemy = enemy;
     }
 
+    /**
+     * Current amount of points that the players have gained
+     */
     public static int getPoints() {
         return points;
     }
@@ -169,6 +198,9 @@ public class DefendEvent {
         DefendEvent.points = points;
     }
 
+    /**
+     * Amount of points needed for the attack event to be successful
+     */
     public static int getPointsMax() {
         return pointsMax;
     }
@@ -177,6 +209,10 @@ public class DefendEvent {
         DefendEvent.pointsMax = pointsMax;
     }
 
+    /**
+     * Either 'active', 'success' or 'failure depending on if the event is ongoing,
+     * succesfully ended or ended in a loss
+     */
     public static String getStatus() {
         return status;
     }

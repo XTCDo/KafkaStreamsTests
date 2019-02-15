@@ -141,6 +141,9 @@ public class AttackEvent {
         return description.toString();
     }
 
+    /**
+     * Attack event id, presumed to be equal to the total amount of attack events minus 1
+     */
     public int getEventId() {
         return eventId;
     }
@@ -149,6 +152,9 @@ public class AttackEvent {
         this.eventId = eventId;
     }
 
+    /**
+     * UNIX Timestamp of when the attack event started
+     */
     public long getStartTime() {
         return startTime;
     }
@@ -157,6 +163,9 @@ public class AttackEvent {
         this.startTime = startTime;
     }
 
+    /**
+     * UNIX Timestamp of when the attack event will end and be lost if the points requirement is not met
+     */
     public long getEndTime() {
         return endTime;
     }
@@ -165,6 +174,9 @@ public class AttackEvent {
         this.endTime = endTime;
     }
 
+    /**
+     * Id of the region in which the planet that is being attacked lies
+     */
     public int getRegion() {
         return region;
     }
@@ -173,6 +185,9 @@ public class AttackEvent {
         this.region = region;
     }
 
+    /**
+     * Id of the enemy on the attacked planet
+     */
     public int getEnemy() {
         return enemy;
     }
@@ -181,6 +196,9 @@ public class AttackEvent {
         this.enemy = enemy;
     }
 
+    /**
+     * Current amount of points that the players have gained
+     */
     public int getPoints() {
         return points;
     }
@@ -189,6 +207,9 @@ public class AttackEvent {
         this.points = points;
     }
 
+    /**
+     * Amount of points needed for the attack event to be successful
+     */
     public int getPointsMax() {
         return pointsMax;
     }
@@ -197,6 +218,10 @@ public class AttackEvent {
         this.pointsMax = pointsMax;
     }
 
+    /**
+     * Either 'active', 'success' or 'failure depending on if the event is ongoing,
+     * successfully ended or ended in a loss
+     */
     public String getStatus() {
         return status;
     }
@@ -205,6 +230,10 @@ public class AttackEvent {
         this.status = status;
     }
 
+    /**
+     * The amount of players that are in a mission in the region where the attack event starts at the time
+     * the attack event started
+     */
     public int getPlayersAtStart() {
         return playersAtStart;
     }
@@ -213,11 +242,25 @@ public class AttackEvent {
         this.playersAtStart = playersAtStart;
     }
 
+    /**
+     * Unsure what this value is
+     */
     public int getMaxEventId() {
         return maxEventId;
     }
 
     public void setMaxEventId(int maxEventId) {
         this.maxEventId = maxEventId;
+    }
+
+    /**
+     * Season/war number
+     */
+    public int getSeason() {
+        return season;
+    }
+
+    public void setSeason(int season) {
+        this.season = season;
     }
 }
