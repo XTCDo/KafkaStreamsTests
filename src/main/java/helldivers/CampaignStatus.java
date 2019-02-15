@@ -84,7 +84,7 @@ public class CampaignStatus {
                 .append("War:                ").append(getSeason()).append("\n")
                 .append("Points:             ").append(getPoints()).append("\n")
                 .append("Points Max:         ").append(getPointsMax()).append("\n")
-                .append("Status:             ").append(getPointsMax()).append("\n")
+                .append("Status:             ").append(getStatus()).append("\n")
                 .append("Introduction order: ").append(getIntroductionOrder()).append("\n");
         return description.toString();
     }
