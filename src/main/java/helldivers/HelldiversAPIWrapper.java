@@ -114,6 +114,7 @@ public class HelldiversAPIWrapper {
 
     public static List<AttackEvent> getAttackEvents(Object httpRequestReturnValue) {
         Object returnValue = httpRequestReturnValue;
+        Logging.log(httpRequestReturnValue.toString(),"getAttackEvents");
         if (returnValue == null){
             return null;
         }
