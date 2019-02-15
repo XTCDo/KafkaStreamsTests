@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import helldivers.HelldiversAPIWrapper;
 import helldivers.Status;
 import kafka.generic.producers.GenericThreadedProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import util.Logging;
 
 public class HelldiversDataProducer extends GenericThreadedProducer<String, String> {
@@ -14,11 +15,10 @@ public class HelldiversDataProducer extends GenericThreadedProducer<String, Stri
 
     public void run(){
         Thread producerThread = new Thread(() -> {
-            Status status = new Status();
-            Gson gson = new Gson();
+
             while(true){
                 try{
-
+                    getProducer().send(new ProducerRecord(getTopic(), HelldiversAPIWrapper.getAPIResponse()));
                 } catch (Exception e){
                     Logging.error(e, TAG);
                 }
