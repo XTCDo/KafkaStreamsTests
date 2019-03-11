@@ -8,7 +8,6 @@ import util.Config;
 import util.Logging;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -69,18 +68,21 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
             }
          */
         long time = Math.round((double) inputMap.get("time"));
-        Map<String, String> tags = new HashMap<>();
-        ((Map)inputMap.get("tags")).entrySet().forEach(entry-> tags.put((
-                (Map.Entry) entry).getKey().toString(),
-                ((Map.Entry) entry).getValue().toString()));
-
-        Map<String, Object> fields = (Map<String, Object>)inputMap.get("fields");
-
-        return Point.measurement(table)
-                .time(time,TimeUnit.MILLISECONDS)
-                .tag(tags)
-                .fields(fields)
-                .build();
+        Map tags = (Map) inputMap.get("tags");
+        Map fields = (Map) inputMap.get("fields");
+        Point point = null;
+        try {
+            point = Point.measurement(table)
+                    .time(time, TimeUnit.MILLISECONDS)
+                    .tag(tags)
+                    .fields(fields)
+                    .build();
+        } catch (Exception e)
+        {
+            Logging.error(e, TAG);
+            throw e;
+        }
+        return point;
     }
 
 }
