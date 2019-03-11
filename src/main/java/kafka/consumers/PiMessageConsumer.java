@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, String> {
     private static final String TAG = "PiMessageConsumer";
     public PiMessageConsumer(){
-        super("http://localhost:8086","python-input-alt", Config.getLocalBootstrapServersConfig(), "PiMessageConsumer");
+        super("http://localhost:8086","python-input-new", Config.getLocalBootstrapServersConfig(), "PiMessageConsumer");
     }
 
     public void run(){
