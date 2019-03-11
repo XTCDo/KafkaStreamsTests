@@ -10,6 +10,7 @@ import util.Logging;
 import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, String> {
     private static final String TAG = "PiMessageConsumer";
@@ -69,6 +70,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
          */
         long time = Math.round((double) inputMap.get("time"));
         Map tags = (Map) inputMap.get("tags");
+        tags.replaceAll((key, value)-> String.valueOf(value));
         Map fields = (Map) inputMap.get("fields");
         Point point = null;
         try {
