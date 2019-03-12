@@ -41,4 +41,5 @@ public class Status {
     public List<Statistics> getStatistics() {
         return statistics;
     }
+
 }

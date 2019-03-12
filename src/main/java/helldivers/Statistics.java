@@ -95,7 +95,7 @@ public class Statistics {
 
     /**
      * Constructor for Statistics that takes a Map containing values returned by the helldivers API
-     * @param values
+     * @param values a map containing the statistics
      */
     public Statistics(Map values){
         this(
