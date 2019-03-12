@@ -1,9 +1,10 @@
 package helldivers;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Status {
+public class Status implements Serializable {
     private Map httpApiResponseObject;
     private List<CampaignStatus> campaignStatuses;
     private List<DefendEvent> defendEvents;
