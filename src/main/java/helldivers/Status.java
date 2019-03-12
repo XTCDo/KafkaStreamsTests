@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Status implements Serializable {
+public class Status {
     private Map httpApiResponseObject;
     private List<CampaignStatus> campaignStatuses;
     private List<DefendEvent> defendEvents;

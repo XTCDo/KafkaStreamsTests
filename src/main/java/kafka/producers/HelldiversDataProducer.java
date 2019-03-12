@@ -1,6 +1,7 @@
 package kafka.producers;
 
 
+import com.google.gson.Gson;
 import helldivers.Status;
 import kafka.generic.producers.GenericThreadedProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -19,12 +20,12 @@ public class HelldiversDataProducer extends GenericThreadedProducer<String, Stri
         Thread producerThread = new Thread(() -> {
             Logging.log(Level.INFO, "starting producer on topic: "+getTopic(),TAG);
             Status status = new Status();
+            Gson gson = new Gson();
             while(true){
                 try{
                     // fetch info
                     status.refresh();
-                    ProducerRecord<String, Status> statRecord = new ProducerRecord<String, Status>(getTopic(),status);
-                    getProducer().send(statRecord);
+                    getProducer().send(new ProducerRecord<String, String>(getTopic(),gson.toJson(status)));
 
                     Thread.sleep(1000*60); // sleep for one minute
                 } catch (Exception e){
