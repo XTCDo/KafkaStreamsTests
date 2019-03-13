@@ -29,7 +29,7 @@ public class VaillantConsumer extends GenericThreadedInfluxConsumer<String, Stri
 
                     for(ConsumerRecord<String, String> record : records){
                         //Logging.log(record.toString(), TAG);
-                        Map vaillantData = gson.fromJson(record.toString(), Map.class);
+                        Map vaillantData = gson.fromJson(record.value().toString(), Map.class);
                         Logging.log(vaillantData.toString());
                     }
                 }

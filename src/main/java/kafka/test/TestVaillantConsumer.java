@@ -10,6 +10,5 @@ public class TestVaillantConsumer {
         Logging.log("Starting VaillantConsumer test", TAG);
         VaillantConsumer vc = new VaillantConsumer();
         vc.run();
-        Logging.log("Done testing VaillantConsumer", TAG);
     }
 }
