@@ -12,7 +12,7 @@ import util.Logging;
 import java.util.Map;
 
 public class TestHelldiversStream {
-    private static final String TAG = "TestHelldiversStream"";
+    private static final String TAG = "TestHelldiversStream";
     public void main(String ...args){
         // decleare topology
         StreamsBuilder builder = new StreamsBuilder();
