@@ -28,7 +28,7 @@ public class HelldiversDataProducer extends GenericThreadedProducer<String, Stri
                 try{
                     // fetch info
                     status.refresh();
-                    Logging.log("sending data at "+ new SimpleDateFormat("hh:mm:SS").format(new Date()) );
+                    Logging.log("sending data at "+ new SimpleDateFormat("hh:mm:SS").format(new Date()) ,TAG);
                     getProducer().send(new ProducerRecord<String, String>(getTopic(),gson.toJson(status)));
 
                     Thread.sleep(1000*60); // sleep for one minute
