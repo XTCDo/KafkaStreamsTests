@@ -8,6 +8,8 @@ import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.processor.RecordContext;
+import org.apache.kafka.streams.processor.TopicNameExtractor;
 import util.Config;
 import util.Logging;
 
@@ -45,11 +47,14 @@ public class TestHelldiversStream {
             });
 
         Logging.debug("routing to sinks", TAG);
+
+        TopicNameExtractor<String, String> keyFetcher = (key, value, recordContext) -> key;
+        
         // send to dynamic topics
         tagged
                 .filterNot((key, object)-> object == null)
                 .mapValues(object-> gson.toJson(object))
-                .to((key, jsonObj, recordContext) -> key);
+                .to(keyFetcher);
 
         final Topology topology = builder.build();
         Logging.log("topology constructed: "+topology.describe(), TAG);
@@ -62,3 +67,5 @@ public class TestHelldiversStream {
     }
 
 }
+
+
