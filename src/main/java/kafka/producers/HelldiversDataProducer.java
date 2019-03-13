@@ -8,6 +8,9 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.record.Record;
 import util.Logging;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.logging.Level;
 
 public class HelldiversDataProducer extends GenericThreadedProducer<String, String> {
@@ -25,6 +28,7 @@ public class HelldiversDataProducer extends GenericThreadedProducer<String, Stri
                 try{
                     // fetch info
                     status.refresh();
+                    Logging.log("sending data at "+ new SimpleDateFormat("hh:mm:SS").format(new Date()) );
                     getProducer().send(new ProducerRecord<String, String>(getTopic(),gson.toJson(status)));
 
                     Thread.sleep(1000*60); // sleep for one minute
