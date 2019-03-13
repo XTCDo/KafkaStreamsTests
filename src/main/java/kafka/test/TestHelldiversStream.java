@@ -34,7 +34,7 @@ public class TestHelldiversStream {
 
         // process source
         KStream<String, Object> tagged = source
-            .mapValues(value -> new Status((Map) gson.fromJson(value, Status.class)))// process string to Status object
+            .mapValues(value -> gson.fromJson(value, Status.class))// process string to Status object
             .flatMap((key, status)->{
             List<KeyValue<String, Object>> result = new LinkedList<>();
             result.add(KeyValue.pair("helldivers-campaign_status", status.getCampaignStatuses())); // campaign_status
