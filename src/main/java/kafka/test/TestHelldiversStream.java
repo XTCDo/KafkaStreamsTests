@@ -1,22 +1,19 @@
 package kafka.test;
 
 import com.google.gson.Gson;
-import helldivers.*;
+import helldivers.Status;
 import kafka.generic.streams.GenericStream;
-import org.apache.kafka.common.metrics.Stat;
-import org.apache.kafka.common.record.Record;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.ValueMapper;
-import org.apache.kafka.streams.processor.TopicNameExtractor;
-import sun.rmi.runtime.Log;
 import util.Config;
 import util.Logging;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class TestHelldiversStream {
     private static final String TAG = "TestHelldiversStream";
@@ -37,7 +34,7 @@ public class TestHelldiversStream {
 
         // process source
         KStream<String, Object> tagged = source
-            .mapValues(value -> new Status(gson.fromJson(value, Map.class))) // process from string to map to Status object
+            .mapValues(value -> new Status((Map) gson.fromJson(value, Map.class).get("httpApiResponseObject"))) // process from string to map to Status object
             // then re-map to their respective variables
             .flatMap((key, status)->{
             List<KeyValue<String, Object>> result = new LinkedList<>();
