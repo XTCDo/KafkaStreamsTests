@@ -11,7 +11,7 @@ import java.time.Duration;
 public class VaillantConsumer extends GenericThreadedInfluxConsumer<String, String> {
     static final String topic = "vaillant-input";
     static final String influxURL = "http://localhost:8086";
-
+    static final String TAG = "VaillantConsumer";
     public VaillantConsumer(){
         super(influxURL, topic, Config.getLocalBootstrapServersConfig(), "VaillantConsumer");
     }
@@ -23,13 +23,13 @@ public class VaillantConsumer extends GenericThreadedInfluxConsumer<String, Stri
                     ConsumerRecords<String, String> records = getConsumer().poll(Duration.ofMillis(10));
 
                     for(ConsumerRecord<String, String> record : records){
-                        Logging.log(record.toString());
+                        Logging.log(record.toString(), TAG);
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 getInfluxDAO();
-                Logging.error(e);
+                Logging.error(e, TAG);
             }
         });
         super.run(consumerThread);
