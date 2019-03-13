@@ -46,7 +46,10 @@ public class TestHelldiversStream {
 
         Logging.debug("routing to sinks", TAG);
         // send to dynamic topics
-        tagged.to((key, val, recordContext) -> key);
+        tagged
+                .filterNot((key, object)-> object == null)
+                .mapValues(object-> gson.toJson(object))
+                .to((key, jsonObj, recordContext) -> key);
 
         final Topology topology = builder.build();
         Logging.log("topology constructed: "+topology.describe(), TAG);
