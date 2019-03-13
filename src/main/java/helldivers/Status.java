@@ -18,8 +18,8 @@ public class Status {
     public Status(Map fullStatus){
         this.httpApiResponseObject = fullStatus;
         this.campaignStatuses = HelldiversAPIWrapper.getCampaignStatus(httpApiResponseObject.get("campaign_status"));
-        this.defendEvents = HelldiversAPIWrapper.getDefendEvents(httpApiResponseObject.get("defend_event"));
-        this.attackEvents = HelldiversAPIWrapper.getAttackEvents(httpApiResponseObject.get("attack_event"));
+        this.defendEvents = HelldiversAPIWrapper.getDefendEvents(httpApiResponseObject.get("defend_event"));//potentially broken, check topic helldivers-status
+        this.attackEvents = HelldiversAPIWrapper.getAttackEvents(httpApiResponseObject.get("attack_event"));// same as above
         this.statistics = HelldiversAPIWrapper.getStatistics(httpApiResponseObject.get("statistics"));
     }
 

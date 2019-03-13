@@ -49,7 +49,7 @@ public class TestHelldiversStream {
         Logging.debug("routing to sinks", TAG);
 
         TopicNameExtractor<String, String> keyFetcher = (key, value, recordContext) -> key;
-        
+
         // send to dynamic topics
         tagged
                 .filterNot((key, object)-> object == null)
