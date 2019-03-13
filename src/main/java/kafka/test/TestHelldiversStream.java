@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class TestHelldiversStream {
     private static final String TAG = "TestHelldiversStream";
-    public void main(String ...args){
+    public static void main(String ...args){
         // decleare topology
         StreamsBuilder builder = new StreamsBuilder();
         Gson gson = new Gson();
