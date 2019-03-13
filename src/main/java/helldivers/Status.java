@@ -15,6 +15,14 @@ public class Status {
         refresh();
     }
 
+    public Status(Map fullStatus){
+        this.httpApiResponseObject = fullStatus;
+        this.campaignStatuses = HelldiversAPIWrapper.getCampaignStatus(httpApiResponseObject.get("campaign_status"));
+        this.defendEvents = HelldiversAPIWrapper.getDefendEvents(httpApiResponseObject.get("defend_event"));
+        this.attackEvents = HelldiversAPIWrapper.getAttackEvents(httpApiResponseObject.get("attack_event"));
+        this.statistics = HelldiversAPIWrapper.getStatistics(httpApiResponseObject.get("statistics"));
+    }
+
     public void refresh(){
         this.httpApiResponseObject = HelldiversAPIWrapper.getStatus();
         this.campaignStatuses = HelldiversAPIWrapper.getCampaignStatus(httpApiResponseObject.get("campaign_status"));
