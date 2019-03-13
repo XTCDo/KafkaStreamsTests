@@ -12,6 +12,7 @@ import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.ValueMapper;
 import org.apache.kafka.streams.processor.TopicNameExtractor;
+import sun.rmi.runtime.Log;
 import util.Config;
 import util.Logging;
 
@@ -20,14 +21,19 @@ import java.util.*;
 public class TestHelldiversStream {
     private static final String TAG = "TestHelldiversStream";
     public static void main(String ...args){
+
         // declare topology
         StreamsBuilder builder = new StreamsBuilder();
         Gson gson = new Gson();
 
         // set up topology
+        Logging.debug("declaring topology",TAG);
 
         // get source
+        Logging.debug("fetching source",TAG);
         KStream<String, String> source = builder.stream("helldivers-status");
+
+        Logging.debug("declaring processors",TAG);
 
         // process source
         KStream<String, Object> tagged = source
@@ -42,9 +48,10 @@ public class TestHelldiversStream {
             return result;
             });
 
+        Logging.debug("routing to sinks", TAG);
         // send to dynamic topics
         tagged.to((key, val, recordContext) -> key);
-        
+
         final Topology topology = builder.build();
         Logging.log("topology constructed: "+topology.describe(), TAG);
         // create a generic stream with topology
