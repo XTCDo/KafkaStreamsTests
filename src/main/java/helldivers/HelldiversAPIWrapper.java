@@ -50,29 +50,11 @@ public class HelldiversAPIWrapper {
     public static Map getStatus() {
         final String TAG = "HelldiversAPIWrapper";
         try {
-            URL url = new URL("https://api.helldiversgame.com/1.0/");
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("action", "get_campaign_status");
-            connection.setDoOutput(true);
-            DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
-            outputStream.writeBytes(ParameterStringBuilder.getParamsString(parameters));
-            outputStream.flush();
-            outputStream.close();
-
-            BufferedReader in = new BufferedReader(
-                new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuffer content = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-
+            String apiResponseJSONString = getAPIResponse();
             Gson gson = new Gson();
-            Map apiResponse = gson.fromJson(content.toString(), Map.class);
-            in.close();
+            Map apiResponse = gson.fromJson(apiResponseJSONString, Map.class);
             return apiResponse;
+
         } catch (Exception e) {
             Logging.error(e, TAG);
             return null;
