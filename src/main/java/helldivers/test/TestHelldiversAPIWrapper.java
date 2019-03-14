@@ -1,6 +1,7 @@
 package helldivers.test;
 
 import helldivers.*;
+import sun.rmi.runtime.Log;
 import util.Logging;
 
 import java.util.HashMap;
@@ -61,9 +62,32 @@ public class TestHelldiversAPIWrapper {
         List<DefendEvent> defendEventsListFromWrapper =
             HelldiversAPIWrapper.getDefendEvents();
 
-        Logging.log(campaignStatusListFromWrapper.toString(), TAG);
-        Logging.log(statisticsListFromWrapper.toString(), TAG);
-        Logging.log(attackEventsListFromWrapper.toString(), TAG);
-        Logging.log(defendEventsListFromWrapper.toString(), TAG);
+        try {
+            Logging.log(campaignStatusListFromWrapper.toString(), TAG);
+        } catch (Exception e) {
+            Logging.error(e, TAG);
+            Logging.log(Level.SEVERE, "No CampaignStatus", TAG);
+        }
+
+        try {
+            Logging.log(statisticsListFromWrapper.toString(), TAG);
+        } catch (Exception e) {
+            Logging.error(e, TAG);
+            Logging.log(Level.SEVERE, "No Statistics", TAG);
+        }
+
+        try {
+            Logging.log(attackEventsListFromWrapper.toString(), TAG);
+        } catch (Exception e) {
+            Logging.error(e, TAG);
+            Logging.log(Level.SEVERE, "No AttackEvents", TAG);
+        }
+
+        try {
+            Logging.log(defendEventsListFromWrapper.toString(), TAG);
+        } catch (Exception e) {
+            Logging.error(e, TAG);
+            Logging.log(Level.SEVERE, "No DefendEvents",  TAG);
+        }
     }
 }
