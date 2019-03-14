@@ -18,8 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 public class TestHelldiversStream {
+
     private static final String TAG = "TestHelldiversStream";
-    public static void main(String ...args) {
+
+    public static void main(String... args) {
 
         // declare topology
         StreamsBuilder builder = new StreamsBuilder();
@@ -36,13 +38,18 @@ public class TestHelldiversStream {
 
         // process source
         KStream<String, Object> tagged = source
-            .mapValues(value -> gson.fromJson(value, Status.class))// process string to Status object
+            .mapValues(
+                value -> gson.fromJson(value, Status.class))// process string to Status object
             .flatMap((key, status) -> {
-            List<KeyValue<String, Object>> result = new LinkedList<>();
-                result.add(KeyValue.pair("helldivers-campaign_status", status.getCampaignStatuses())); // campaign_status
-                result.add(KeyValue.pair("helldivers-attack_events", status.getAttackEvents())); // attack events
-                result.add(KeyValue.pair("helldivers-defend_events", status.getDefendEvents())); // defend events
-                result.add(KeyValue.pair("helldivers-statistics", status.getStatistics())); // statistics
+                List<KeyValue<String, Object>> result = new LinkedList<>();
+                result.add(KeyValue.pair("helldivers-campaign_status",
+                    status.getCampaignStatuses())); // campaign_status
+                result.add(KeyValue
+                    .pair("helldivers-attack_events", status.getAttackEvents())); // attack events
+                result.add(KeyValue
+                    .pair("helldivers-defend_events", status.getDefendEvents())); // defend events
+                result.add(
+                    KeyValue.pair("helldivers-statistics", status.getStatistics())); // statistics
                 return result;
             });
 
@@ -52,14 +59,15 @@ public class TestHelldiversStream {
 
         // send to dynamic topics
         tagged.filterNot((key, object) -> object == null)
-                .mapValues(object -> gson.toJson(object))
-                .to(keyFetcher);
+            .mapValues(object -> gson.toJson(object))
+            .to(keyFetcher);
 
         final Topology topology = builder.build();
         Logging.log("topology constructed: " + topology.describe(), TAG);
         // create a generic stream with topology
         GenericStream hdStream = new GenericStream("streams-helldivers",
-                Config.getLocalBootstrapServersConfig(), Serdes.StringSerde.class, Serdes.StringSerde.class, topology);
+            Config.getLocalBootstrapServersConfig(), Serdes.StringSerde.class,
+            Serdes.StringSerde.class, topology);
 
         hdStream.run();
     }

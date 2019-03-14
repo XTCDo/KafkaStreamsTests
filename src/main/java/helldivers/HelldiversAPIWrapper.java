@@ -13,9 +13,10 @@ import java.net.URLEncoder;
 import java.util.*;
 
 public class HelldiversAPIWrapper {
+
     // Link to API
     // https://docs.google.com/document/d/11BH152Tx7YpWOlfT69Ad2anG8wwlt6xOE3VO_YHC2mQ/edit#heading=h.trtt0zalsa2
-    public  static String getAPIResponse(){
+    public static String getAPIResponse() {
         final String TAG = "HelldiversAPIWrapper";
         try {
             URL url = new URL("https://api.helldiversgame.com/1.0/");
@@ -29,24 +30,24 @@ public class HelldiversAPIWrapper {
             outputStream.flush();
             outputStream.close();
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader in = new BufferedReader(
+                new InputStreamReader(connection.getInputStream()));
             String inputLine;
             StringBuffer content = new StringBuffer();
-            while((inputLine = in.readLine()) != null){
+            while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
             }
 
             in.close();
             return content.toString();
-        } catch (Exception e){
+        } catch (Exception e) {
             Logging.error(e, TAG);
             return null;
         }
     }
 
 
-
-    public static Map getStatus(){
+    public static Map getStatus() {
         final String TAG = "HelldiversAPIWrapper";
         try {
             URL url = new URL("https://api.helldiversgame.com/1.0/");
@@ -60,10 +61,11 @@ public class HelldiversAPIWrapper {
             outputStream.flush();
             outputStream.close();
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader in = new BufferedReader(
+                new InputStreamReader(connection.getInputStream()));
             String inputLine;
             StringBuffer content = new StringBuffer();
-            while((inputLine = in.readLine()) != null){
+            while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
             }
 
@@ -71,17 +73,17 @@ public class HelldiversAPIWrapper {
             Map apiResponse = gson.fromJson(content.toString(), Map.class);
             in.close();
             return apiResponse;
-        } catch (Exception e){
+        } catch (Exception e) {
             Logging.error(e, TAG);
             return null;
         }
     }
 
-    public static List<Statistics> getStatistics(){
+    public static List<Statistics> getStatistics() {
         return getStatistics(getStatus().get("statistics"));
     }
 
-    public static List<Statistics> getStatistics(Object httpRequestReturnValue){
+    public static List<Statistics> getStatistics(Object httpRequestReturnValue) {
         List<Map> statisticsList = (List) httpRequestReturnValue;//doHTTPRequest().get("statistics");
         List<Statistics> statisticsObjectList = new ArrayList<>();
         statisticsList.forEach(statistics -> {
@@ -91,15 +93,15 @@ public class HelldiversAPIWrapper {
         return statisticsObjectList;
     }
 
-    public static List<CampaignStatus> getCampaignStatus(){
+    public static List<CampaignStatus> getCampaignStatus() {
         return getCampaignStatus(getStatus().get("campaign_status"));
     }
 
-    public static List<CampaignStatus> getCampaignStatus(Object httpRequestReturnValue){
+    public static List<CampaignStatus> getCampaignStatus(Object httpRequestReturnValue) {
         List<Map> campaignStatusList = (List) httpRequestReturnValue;
         List<CampaignStatus> campaignStatusObjectList = new ArrayList<>();
 
-        for(int i = 0; i < campaignStatusList.size(); i++){
+        for (int i = 0; i < campaignStatusList.size(); i++) {
             Map campaignStatus = campaignStatusList.get(i);
             campaignStatus.put("enemy", i);
             campaignStatusObjectList.add(new CampaignStatus(campaignStatus));
@@ -109,19 +111,19 @@ public class HelldiversAPIWrapper {
     }
 
     // todo fix this
-    public static List<AttackEvent> getAttackEvents(){
+    public static List<AttackEvent> getAttackEvents() {
         return getAttackEvents(getStatus().get("attack_events"));
     }
 
     public static List<AttackEvent> getAttackEvents(Object httpRequestReturnValue) {
         Object returnValue = httpRequestReturnValue;
 
-        if (returnValue == null){
+        if (returnValue == null) {
             return null;
         }
-        Logging.log(httpRequestReturnValue.toString(),"getAttackEvents");
+        Logging.log(httpRequestReturnValue.toString(), "getAttackEvents");
         List<AttackEvent> attackEventsObjectList = new ArrayList<>();
-        if (returnValue instanceof Map){
+        if (returnValue instanceof Map) {
             attackEventsObjectList.add(new AttackEvent((Map) returnValue));
         } else {
             List<Map> attackEventsList = (List) returnValue;
@@ -134,7 +136,7 @@ public class HelldiversAPIWrapper {
         return attackEventsObjectList;
     }
 
-    public static List<DefendEvent> getDefendEvents(){
+    public static List<DefendEvent> getDefendEvents() {
         return getDefendEvents(getStatus().get("defend_event"));
     }
 
@@ -146,7 +148,7 @@ public class HelldiversAPIWrapper {
         }
 
         List<DefendEvent> defendEventsObjectList = new ArrayList<>();
-        if (returnValue instanceof Map){
+        if (returnValue instanceof Map) {
             defendEventsObjectList.add(new DefendEvent((Map) returnValue));
         } else {
             List<Map> defendEventsList = (List) returnValue;
@@ -161,8 +163,9 @@ public class HelldiversAPIWrapper {
 }
 
 class ParameterStringBuilder {
+
     public static String getParamsString(Map<String, String> params)
-            throws UnsupportedEncodingException {
+        throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
 
         for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -174,7 +177,7 @@ class ParameterStringBuilder {
 
         String resultString = result.toString();
         return resultString.length() > 0
-                ? resultString.substring(0, resultString.length() - 1)
-                : resultString;
+            ? resultString.substring(0, resultString.length() - 1)
+            : resultString;
     }
 }

@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import java.util.Map;
 
 public class Statistics {
+
     /**
      * Season/war number
      */
@@ -97,33 +98,35 @@ public class Statistics {
 
     /**
      * Constructor for Statistics that takes a Map containing values returned by the helldivers API
+     *
      * @param values a map containing the statistics
      */
-    public Statistics(Map values){
+    public Statistics(Map values) {
         this(
-                (int) Math.round((double) values.get("season")),
-                (long) Math.round((double) values.get("season_duration")),
-                (int) Math.round((double) values.get("enemy")),
-                (int) Math.round((double) values.get("players")),
-                (int) Math.round((double) values.get("total_unique_players")),
-                (int) Math.round((double) values.get("missions")),
-                (int) Math.round((double) values.get("successful_missions")),
-                (int) Math.round((double) values.get("total_mission_difficulty")),
-                (int) Math.round((double) values.get("completed_planets")),
-                (int) Math.round((double) values.get("defend_events")),
-                (int) Math.round((double) values.get("successful_defend_events")),
-                (int) Math.round((double) values.get("attack_events")),
-                (int) Math.round((double) values.get("successful_attack_events")),
-                (int) Math.round((double) values.get("deaths")),
-                (int) Math.round((double) values.get("accidentals")),
-                (int) Math.round((double) values.get("shots")),
-                (int) Math.round((double) values.get("hits")),
-                (int) Math.round((double) values.get("kills"))
+            (int) Math.round((double) values.get("season")),
+            (long) Math.round((double) values.get("season_duration")),
+            (int) Math.round((double) values.get("enemy")),
+            (int) Math.round((double) values.get("players")),
+            (int) Math.round((double) values.get("total_unique_players")),
+            (int) Math.round((double) values.get("missions")),
+            (int) Math.round((double) values.get("successful_missions")),
+            (int) Math.round((double) values.get("total_mission_difficulty")),
+            (int) Math.round((double) values.get("completed_planets")),
+            (int) Math.round((double) values.get("defend_events")),
+            (int) Math.round((double) values.get("successful_defend_events")),
+            (int) Math.round((double) values.get("attack_events")),
+            (int) Math.round((double) values.get("successful_attack_events")),
+            (int) Math.round((double) values.get("deaths")),
+            (int) Math.round((double) values.get("accidentals")),
+            (int) Math.round((double) values.get("shots")),
+            (int) Math.round((double) values.get("hits")),
+            (int) Math.round((double) values.get("kills"))
         );
     }
 
     /**
      * Regular constructor fo Statistics
+     *
      * @param season Season/war number
      * @param seasonDuration Amount of seconds that the current war has been going on
      * @param enemy The id of the enemy these statistics belong to
@@ -143,10 +146,12 @@ public class Statistics {
      * @param hits Amount of shots fired by players that hit
      * @param kills Amount of enemies killed
      */
-    public Statistics(int season, long seasonDuration, int enemy, int players, int totalUniquePlayers,
-                      int missions, int successfulMissions, int totalMissionDifficulty, int completedPlanets, int defendEvents,
-                      int successfulDefendEvents, int attackEvents, int successfulAttackEvents,
-                      int deaths, int accidentals, long shots, long hits, int kills){
+    public Statistics(int season, long seasonDuration, int enemy, int players,
+        int totalUniquePlayers,
+        int missions, int successfulMissions, int totalMissionDifficulty, int completedPlanets,
+        int defendEvents,
+        int successfulDefendEvents, int attackEvents, int successfulAttackEvents,
+        int deaths, int accidentals, long shots, long hits, int kills) {
         this.season = season;
         this.seasonDuration = seasonDuration;
         this.enemy = enemy;
@@ -169,41 +174,45 @@ public class Statistics {
 
     /**
      * Returns the name of the enemy that is being attacked in this AttackEvent
+     *
      * @return the name of the enemy that is being attacked in this AttackEvent
      */
-    public String getEnemyName(){
-        String[] enemies = new String[] {"Bugs", "Cyborgs", "Illuminate"};
+    public String getEnemyName() {
+        String[] enemies = new String[]{"Bugs", "Cyborgs", "Illuminate"};
         return enemies[getEnemy()];
     }
 
 
     /**
      * Returns a String describing the Statistics
+     *
      * @return a String describing the Statistics
      */
-    public String getDescription(){
+    public String getDescription() {
         StringBuilder description = new StringBuilder();
         description.append(this.toString()).append("\n")
-                .append("Enemy:                    ").append(getEnemyName()).append("\n")
-                .append("War:                      ").append(getSeason()).append("\n")
-                .append("Season duration:          ").append(getSeasonDuration()).append("s\n")
-                .append("Players:                  ").append(getPlayers()).append("\n")
-                .append("Total unique players:     ").append(getTotalUniquePlayers()).append("\n")
-                .append("Missions:                 ").append(getMissions()).append("\n")
-                .append("Successful missions:      ").append(getSuccessfulMissions()).append("\n")
-                .append("Total mission difficulty: ").append(getTotalMissionDifficulty()).append("\n")
-                .append("Completed planets:        ").append(getCompletedPlanets()).append("\n")
-                .append("Defend events:            ").append(getDefendEvents()).append("\n")
-                .append("Successful defend events: ").append(getSuccessfulDefendEvents()).append("\n")
-                .append("Attack events:            ").append(getAttackEvents()).append("\n")
-                .append("Successful attack events: ").append(getSuccessfulAttackEvents()).append("\n")
-                .append("Death:                    ").append(getDeaths()).append("\n")
-                .append("Accidentals:              ").append(getAccidentals()).append("\n")
-                .append("Accidentals %:            ").append(100*getAccidentals()/getDeaths()).append("%\n")
-                .append("Shots fired:              ").append(getShots()).append("\n")
-                .append("Shots hit:                ").append(getHits()).append("\n")
-                .append("Accuracy:                 ").append((100*getHits()/getShots())).append("%\n")
-                .append("Enemies killed:           ").append(getKills()).append("\n");
+            .append("Enemy:                    ").append(getEnemyName()).append("\n")
+            .append("War:                      ").append(getSeason()).append("\n")
+            .append("Season duration:          ").append(getSeasonDuration()).append("s\n")
+            .append("Players:                  ").append(getPlayers()).append("\n")
+            .append("Total unique players:     ").append(getTotalUniquePlayers()).append("\n")
+            .append("Missions:                 ").append(getMissions()).append("\n")
+            .append("Successful missions:      ").append(getSuccessfulMissions()).append("\n")
+            .append("Total mission difficulty: ").append(getTotalMissionDifficulty()).append("\n")
+            .append("Completed planets:        ").append(getCompletedPlanets()).append("\n")
+            .append("Defend events:            ").append(getDefendEvents()).append("\n")
+            .append("Successful defend events: ").append(getSuccessfulDefendEvents()).append("\n")
+            .append("Attack events:            ").append(getAttackEvents()).append("\n")
+            .append("Successful attack events: ").append(getSuccessfulAttackEvents()).append("\n")
+            .append("Death:                    ").append(getDeaths()).append("\n")
+            .append("Accidentals:              ").append(getAccidentals()).append("\n")
+            .append("Accidentals %:            ").append(100 * getAccidentals() / getDeaths())
+            .append("%\n")
+            .append("Shots fired:              ").append(getShots()).append("\n")
+            .append("Shots hit:                ").append(getHits()).append("\n")
+            .append("Accuracy:                 ").append((100 * getHits() / getShots()))
+            .append("%\n")
+            .append("Enemies killed:           ").append(getKills()).append("\n");
         return description.toString();
     }
 
