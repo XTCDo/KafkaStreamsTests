@@ -18,8 +18,8 @@ public class HelldiversAPIWrapper {
     // https://docs.google.com/document/d/11BH152Tx7YpWOlfT69Ad2anG8wwlt6xOE3VO_YHC2mQ/edit#heading=h.trtt0zalsa2
 
     /**
-     * Returns a JSON String containing the response received when performing a POST request to
-     * the Helldivers api server with as sole parameter action with action being get_campaign_status
+     * Returns a JSON String containing the response received when performing a POST request to the
+     * Helldivers api server with as sole parameter action with action being get_campaign_status
      * This JSON string containts the current status of the Helldivers campaign
      *
      * @return A JSON String containing the current status of the Helldivers campaign
@@ -34,10 +34,11 @@ public class HelldiversAPIWrapper {
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestMethod("POST"); // We are using POST methods
 
-            // Create a Map with the parameters to send with the POST request
-            Map<String, String> parameters = new HashMap<>();
-            // Add the sole parameter we want to send
-            parameters.put("action", "get_campaign_status");
+
+            StringBuilder parameterStringBuilder = new StringBuilder();
+            parameterStringBuilder.append(URLEncoder.encode("action", "UTF-8"))
+                .append("=")
+                .append(URLEncoder.encode("get_campaign_status", "UTF-8"));
 
             // This has to be set to true in order to actually send a request body
             // (not all requests have a request body, but ours does)
@@ -49,7 +50,7 @@ public class HelldiversAPIWrapper {
 
             // Write the parameters to the outputStream using the ParameterStringBuilder
             // helper class
-            outputStream.writeBytes(ParameterStringBuilder.getParamsString(parameters));
+            outputStream.writeBytes(parameterStringBuilder.toString());
 
             // Flush the outputStream to our destination
             outputStream.flush();
@@ -59,7 +60,8 @@ public class HelldiversAPIWrapper {
 
             // Use BufferedReader to read the result from our request
             BufferedReader inputStream = new BufferedReader(
-                new InputStreamReader(connection.getInputStream())); // Use inputStream from connection
+                new InputStreamReader(
+                    connection.getInputStream())); // Use inputStream from connection
 
             // Define inputLine as empty String
             String inputLine;
@@ -80,8 +82,8 @@ public class HelldiversAPIWrapper {
     }
 
     /**
-     * Returns a Map that is created by parsing the JSON String returned by getAPIResponse() using gson
-     * This Map contains the current status of the Helldivers campaign
+     * Returns a Map that is created by parsing the JSON String returned by getAPIResponse() using
+     * gson This Map contains the current status of the Helldivers campaign
      *
      * @return A Map containing the current status of the Helldivers campaign
      */
@@ -197,7 +199,6 @@ public class HelldiversAPIWrapper {
 
         // Make an empty List of AttackEvents
         List<DefendEvent> defendEventsObjectList = new ArrayList<>();
-
 
         // If returnValue is a map, that means only a single DefendEvent is present,
         // if that's the case, create that single DefendEvent and add it to the List
