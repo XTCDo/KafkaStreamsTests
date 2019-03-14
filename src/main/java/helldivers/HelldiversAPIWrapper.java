@@ -16,6 +16,14 @@ public class HelldiversAPIWrapper {
 
     // Link to API
     // https://docs.google.com/document/d/11BH152Tx7YpWOlfT69Ad2anG8wwlt6xOE3VO_YHC2mQ/edit#heading=h.trtt0zalsa2
+
+    /**
+     * Returns a JSON String containing the response received when performing a POST request to
+     * the Helldivers api server with as sole parameter action with action being get_campaign_status
+     * This JSON string containts the current status of the Helldivers campaign
+     *
+     * @return A JSON String containing the current status of the Helldivers campaign
+     */
     public static String getAPIResponse() {
         final String TAG = "HelldiversAPIWrapper";
         try {
@@ -64,7 +72,6 @@ public class HelldiversAPIWrapper {
             // Close the inputStream because we dont need it anymore
             inputStream.close();
 
-
             return content.toString();
         } catch (Exception e) {
             Logging.error(e, TAG);
@@ -72,15 +79,23 @@ public class HelldiversAPIWrapper {
         }
     }
 
-
+    /**
+     * Returns a Map that is created by parsing the JSON String returned by getAPIResponse() using gson
+     * This Map contains the current status of the Helldivers campaign
+     *
+     * @return A Map containing the current status of the Helldivers campaign
+     */
     public static Map getStatus() {
         final String TAG = "HelldiversAPIWrapper";
         try {
+            // Get JSON String from the api response
             String apiResponseJSONString = getAPIResponse();
+
+            // Create a Map out of it using gson
             Gson gson = new Gson();
             Map apiResponse = gson.fromJson(apiResponseJSONString, Map.class);
-            return apiResponse;
 
+            return apiResponse;
         } catch (Exception e) {
             Logging.error(e, TAG);
             return null;
