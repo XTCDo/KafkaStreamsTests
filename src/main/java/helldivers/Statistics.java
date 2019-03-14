@@ -204,14 +204,40 @@ public class Statistics {
             .append("Successful attack events: ").append(getSuccessfulAttackEvents()).append("\n")
             .append("Death:                    ").append(getDeaths()).append("\n")
             .append("Accidentals:              ").append(getAccidentals()).append("\n")
-            .append("Accidentals %:            ").append(100 * getAccidentals() / getDeaths())
+            .append("Accidentals %:            ").append(getAccidentals())
             .append("%\n")
             .append("Shots fired:              ").append(getShots()).append("\n")
             .append("Shots hit:                ").append(getHits()).append("\n")
-            .append("Accuracy:                 ").append((100 * getHits() / getShots()))
+            .append("Accuracy:                 ").append(getAccuracy())
             .append("%\n")
             .append("Enemies killed:           ").append(getKills()).append("\n");
         return description.toString();
+    }
+
+    /**
+     * Get accuracy / percentage of shots hit
+     *
+     * @return Accuracy / percentage of shots hit
+     */
+    public double getAccuracy() {
+        if (getShots() == 0) {
+            return 0;
+        } else {
+            return 100 * getHits() / getShots();
+        }
+    }
+
+    /**
+     * Gets amount of deaths attributed to accidentals
+     *
+     * @return Amount of deaths attributed to accidentals
+     */
+    public double getAccidentalsPercentage() {
+        if (getDeaths() == 0) {
+            return 0;
+        } else {
+            return 100 * getAccidentals() / getDeaths();
+        }
     }
 
     /**
