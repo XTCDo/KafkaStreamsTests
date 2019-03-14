@@ -34,13 +34,6 @@ public class HelldiversAPIWrapper {
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestMethod("POST"); // We are using POST methods
 
-            // Create a StringBuilder to create a parameter String
-            // also use URLEncoder to properly encode 'action' and 'get_campaign_status' to UTF-8
-            StringBuilder parameterStringBuilder = new StringBuilder();
-            parameterStringBuilder.append(URLEncoder.encode("action", "UTF-8"))
-                .append("=")
-                .append(URLEncoder.encode("get_campaign_status", "UTF-8"));
-
             // This has to be set to true in order to actually send a request body
             // (not all requests have a request body, but ours does)
             connection.setDoOutput(true);
@@ -48,6 +41,13 @@ public class HelldiversAPIWrapper {
             // Create a DataOutPutStream Object from the OutputStream we are getting from
             // the connection
             DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+
+            // Create a StringBuilder to create a parameter String
+            // also use URLEncoder to properly encode 'action' and 'get_campaign_status' to UTF-8
+            StringBuilder parameterStringBuilder = new StringBuilder();
+            parameterStringBuilder.append(URLEncoder.encode("action", "UTF-8"))
+                .append("=")
+                .append(URLEncoder.encode("get_campaign_status", "UTF-8"));
 
             // Write the parameters to the outputStream using the ParameterStringBuilder
             // helper class
