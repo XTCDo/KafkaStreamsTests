@@ -151,8 +151,8 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<AttackEvent> getAttackEvents(Object httpRequestReturnValue) {
-        // This is probably unneccesary
-        // todo remove this and make sure eveything still works
+        // This is probably unnecessary
+        // todo remove this and make sure everything still works
         Object returnValue = httpRequestReturnValue;
 
         // Check if returnValue is empty, if is: return null
@@ -164,7 +164,10 @@ public class HelldiversAPIWrapper {
         // Make an empty List of AttackEvents
         List<AttackEvent> attackEventsObjectList = new ArrayList<>();
 
-        // todo finish documentation
+        // If returnValue is a map, that means only a single AttackEvent is present,
+        // if that's the case, create that single AttackEvent and add it to the List
+        // Otherwise just iterate through the list, turn every map into an AttackEvent
+        // and add that AttackEvent to attackEventsObjectList
         if (returnValue instanceof Map) {
             attackEventsObjectList.add(new AttackEvent((Map) returnValue));
         } else {
@@ -183,13 +186,23 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<DefendEvent> getDefendEvents(Object httpRequestReturnValue) {
+        // This is probably unnecessary
+        // todo remove this and make sure everything still works
         Object returnValue = httpRequestReturnValue;
 
+        // Check if returnValue is empty, if it is: return null
         if (returnValue == null) {
             return null;
         }
 
+        // Make an empty List of AttackEvents
         List<DefendEvent> defendEventsObjectList = new ArrayList<>();
+
+
+        // If returnValue is a map, that means only a single DefendEvent is present,
+        // if that's the case, create that single DefendEvent and add it to the List
+        // Otherwise just iterate through the list, turn every map into a DefendEvent
+        // and add that DefendEvent to defendEventObjectList
         if (returnValue instanceof Map) {
             defendEventsObjectList.add(new DefendEvent((Map) returnValue));
         } else {
