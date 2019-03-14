@@ -102,9 +102,18 @@ public class HelldiversAPIWrapper {
         }
     }
 
+    // todo change Object to List if that doesn't break anything
+    // todo Make the cooperation between getSomething(Object httpRequestReturnValue) and
+    // todo getSomething() more clear and logical
     public static List<Statistics> getStatistics(Object httpRequestReturnValue) {
-        List<Map> statisticsList = (List) httpRequestReturnValue;//doHTTPRequest().get("statistics");
+        // Turn httpRequestReturnValue into a List of Maps
+        List<Map> statisticsList = (List) httpRequestReturnValue;
+
+        // Make an empty List of Statistics
         List<Statistics> statisticsObjectList = new ArrayList<>();
+
+        // Iterate through the Maps in statisticsList, turn them into a Statistics Object
+        // and store them in statisticsObjectList
         statisticsList.forEach(statistics -> {
             statisticsObjectList.add(new Statistics(statistics));
         });
@@ -117,9 +126,17 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<CampaignStatus> getCampaignStatus(Object httpRequestReturnValue) {
+        // Turn httpRequestReturnValue into a List of Maps
         List<Map> campaignStatusList = (List) httpRequestReturnValue;
+
+        // Make an empty List of CampaignStatuses
         List<CampaignStatus> campaignStatusObjectList = new ArrayList<>();
 
+        // Iterate through the Maps in campaignStatusList, add the index indicating which enemy the
+        // CampaignStatus Object is relevant to to the map and then add it to
+        // campaignStatusObjectList. The reason this is a for int loop and not a for each is that
+        // the enemy factions are always introduced in the same order and thus the index in the list
+        // determines the faction
         for (int i = 0; i < campaignStatusList.size(); i++) {
             Map campaignStatus = campaignStatusList.get(i);
             campaignStatus.put("enemy", i);
@@ -134,13 +151,20 @@ public class HelldiversAPIWrapper {
     }
 
     public static List<AttackEvent> getAttackEvents(Object httpRequestReturnValue) {
+        // This is probably unneccesary
+        // todo remove this and make sure eveything still works
         Object returnValue = httpRequestReturnValue;
 
+        // Check if returnValue is empty, if is: return null
         if (returnValue == null) {
             return null;
         }
         Logging.log(httpRequestReturnValue.toString(), "getAttackEvents");
+
+        // Make an empty List of AttackEvents
         List<AttackEvent> attackEventsObjectList = new ArrayList<>();
+
+        // todo finish documentation
         if (returnValue instanceof Map) {
             attackEventsObjectList.add(new AttackEvent((Map) returnValue));
         } else {
