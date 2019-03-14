@@ -216,6 +216,9 @@ public class Statistics {
 
     /**
      * Get accuracy / percentage of shots hit
+     * Always use this method to get the accuracy, don't calculate it yourself because
+     * sometimes the result of getShots() is 0 when the faction to which the statistics are
+     * related to isn't active yet, resulting in an error by trying to divide by zero
      *
      * @return Accuracy / percentage of shots hit
      */
@@ -229,7 +232,9 @@ public class Statistics {
 
     /**
      * Gets amount of deaths attributed to accidentals
-     *
+     * Always use this method to get the percentage of accidentals, don't calculate it yourself
+     * because sometimes the result of getDeaths() is 0 when the factio nto which the statistics
+     * are related to isn't active yet, resulting in an error by trying to divide by zero
      * @return Amount of deaths attributed to accidentals
      */
     public double getAccidentalsPercentage() {
