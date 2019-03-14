@@ -150,24 +150,24 @@ public class Statistics {
         int defendEvents,
         int successfulDefendEvents, int attackEvents, int successfulAttackEvents,
         int deaths, int accidentals, long shots, long hits, int kills) {
-        this.season = season;
-        this.seasonDuration = seasonDuration;
-        this.enemy = enemy;
-        this.players = players;
-        this.totalUniquePlayers = totalUniquePlayers;
-        this.missions = missions;
-        this.successfulMissions = successfulMissions;
-        this.totalMissionDifficulty = totalMissionDifficulty;
-        this.completedPlanets = completedPlanets;
-        this.defendEvents = defendEvents;
-        this.successfulDefendEvents = successfulDefendEvents;
-        this.attackEvents = attackEvents;
-        this.successfulAttackEvents = successfulAttackEvents;
-        this.deaths = deaths;
-        this.accidentals = accidentals;
-        this.shots = shots;
-        this.hits = hits;
-        this.kills = kills;
+        this.setSeason(season);
+        this.setSeasonDuration(seasonDuration);
+        this.setEnemy(enemy);
+        this.setPlayers(players);
+        this.setTotalUniquePlayers(totalUniquePlayers);
+        this.setMissions(missions);
+        this.setSuccessfulMissions(successfulMissions);
+        this.setTotalMissionDifficulty(totalMissionDifficulty);
+        this.setCompletedPlanets(completedPlanets);
+        this.setDefendEvents(defendEvents);
+        this.setSuccessfulDefendEvents(successfulDefendEvents);
+        this.setAttackEvents(attackEvents);
+        this.setSuccessfulAttackEvents(successfulAttackEvents);
+        this.setDeaths(deaths);
+        this.setAccidentals(accidentals);
+        this.setShots(shots);
+        this.setHits(hits);
+        this.setKills(kills);
     }
 
     /**
@@ -204,7 +204,7 @@ public class Statistics {
             .append("Successful attack events: ").append(getSuccessfulAttackEvents()).append("\n")
             .append("Death:                    ").append(getDeaths()).append("\n")
             .append("Accidentals:              ").append(getAccidentals()).append("\n")
-            .append("Accidentals %:            ").append(getAccidentals())
+            .append("Accidentals %:            ").append(getAccidentalsPercentage())
             .append("%\n")
             .append("Shots fired:              ").append(getShots()).append("\n")
             .append("Shots hit:                ").append(getHits()).append("\n")
@@ -215,10 +215,10 @@ public class Statistics {
     }
 
     /**
-     * Get accuracy / percentage of shots hit
-     * Always use this method to get the accuracy, don't calculate it yourself because
-     * sometimes the result of getShots() is 0 when the faction to which the statistics are
-     * related to isn't active yet, resulting in an error by trying to divide by zero
+     * Get accuracy / percentage of shots hit Always use this method to get the accuracy, don't
+     * calculate it yourself because sometimes the result of getShots() is 0 when the faction to
+     * which the statistics are related to isn't active yet, resulting in an error by trying to
+     * divide by zero
      *
      * @return Accuracy / percentage of shots hit
      */
@@ -231,10 +231,11 @@ public class Statistics {
     }
 
     /**
-     * Gets amount of deaths attributed to accidentals
-     * Always use this method to get the percentage of accidentals, don't calculate it yourself
-     * because sometimes the result of getDeaths() is 0 when the factio nto which the statistics
-     * are related to isn't active yet, resulting in an error by trying to divide by zero
+     * Gets amount of deaths attributed to accidentals Always use this method to get the percentage
+     * of accidentals, don't calculate it yourself because sometimes the result of getDeaths() is 0
+     * when the factio nto which the statistics are related to isn't active yet, resulting in an
+     * error by trying to divide by zero
+     *
      * @return Amount of deaths attributed to accidentals
      */
     public double getAccidentalsPercentage() {
@@ -377,6 +378,10 @@ public class Statistics {
         this.attackEvents = attackEvents;
     }
 
+     /**
+     *
+     * @return
+     */
     public int getSuccessfulAttackEvents() {
         return successfulAttackEvents;
     }
@@ -385,6 +390,9 @@ public class Statistics {
         this.successfulAttackEvents = successfulAttackEvents;
     }
 
+    /**
+     * Amount of player deaths
+     */
     public int getDeaths() {
         return deaths;
     }
@@ -393,6 +401,9 @@ public class Statistics {
         this.deaths = deaths;
     }
 
+    /**
+     * Amount of player-caused deaths
+     */
     public int getAccidentals() {
         return accidentals;
     }
@@ -401,6 +412,9 @@ public class Statistics {
         this.accidentals = accidentals;
     }
 
+    /**
+     * Amount of shots fired by players
+     */
     public long getShots() {
         return shots;
     }
@@ -409,6 +423,9 @@ public class Statistics {
         this.shots = shots;
     }
 
+    /**
+     * Amount of shots fired by players that hit
+     */
     public long getHits() {
         return hits;
     }
@@ -417,6 +434,9 @@ public class Statistics {
         this.hits = hits;
     }
 
+    /**
+     * Amount of enemies killed
+     */
     public int getKills() {
         return kills;
     }
