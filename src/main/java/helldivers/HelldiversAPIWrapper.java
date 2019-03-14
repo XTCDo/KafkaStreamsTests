@@ -110,7 +110,6 @@ public class HelldiversAPIWrapper {
         return campaignStatusObjectList;
     }
 
-    // todo fix this
     public static List<AttackEvent> getAttackEvents() {
         return getAttackEvents(getStatus().get("attack_events"));
     }
