@@ -19,26 +19,52 @@ public class HelldiversAPIWrapper {
     public static String getAPIResponse() {
         final String TAG = "HelldiversAPIWrapper";
         try {
+            // Create URL object from helldivers api url string
             URL url = new URL("https://api.helldiversgame.com/1.0/");
+
+            // Create a HttpsURLConnection object using new URL object
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
+            connection.setRequestMethod("POST"); // We are using POST methods
+
+            // Create a Map with the parameters to send with the POST request
             Map<String, String> parameters = new HashMap<>();
+            // Add the sole parameter we want to send
             parameters.put("action", "get_campaign_status");
+
+            // This has to be set to true in order to actually send a request body
+            // (not all requests have a request body, but ours does)
             connection.setDoOutput(true);
+
+            // Create a DataOutPutStream Object from the OutputStream we are getting from
+            // the connection
             DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+
+            // Write the parameters to the outputStream using the ParameterStringBuilder
+            // helper class
             outputStream.writeBytes(ParameterStringBuilder.getParamsString(parameters));
+
+            // Flush the outputStream to our destination
             outputStream.flush();
+
+            // Close the outputStream because it is no longer needed
             outputStream.close();
 
-            BufferedReader in = new BufferedReader(
-                new InputStreamReader(connection.getInputStream()));
+            // Use BufferedReader to read the result from our request
+            BufferedReader inputStream = new BufferedReader(
+                new InputStreamReader(connection.getInputStream())); // Use inputStream from connection
+
+            // Define inputLine as empty String
             String inputLine;
+            // Create a StringBuffer that will contain the content of the response on our request
             StringBuffer content = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
+            // Fill the buffer with the content from the inputstream
+            while ((inputLine = inputStream.readLine()) != null) {
                 content.append(inputLine);
             }
+            // Close the inputStream because we dont need it anymore
+            inputStream.close();
 
-            in.close();
+
             return content.toString();
         } catch (Exception e) {
             Logging.error(e, TAG);
