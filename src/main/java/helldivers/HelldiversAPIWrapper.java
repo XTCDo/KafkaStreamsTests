@@ -102,10 +102,6 @@ public class HelldiversAPIWrapper {
         }
     }
 
-    public static List<Statistics> getStatistics() {
-        return getStatistics(getStatus().get("statistics"));
-    }
-
     public static List<Statistics> getStatistics(Object httpRequestReturnValue) {
         List<Map> statisticsList = (List) httpRequestReturnValue;//doHTTPRequest().get("statistics");
         List<Statistics> statisticsObjectList = new ArrayList<>();
@@ -116,8 +112,8 @@ public class HelldiversAPIWrapper {
         return statisticsObjectList;
     }
 
-    public static List<CampaignStatus> getCampaignStatus() {
-        return getCampaignStatus(getStatus().get("campaign_status"));
+    public static List<Statistics> getStatistics() {
+        return getStatistics(getStatus().get("statistics"));
     }
 
     public static List<CampaignStatus> getCampaignStatus(Object httpRequestReturnValue) {
@@ -133,8 +129,8 @@ public class HelldiversAPIWrapper {
         return campaignStatusObjectList;
     }
 
-    public static List<AttackEvent> getAttackEvents() {
-        return getAttackEvents(getStatus().get("attack_events"));
+    public static List<CampaignStatus> getCampaignStatus() {
+        return getCampaignStatus(getStatus().get("campaign_status"));
     }
 
     public static List<AttackEvent> getAttackEvents(Object httpRequestReturnValue) {
@@ -158,8 +154,8 @@ public class HelldiversAPIWrapper {
         return attackEventsObjectList;
     }
 
-    public static List<DefendEvent> getDefendEvents() {
-        return getDefendEvents(getStatus().get("defend_event"));
+    public static List<AttackEvent> getAttackEvents() {
+        return getAttackEvents(getStatus().get("attack_events"));
     }
 
     public static List<DefendEvent> getDefendEvents(Object httpRequestReturnValue) {
@@ -180,6 +176,10 @@ public class HelldiversAPIWrapper {
             });
         }
         return defendEventsObjectList;
+    }
+
+    public static List<DefendEvent> getDefendEvents() {
+        return getDefendEvents(getStatus().get("defend_event"));
     }
 
 }
