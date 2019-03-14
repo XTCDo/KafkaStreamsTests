@@ -34,7 +34,8 @@ public class HelldiversAPIWrapper {
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestMethod("POST"); // We are using POST methods
 
-
+            // Create a StringBuilder to create a parameter String
+            // also use URLEncoder to properly encode 'action' and 'get_campaign_status' to UTF-8
             StringBuilder parameterStringBuilder = new StringBuilder();
             parameterStringBuilder.append(URLEncoder.encode("action", "UTF-8"))
                 .append("=")
