@@ -12,6 +12,8 @@ public class TestHelldiversAPIWrapper {
     public static void main(String[] args){
         final String TAG = "TestHelldiversAPIWrapper";
 
+        Logging.log("Tests using new Status()", TAG);
+
         Logging.log(HelldiversAPIWrapper.getAPIResponse(), TAG);
 
         Status status = new Status();
@@ -47,5 +49,21 @@ public class TestHelldiversAPIWrapper {
             Logging.error(e, TAG);
             Logging.log(Level.SEVERE,"No Statistics", TAG);
         }
+
+        Logging.log("Tests for fixing weird attackevents behaviour", TAG);
+
+        List<CampaignStatus> campaignStatusListFromWrapper =
+            HelldiversAPIWrapper.getCampaignStatus();
+        List<Statistics> statisticsListFromWrapper =
+            HelldiversAPIWrapper.getStatistics();
+        List<AttackEvent> attackEventsListFromWrapper =
+            HelldiversAPIWrapper.getAttackEvents();
+        List<DefendEvent> defendEventsListFromWrapper =
+            HelldiversAPIWrapper.getDefendEvents();
+
+        Logging.log(campaignStatusListFromWrapper.toString(), TAG);
+        Logging.log(statisticsListFromWrapper.toString(), TAG);
+        Logging.log(attackEventsListFromWrapper.toString(), TAG);
+        Logging.log(defendEventsListFromWrapper.toString(), TAG);
     }
 }
