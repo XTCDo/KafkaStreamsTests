@@ -5,11 +5,9 @@ import com.google.gson.Gson;
 import helldivers.Status;
 import kafka.generic.producers.GenericThreadedProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.record.Record;
 import util.Logging;
 
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.logging.Level;
 

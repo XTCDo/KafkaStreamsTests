@@ -8,14 +8,12 @@ import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.processor.RecordContext;
 import org.apache.kafka.streams.processor.TopicNameExtractor;
 import util.Config;
 import util.Logging;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class TestHelldiversStream {
 
