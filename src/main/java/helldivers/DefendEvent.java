@@ -119,7 +119,8 @@ public class DefendEvent {
                 .append("Region      ").append(getRegion()).append("\n")
                 .append("Points:     ").append(getPoints()).append("\n")
                 .append("Points Max: ").append(getPointsMax()).append("\n")
-                .append("Event id:   ").append(getEventId());
+                .append("Event id:   ").append(getEventId())
+                .append("\n");
         return description.toString();
     }
 
