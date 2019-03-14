@@ -25,11 +25,6 @@ public class AttackEvent {
     private long endTime;
 
     /**
-     * Id of the region in which the planet that is being attacked lies
-     */
-    private int region;
-
-    /**
      * Id of the enemy on the attacked planet
      */
     private int enemy;
@@ -72,7 +67,6 @@ public class AttackEvent {
                 (int) Math.round((double) values.get("event_id")),
                 (long) Math.round((double) values.get("start_time")),
                 (long) Math.round((double) values.get("end_time")),
-                (int) Math.round((double) values.get("region")),
                 (int) Math.round((double) values.get("enemy")),
                 (int) Math.round((double) values.get("points")),
                 (int) Math.round((double) values.get("points_max")),
@@ -88,7 +82,6 @@ public class AttackEvent {
      * @param eventId Attack event id, presumed to be equal to the total amount of attack events minus 1
      * @param startTime UNIX Timestamp of when the attack event started
      * @param endTime UNIX Timestamp of when the attack event will end and be lost if the points requirement is not met
-     * @param region Id of the region in which the planet that is being attacked lies
      * @param enemy Current amount of points that the players have gained
      * @param points Current amount of points that the players have gained
      * @param pointsMax Amount of points needed for the attack event to be successful
@@ -98,13 +91,12 @@ public class AttackEvent {
      *                       the time the attack event started
      * @param maxEventId Unsure what this value is
      */
-    public AttackEvent(int season, int eventId, long startTime, long endTime, int region, int enemy, int points, int pointsMax,
+    public AttackEvent(int season, int eventId, long startTime, long endTime, int enemy, int points, int pointsMax,
                        String status, int playersAtStart, int maxEventId){
         this.season = season;
         this.eventId = eventId;
         this.endTime = endTime;
         this.startTime = startTime;
-        this.region = region;
         this.enemy = enemy;
         this.points = points;
         this.pointsMax = pointsMax;
@@ -133,7 +125,6 @@ public class AttackEvent {
                 .append("Status:           ").append(getStatus()).append("\n")
                 .append("Start time:       ").append(new Date(getStartTime()*1000)).append("\n")
                 .append("End time:         ").append(new Date(getEndTime()*1000)).append("\n")
-                .append("Region:           ").append(getRegion()).append("\n")
                 .append("Points:           ").append(getPoints()).append("\n")
                 .append("PointsMax:        ").append(getPointsMax()).append("\n")
                 .append("Players At Start: ").append(getPlayersAtStart()).append("\n")
@@ -173,17 +164,6 @@ public class AttackEvent {
 
     public void setEndTime(long endTime) {
         this.endTime = endTime;
-    }
-
-    /**
-     * Id of the region in which the planet that is being attacked lies
-     */
-    public int getRegion() {
-        return region;
-    }
-
-    public void setRegion(int region) {
-        this.region = region;
     }
 
     /**
