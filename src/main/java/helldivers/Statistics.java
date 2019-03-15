@@ -3,6 +3,7 @@ package helldivers;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import util.MapUtils;
 
 public class Statistics {
 
@@ -102,21 +103,20 @@ public class Statistics {
      * @param values a map containing the statistics
      */
     public Statistics(Map values) {
-
         this(
             (int) Math.round((double) values.get("season")),
-            (int) Math.round((double) (values.containsKey("season_duration") ? values.get("season_duration") : values.get("seasonDuration"))),
+            (int) Math.round((double) MapUtils.safeGet(values,"season_duration")),
             (int) Math.round((double) values.get("enemy")),
             (int) Math.round((double) values.get("players")),
-            (int) Math.round((double) values.get("total_unique_players")),
+            (int) Math.round((double) MapUtils.safeGet(values,"total_unique_players")),
             (int) Math.round((double) values.get("missions")),
-            (int) Math.round((double) values.get("successful_missions")),
-            (int) Math.round((double) values.get("total_mission_difficulty")),
-            (int) Math.round((double) values.get("completed_planets")),
-            (int) Math.round((double) values.get("defend_events")),
-            (int) Math.round((double) values.get("successful_defend_events")),
-            (int) Math.round((double) values.get("attack_events")),
-            (int) Math.round((double) values.get("successful_attack_events")),
+            (int) Math.round((double) MapUtils.safeGet(values,"successful_missions")),
+            (int) Math.round((double) MapUtils.safeGet(values,"total_mission_difficulty")),
+            (int) Math.round((double) MapUtils.safeGet(values,"completed_planets")),
+            (int) Math.round((double) MapUtils.safeGet(values,"defend_events")),
+            (int) Math.round((double) MapUtils.safeGet(values,"successful_defend_events")),
+            (int) Math.round((double) MapUtils.safeGet(values,"attack_events")),
+            (int) Math.round((double) MapUtils.safeGet(values,"successful_attack_events")),
             (int) Math.round((double) values.get("deaths")),
             (int) Math.round((double) values.get("accidentals")),
             (int) Math.round((double) values.get("shots")),
@@ -125,16 +125,7 @@ public class Statistics {
         );
     }
 
-    private String snakeCaseToCamelCase(String snake){
-        Pattern pattern = Pattern.compile("_([a-zA-z])");
-        Matcher matcher = pattern.matcher(snake);
-        StringBuffer stringBuffer = new StringBuffer();
-        while (matcher.find()) {
-            matcher.appendReplacement(stringBuffer, matcher.group(1).toUpperCase());
-        }
-        matcher.appendTail(stringBuffer);
-        return stringBuffer.toString();
-    }
+
 
     /**
      * Regular constructor fo Statistics
