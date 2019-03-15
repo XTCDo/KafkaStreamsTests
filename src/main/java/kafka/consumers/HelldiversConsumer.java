@@ -30,8 +30,7 @@ public class HelldiversConsumer extends GenericThreadedConsumer {
                         .poll(Duration.ofMillis(10));
 
                     for (ConsumerRecord<String, String> record : records) {
-                        //Logging.log(record.value(), TAG);
-                        List<Map> statisticsList = gson.fromJson(record.value().toString(), List.class);
+                        List<Map> statisticsList = gson.fromJson(record.value(), List.class);
                         for (Map statistics : statisticsList) {
                             Statistics statisticsObject = new Statistics(statistics);
                             Logging.log(statisticsObject.getDescription(), TAG);
