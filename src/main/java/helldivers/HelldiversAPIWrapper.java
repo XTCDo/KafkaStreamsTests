@@ -118,6 +118,7 @@ public class HelldiversAPIWrapper {
         // Iterate through the Maps in statisticsList, turn them into a Statistics Object
         // and store them in statisticsObjectList
         statisticsList.forEach(statistics -> {
+            statistics.put("timeStamp", System.currentTimeMillis());
             statisticsObjectList.add(new Statistics(statistics));
         });
 

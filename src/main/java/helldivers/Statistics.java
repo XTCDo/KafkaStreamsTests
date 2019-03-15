@@ -1,12 +1,16 @@
 package helldivers;
 
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
 import org.influxdb.dto.Point;
 import util.MapUtils;
 
 public class Statistics {
+
+    /**
+     * The time at which this measurement was made
+     */
+    private long timeStamp;
 
     /**
      * Season/war number
@@ -105,6 +109,7 @@ public class Statistics {
      */
     public Statistics(Map values) {
         this(
+            (long) Math.round((double) values.get("timeStamp")),
             (int) Math.round((double) values.get("season")),
             (int) Math.round((double) MapUtils.safeGet(values,"season_duration")),
             (int) Math.round((double) values.get("enemy")),
@@ -128,6 +133,7 @@ public class Statistics {
 
     public Point toPoint() {
         Point point = Point.measurement("helldivers-statistics")
+            .time(getTimeStamp(), TimeUnit.MILLISECONDS)
             .tag("season", String.valueOf(getSeason()))
             .tag("enemy", getEnemyName())
             .addField("season_duration", getSeasonDuration())
@@ -173,12 +179,13 @@ public class Statistics {
      * @param hits Amount of shots fired by players that hit
      * @param kills Amount of enemies killed
      */
-    public Statistics(int season, long seasonDuration, int enemy, int players,
+    public Statistics(long timeStamp, int season, long seasonDuration, int enemy, int players,
         int totalUniquePlayers,
         int missions, int successfulMissions, int totalMissionDifficulty, int completedPlanets,
         int defendEvents,
         int successfulDefendEvents, int attackEvents, int successfulAttackEvents,
         int deaths, int accidentals, long shots, long hits, int kills) {
+        this.setTimeStamp(timeStamp);
         this.setSeason(season);
         this.setSeasonDuration(seasonDuration);
         this.setEnemy(enemy);
@@ -472,5 +479,16 @@ public class Statistics {
 
     public void setKills(int kills) {
         this.kills = kills;
+    }
+
+    /**
+     * The time at which this measurement was made
+     */
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }
