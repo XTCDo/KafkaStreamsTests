@@ -1,6 +1,8 @@
 package helldivers;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Statistics {
 
@@ -100,9 +102,10 @@ public class Statistics {
      * @param values a map containing the statistics
      */
     public Statistics(Map values) {
+
         this(
             (int) Math.round((double) values.get("season")),
-            (long) Math.round((double) values.get("season_duration")),
+            (int) Math.round((double) (values.containsKey("season_duration") ? values.get("season_duration") : values.get("seasonDuration"))),
             (int) Math.round((double) values.get("enemy")),
             (int) Math.round((double) values.get("players")),
             (int) Math.round((double) values.get("total_unique_players")),
@@ -120,6 +123,17 @@ public class Statistics {
             (int) Math.round((double) values.get("hits")),
             (int) Math.round((double) values.get("kills"))
         );
+    }
+
+    private String snakeCaseToCamelCase(String snake){
+        Pattern pattern = Pattern.compile("_([a-zA-z])");
+        Matcher matcher = pattern.matcher(snake);
+        StringBuffer stringBuffer = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(stringBuffer, matcher.group(1).toUpperCase());
+        }
+        matcher.appendTail(stringBuffer);
+        return stringBuffer.toString();
     }
 
     /**
