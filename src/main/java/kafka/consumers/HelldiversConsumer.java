@@ -3,6 +3,7 @@ package kafka.consumers;
 import com.google.gson.Gson;
 import helldivers.Statistics;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import javax.print.DocFlavor.STRING;
 import kafka.generic.consumers.GenericThreadedConsumer;
@@ -30,9 +31,11 @@ public class HelldiversConsumer extends GenericThreadedConsumer {
 
                     for (ConsumerRecord<String, String> record : records) {
                         //Logging.log(record.value(), TAG);
-                        Map statisticsMap = gson.fromJson(record.value().toString(), Map.class);
-                        Statistics statistics = new Statistics(statisticsMap);
-                        statistics.getDescription();
+                        List<Map> statisticsList = gson.fromJson(record.value().toString(), List.class);
+                        for (Map statistics : statisticsList) {
+                            Statistics statisticsObject = new Statistics(statistics);
+                            Logging.log(statisticsObject.getDescription(), TAG);
+                        }
                     }
                 }
             } catch (Exception e) {
