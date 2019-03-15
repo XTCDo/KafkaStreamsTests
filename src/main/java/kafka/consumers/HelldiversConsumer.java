@@ -1,6 +1,9 @@
 package kafka.consumers;
 
+import com.google.gson.Gson;
+import helldivers.Statistics;
 import java.time.Duration;
+import java.util.Map;
 import javax.print.DocFlavor.STRING;
 import kafka.generic.consumers.GenericThreadedConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -19,13 +22,17 @@ public class HelldiversConsumer extends GenericThreadedConsumer {
 
     public void run() {
         Thread consumerThread = new Thread(() -> {
+            Gson gson = new Gson();
             try {
                 while (true) {
                     ConsumerRecords<String, String> records = getConsumer()
                         .poll(Duration.ofMillis(10));
 
                     for (ConsumerRecord<String, String> record : records) {
-                        Logging.log(record.value(), TAG);
+                        //Logging.log(record.value(), TAG);
+                        Map statisticsMap = gson.fromJson(record.value().toString(), Map.class);
+                        Statistics statistics = new Statistics(statisticsMap);
+                        statistics.getDescription();
                     }
                 }
             } catch (Exception e) {
