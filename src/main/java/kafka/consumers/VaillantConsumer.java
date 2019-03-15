@@ -28,8 +28,11 @@ public class VaillantConsumer extends GenericThreadedInfluxConsumer<String, Stri
                     ConsumerRecords<String, String> records = getConsumer().poll(Duration.ofMillis(10));
 
                     for(ConsumerRecord<String, String> record : records){
-                        //Logging.log(record.toString(), TAG);
+                        // Get data from vaillant-input topic in form of JSON String and parse it
+                        // to a Map
                         Map vaillantData = gson.fromJson(record.value().toString(), Map.class);
+
+                        // Turn map with the three data points into a Point
                         Point point = Point.measurement("vaillant")
                                 .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                                 .addField("FlowTemperatureSensor",
@@ -39,13 +42,15 @@ public class VaillantConsumer extends GenericThreadedInfluxConsumer<String, Stri
                                 .addField("DomesticHotWaterTankTemperatureValue",
                                         (double) vaillantData.get("domestic_hot_water_tank_temperature_value"))
                                 .build();
+
+                        // Write point to InfluxDB in 'vaillant' database
                         getInfluxDAO().writePoint("vaillant", point);
                         Logging.log(vaillantData.toString());
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                getInfluxDAO();
+                getInfluxDAO().close();
                 Logging.error(e, TAG);
             }
         });
