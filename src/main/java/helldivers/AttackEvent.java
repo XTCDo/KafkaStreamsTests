@@ -2,6 +2,7 @@ package helldivers;
 
 import java.sql.Date;
 import java.util.Map;
+import util.MapUtils;
 
 public class AttackEvent {
     /**
@@ -64,15 +65,15 @@ public class AttackEvent {
     public AttackEvent(Map values){
         this(
                 (int) Math.round((double) values.get("season")),
-                (int) Math.round((double) values.get("event_id")),
-                (long) Math.round((double) values.get("start_time")),
-                (long) Math.round((double) values.get("end_time")),
+                (int) Math.round((double) MapUtils.safeGet(values, "event_id")),
+                (long) Math.round((double) MapUtils.safeGet(values, "start_time")),
+                (long) Math.round((double) MapUtils.safeGet(values, "end_time")),
                 (int) Math.round((double) values.get("enemy")),
                 (int) Math.round((double) values.get("points")),
-                (int) Math.round((double) values.get("points_max")),
+                (int) Math.round((double) MapUtils.safeGet(values, "points_max")),
                 (String) values.get("status"),
-                (int) Math.round((double) values.get("players_at_start")),
-                (int) Math.round((double) values.get("max_event_id"))
+                (int) Math.round((double) MapUtils.safeGet(values, "players_at_start")),
+                (int) Math.round((double) MapUtils.safeGet(values, "max_event_id"))
         );
     }
 

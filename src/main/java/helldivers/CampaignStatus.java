@@ -1,6 +1,7 @@
 package helldivers;
 
 import java.util.Map;
+import util.MapUtils;
 
 public class CampaignStatus {
     /**
@@ -47,11 +48,11 @@ public class CampaignStatus {
         this(
             (int) Math.round((double) values.get("season")),
             (int) values.get("enemy"),
-            (int) Math.round((double) values.get("points")),
-            (int) Math.round((double) values.get("points_taken")),
-            (int) Math.round((double) values.get("points_max")),
+            (int) Math.round((double) MapUtils.safeGet(values, "points")),
+            (int) Math.round((double) MapUtils.safeGet(values, "points_taken")),
+            (int) Math.round((double) MapUtils.safeGet(values, "points_max")),
             (String) values.get("status"),
-            (int) Math.round((double) values.get("introduction_order"))
+            (int) Math.round((double) MapUtils.safeGet(values, "introduction_order"))
         );
     }
 
