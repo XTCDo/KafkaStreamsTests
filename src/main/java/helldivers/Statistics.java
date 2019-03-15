@@ -109,7 +109,7 @@ public class Statistics {
      */
     public Statistics(Map values) {
         this(
-            (long) Math.round((double) values.get("timeStamp")),
+            (long) values.get("timeStamp"),
             (int) Math.round((double) values.get("season")),
             (int) Math.round((double) MapUtils.safeGet(values,"season_duration")),
             (int) Math.round((double) values.get("enemy")),
@@ -152,6 +152,8 @@ public class Statistics {
             .addField("shots", getShots())
             .addField("hits", getHits())
             .addField("kills", getKills())
+            .addField("accuracy", getAccuracy())
+
             .build();
 
         return point;

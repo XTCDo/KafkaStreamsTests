@@ -144,6 +144,7 @@ public class HelldiversAPIWrapper {
         for (int i = 0; i < campaignStatusList.size(); i++) {
             Map campaignStatus = campaignStatusList.get(i);
             campaignStatus.put("enemy", i);
+            campaignStatus.put("timeStamp", System.currentTimeMillis());
             campaignStatusObjectList.add(new CampaignStatus(campaignStatus));
         }
 

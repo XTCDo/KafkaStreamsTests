@@ -4,6 +4,12 @@ import java.util.Map;
 import util.MapUtils;
 
 public class CampaignStatus {
+
+    /**
+     * The time at which this measurement was made
+     */
+    private long timeStamp;
+
     /**
      * Season/War number
      */
@@ -46,6 +52,7 @@ public class CampaignStatus {
      */
     public CampaignStatus(Map values){
         this(
+            (long) values.get("timeStamp"),
             (int) Math.round((double) values.get("season")),
             (int) values.get("enemy"),
             (int) Math.round((double) MapUtils.safeGet(values, "points")),
@@ -67,7 +74,8 @@ public class CampaignStatus {
      * @param introductionOrder Order in which the faction was introduced to the war,
      *                          255 if the faction hasn't been introduced yet
      */
-    public CampaignStatus(int season, int enemy, int points, int pointsTaken, int pointsMax, String status, int introductionOrder){
+    public CampaignStatus(long timeStamp,int season, int enemy, int points, int pointsTaken, int pointsMax, String status, int introductionOrder){
+        this.timeStamp = timeStamp;
         this.season = season;
         this.enemy = enemy;
         this.points = points;
@@ -182,5 +190,16 @@ public class CampaignStatus {
 
     public void setEnemy(int enemy) {
         this.enemy = enemy;
+    }
+
+    /**
+     * The time at which this measurement was made
+     */
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }
