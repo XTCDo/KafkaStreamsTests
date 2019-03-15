@@ -152,6 +152,8 @@ public class Statistics {
             .addField("shots", getShots())
             .addField("hits", getHits())
             .addField("kills", getKills())
+            .addField("accuracy", getAccuracy())
+            .addField("accidentals_percentage", getAccidentalsPercentage())
             .build();
 
         return point;
