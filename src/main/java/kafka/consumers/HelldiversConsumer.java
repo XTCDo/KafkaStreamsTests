@@ -34,6 +34,7 @@ public class HelldiversConsumer extends GenericThreadedInfluxConsumer {
                     for (ConsumerRecord<String, String> record : records) {
                         List<Map> statisticsList = gson.fromJson(record.value(), List.class);
                         for (Map statistics : statisticsList) {
+                            // todo hacky fix, find different way
                             long timeStamp = (long) Math.round((double) statistics.get("timeStamp"));
                             statistics.put("timeStamp", timeStamp);
                             Statistics statisticsObject = new Statistics(statistics);
