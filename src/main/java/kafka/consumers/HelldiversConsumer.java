@@ -7,18 +7,20 @@ import java.util.List;
 import java.util.Map;
 import javax.print.DocFlavor.STRING;
 import kafka.generic.consumers.GenericThreadedConsumer;
+import kafka.generic.consumers.GenericThreadedInfluxConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.influxdb.dto.Point;
 import util.Config;
 import util.Logging;
 
-public class HelldiversConsumer extends GenericThreadedConsumer {
+public class HelldiversConsumer extends GenericThreadedInfluxConsumer {
 
     private static final String topic = "helldivers-statistics";
     private static final String TAG = "HelldiversConsumer";
-
+    private static final String influxURL = "http://localhost:8086";
     public HelldiversConsumer() {
-        super(topic, Config.getLocalBootstrapServersConfig(), "Helldiversconsumer");
+        super(influxURL, topic, Config.getLocalBootstrapServersConfig(), "Helldiversconsumer");
     }
 
     public void run() {
@@ -34,6 +36,8 @@ public class HelldiversConsumer extends GenericThreadedConsumer {
                         for (Map statistics : statisticsList) {
                             Statistics statisticsObject = new Statistics(statistics);
                             Logging.log(statisticsObject.getDescription(), TAG);
+                            Point point = statisticsObject.toPoint();
+                            getInfluxDAO().writePoint("HELLDIVERS", point);
                         }
                     }
                 }

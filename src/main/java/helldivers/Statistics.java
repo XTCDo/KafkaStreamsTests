@@ -3,6 +3,7 @@ package helldivers;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.influxdb.dto.Point;
 import util.MapUtils;
 
 public class Statistics {
@@ -125,7 +126,30 @@ public class Statistics {
         );
     }
 
+    public Point toPoint() {
+        Point point = Point.measurement("helldivers-statistics")
+            .tag("season", String.valueOf(getSeason()))
+            .tag("enemy", getEnemyName())
+            .addField("season_duration", getSeasonDuration())
+            .addField("players", getPlayers())
+            .addField("total_unique_players", getTotalUniquePlayers())
+            .addField("missions", getMissions())
+            .addField("successful_missions", getSuccessfulMissions())
+            .addField("total_mission_difficulty", getTotalMissionDifficulty())
+            .addField("completed_planets", getCompletedPlanets())
+            .addField("defend_events", getDefendEvents())
+            .addField("successful_defend_events", getSuccessfulDefendEvents())
+            .addField("attack_events", getAttackEvents())
+            .addField("successful_attack_events", getSuccessfulAttackEvents())
+            .addField("deaths", getDeaths())
+            .addField("accidentals", getAccidentals())
+            .addField("shots", getShots())
+            .addField("hits", getHits())
+            .addField("kills", getKills())
+            .build();
 
+        return point;
+    }
 
     /**
      * Regular constructor fo Statistics
