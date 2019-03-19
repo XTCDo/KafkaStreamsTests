@@ -3,7 +3,6 @@ package kafka.generic.consumers;
 import com.google.gson.Gson;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.influxdb.dto.Point;
-import sun.rmi.runtime.Log;
 import util.Logging;
 
 import java.time.Duration;
@@ -41,19 +40,22 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
             Logging.log("Inserting into database: "+database+", measurement: "+measurement);
 
             while (true){
-                ConsumerRecords<String,String> records = getConsumer().poll(Duration.ofMillis(10));
-                // process records into Influx
-                records.forEach(record -> {
-                    try{
+                try {
+                    ConsumerRecords<String, String> records = getConsumer().poll(Duration.ofMillis(10));
+
+                    // process records into Influx
+                    records.forEach(record -> {
                         // extract values from Record (this should be JSON)
                         Point point = JSONToPoint(record.value(), measurement);
                         // inject created point into Influx
                         getInfluxDAO().writePoint(database, point);
-                        Thread.sleep(sleepDuration);
-                    }catch (Exception e){
-                        Logging.error(e);
-                    }
-                });
+                    });
+                    
+                    // sleep for a bit as to not torture processors
+                    Thread.sleep(sleepDuration);
+                } catch ( Exception e){
+                    Logging.error(e, TAG);
+                }
             }
 
         });
@@ -77,7 +79,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
 
     /**
      * construct a new GenericJsonConsumer, which will listen to a list of topics, and subsequently put the records from that topic into
-     * an Influx database. Defaults to a sleepDuration of 1000 ms.
+     * an Influx database. Defaults to a sleepDuration of 100 ms.
      * @param influxURL url for influxDB
      * @param topics topics on which to listen
      * @param bootStrapServer apache kafka broker server
@@ -87,12 +89,12 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
      */
     public GenericJSONConsumer(String influxURL, List<String> topics, String bootStrapServer, String groupId,
                                String database, String measurement) {
-        this(influxURL, topics , bootStrapServer, groupId, database, measurement, 1000);
+        this(influxURL, topics , bootStrapServer, groupId, database, measurement, 100);
     }
 
     /**
      * construct a new GenericJsonConsumer, which will listen to a list of topics, and subsequently put the records from that topic into
-     * an Influx database. Defaults to a sleepDuration of 1000 ms.
+     * an Influx database. Defaults to a sleepDuration of 100 ms.
      * @param influxURL url for influxDB
      * @param topic single topic on which to listen
      * @param bootStrapServer apache kafka broker server
@@ -102,7 +104,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
      */
     public GenericJSONConsumer(String influxURL, String topic, String bootStrapServer, String groupId,
                                String database, String measurement) {
-        this(influxURL, topic, bootStrapServer, groupId, database, measurement, 1000);
+        this(influxURL, topic, bootStrapServer, groupId, database, measurement, 100);
     }
 
 
@@ -122,13 +124,12 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
      * @return Point ready to inject into Influx
      */
     private Point JSONToPoint(String JSONString, String measurement){
-        Logging.debug("received message:"+ JSONString);
         Gson gson = new Gson();
         Map values = gson.fromJson(JSONString, Map.class);
 
-        // extract time (always in milliseconds)
-        long time = Double.valueOf((double)values.get("time")*1000).longValue(); // todo test time units
-        
+        // extract time and convert double representing seconds to long representing milliseconds
+        long time = Double.valueOf((double)values.get("time")*1000).longValue();
+
         // extract tags
         Map<String, String> tags = new HashMap<>();
         ((Map) values.get("tags")).forEach((key, value)->tags.put((String)key, String.valueOf(value)));
@@ -138,7 +139,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
 
         // build and return a point
         return Point.measurement(measurement)
-                .time(time, TimeUnit.MILLISECONDS) // todo test time units
+                .time(time, TimeUnit.MILLISECONDS)
                 .tag(tags)
                 .fields(fields)
                 .build();
