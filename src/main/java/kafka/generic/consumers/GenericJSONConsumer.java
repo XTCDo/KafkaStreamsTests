@@ -3,6 +3,7 @@ package kafka.generic.consumers;
 import com.google.gson.Gson;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.influxdb.dto.Point;
+import sun.rmi.runtime.Log;
 import util.Logging;
 
 import java.time.Duration;
@@ -16,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, String> {
 
     protected String TAG;
-    protected String database, measurement;
     private Thread consumerThread;
 
    // constructors
@@ -36,6 +36,8 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
         super(influxURL, topics,  bootStrapServer, groupId);
 
         this.consumerThread= new Thread(()->{
+            Logging.log("Starting consumer on topics: ["+String.join(", ",topics)+"]");
+            Logging.log("Inserting into database: "+database+", measurement: "+measurement);
 
             while (true){
                 ConsumerRecords<String,String> records = getConsumer().poll(Duration.ofMillis(10));
@@ -99,7 +101,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
         this(influxURL, topic, bootStrapServer, groupId, database, measurement, 1000);
     }
 
-    
+
     // methods
 
     /**
@@ -116,6 +118,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
      * @return Point ready to inject into Influx
      */
     private Point JSONToPoint(String JSONString, String measurement){
+        Logging.debug("received message:"+ JSONString);
         Gson gson = new Gson();
         Map values = gson.fromJson(JSONString, Map.class);
 
