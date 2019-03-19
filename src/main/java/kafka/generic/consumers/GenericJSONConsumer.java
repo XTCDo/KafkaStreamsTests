@@ -50,7 +50,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
                         // inject created point into Influx
                         getInfluxDAO().writePoint(database, point);
                     });
-                    
+
                     // sleep for a bit as to not torture processors
                     Thread.sleep(sleepDuration);
                 } catch ( Exception e){
@@ -89,7 +89,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
      */
     public GenericJSONConsumer(String influxURL, List<String> topics, String bootStrapServer, String groupId,
                                String database, String measurement) {
-        this(influxURL, topics , bootStrapServer, groupId, database, measurement, 100);
+        this(influxURL, topics , bootStrapServer, groupId, database, measurement, 1000);
     }
 
     /**
@@ -104,7 +104,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
      */
     public GenericJSONConsumer(String influxURL, String topic, String bootStrapServer, String groupId,
                                String database, String measurement) {
-        this(influxURL, topic, bootStrapServer, groupId, database, measurement, 100);
+        this(influxURL, topic, bootStrapServer, groupId, database, measurement, 1000);
     }
 
 
