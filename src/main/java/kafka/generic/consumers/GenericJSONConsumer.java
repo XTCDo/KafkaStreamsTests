@@ -32,7 +32,8 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
      * @param measurement table inside database in which to inject message data
      * @param sleepDuration delay between thread operations
      */
-    public GenericJSONConsumer(String influxURL, List<String> topics, String bootStrapServer, String groupId, String database, String measurement, int sleepDuration) {
+    public GenericJSONConsumer(String influxURL, List<String> topics, String bootStrapServer, String groupId,
+                               String database, String measurement, int sleepDuration) {
         super(influxURL, topics,  bootStrapServer, groupId);
 
         this.consumerThread= new Thread(()->{
@@ -69,7 +70,8 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
      * @param measurement table inside database in which to inject message data
      * @param sleepDuration delay between thread operations
      */
-    public GenericJSONConsumer(String influxURL, String topic,String bootStrapServer, String groupId, String database, String measurement, int sleepDuration) {
+    public GenericJSONConsumer(String influxURL, String topic, String bootStrapServer, String groupId,
+                               String database, String measurement, int sleepDuration) {
         this(influxURL, Collections.singletonList(topic), bootStrapServer, groupId, database, measurement, sleepDuration);
     }
 
@@ -83,7 +85,8 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
      * @param database database in which to inject message data
      * @param measurement table inside database in which to inject message data
      */
-    public GenericJSONConsumer(String influxURL, List<String> topics,String bootStrapServer, String groupId, String database, String measurement) {
+    public GenericJSONConsumer(String influxURL, List<String> topics, String bootStrapServer, String groupId,
+                               String database, String measurement) {
         this(influxURL, topics , bootStrapServer, groupId, database, measurement, 1000);
     }
 
@@ -97,7 +100,8 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
      * @param database database in which to inject message data
      * @param measurement table inside database in which to inject message data
      */
-    public GenericJSONConsumer(String influxURL, String topic,String bootStrapServer, String groupId, String database, String measurement) {
+    public GenericJSONConsumer(String influxURL, String topic, String bootStrapServer, String groupId,
+                               String database, String measurement) {
         this(influxURL, topic, bootStrapServer, groupId, database, measurement, 1000);
     }
 
@@ -127,7 +131,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
 
         // extract tags
         Map<String, String> tags = new HashMap<>();
-        ((Map) values.get("tags")).forEach((key, value)->tags.put((String)key, String.valueOf(value))); // retarded java syntax
+        ((Map) values.get("tags")).forEach((key, value)->tags.put((String)key, String.valueOf(value)));
 
         // extract values
         Map<String, Object> fields = (Map<String, Object>) values.get("fields");
