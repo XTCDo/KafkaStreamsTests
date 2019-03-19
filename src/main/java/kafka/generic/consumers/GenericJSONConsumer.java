@@ -127,8 +127,8 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
         Map values = gson.fromJson(JSONString, Map.class);
 
         // extract time (always in milliseconds)
-        long time = Double.valueOf((double)values.get("time")).longValue()*1000; // todo test time units
-
+        long time = Double.valueOf((double)values.get("time")*1000).longValue(); // todo test time units
+        
         // extract tags
         Map<String, String> tags = new HashMap<>();
         ((Map) values.get("tags")).forEach((key, value)->tags.put((String)key, String.valueOf(value)));
@@ -138,7 +138,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
 
         // build and return a point
         return Point.measurement(measurement)
-                .time(time, TimeUnit.SECONDS) // todo test time units
+                .time(time, TimeUnit.MILLISECONDS) // todo test time units
                 .tag(tags)
                 .fields(fields)
                 .build();
