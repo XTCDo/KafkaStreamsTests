@@ -3,17 +3,14 @@ package kafka.generic.consumers;
 import com.google.gson.Gson;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.influxdb.dto.Point;
-import util.Config;
 import util.Logging;
 
 import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 // todo implement runnable (In GenericThreadedConsumer)
 public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, String> {
@@ -22,7 +19,20 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
     protected String database, measurement;
     private Thread consumerThread;
 
-    public GenericJSONConsumer(String influxURL, List<String> topics,String bootStrapServer, String groupId, String database, String measurement) {
+   // constructors
+
+    /**
+     * construct a new GenericJsonConsumer, which will listen to a list of topics, and subsequently put the records from that topic into
+     * an Influx database.
+     * @param influxURL url for influxDB
+     * @param topics topics on which to listen
+     * @param bootStrapServer apache kafka broker server
+     * @param groupId group ID for this consumer
+     * @param database database in which to inject message data
+     * @param measurement table inside database in which to inject message data
+     * @param sleepDuration delay between thread operations
+     */
+    public GenericJSONConsumer(String influxURL, List<String> topics, String bootStrapServer, String groupId, String database, String measurement, int sleepDuration) {
         super(influxURL, topics,  bootStrapServer, groupId);
 
         this.consumerThread= new Thread(()->{
@@ -33,43 +43,78 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
                 records.forEach(record -> {
                     try{
                         // extract values from Record (this should be JSON)
-                        Map values = gson.fromJson(record.value(), Map.class);
-
-                        // extract time
-                        Date time = values.get("time");
-
-                        // extract tags
-                        List<String> tags = values.get("tags");
-
-                        // extract values
-                        Map fields = values.get("fields");
-
-                        // build a point
-                        Point point = Point.measurement(measurement)
-                                .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-                                .tag(tags)
-                                .fields(fields)
-                                .build();
-
+                        Point point = JSONToPoint(record.value(), measurement);
+                        // inject created point into Influx
                         getInfluxDAO().writePoint(database, point);
-
-                        Thread.sleep(2000);
+                        Thread.sleep(sleepDuration);
                     }catch (Exception e){
                         Logging.error(e);
                     }
                 });
             }
+
         });
     }
 
-    public GenericJSONConsumer(String influxURL, String topic,String bootStrapServer, String groupId) {
-        super(influxURL, topic,  bootStrapServer, groupId);
+    /**
+     * construct a new GenericJsonConsumer, which will listen to a list of topics, and subsequently put the records from that topic into
+     * an Influx database.
+     * @param influxURL url for influxDB
+     * @param topic single topic on which to listen
+     * @param bootStrapServer apache kafka broker server
+     * @param groupId group ID for this consumer
+     * @param database database in which to inject message data
+     * @param measurement table inside database in which to inject message data
+     * @param sleepDuration delay between thread operations
+     */
+    public GenericJSONConsumer(String influxURL, String topic,String bootStrapServer, String groupId, String database, String measurement, int sleepDuration) {
+        this(influxURL, Collections.singletonList(topic), bootStrapServer, groupId, database, measurement, sleepDuration);
     }
 
+    /**
+     * construct a new GenericJsonConsumer, which will listen to a list of topics, and subsequently put the records from that topic into
+     * an Influx database. Defaults to a sleepDuration of 1000 ms.
+     * @param influxURL url for influxDB
+     * @param topics topics on which to listen
+     * @param bootStrapServer apache kafka broker server
+     * @param groupId group ID for this consumer
+     * @param database database in which to inject message data
+     * @param measurement table inside database in which to inject message data
+     */
+    public GenericJSONConsumer(String influxURL, List<String> topics,String bootStrapServer, String groupId, String database, String measurement) {
+        this(influxURL, topics , bootStrapServer, groupId, database, measurement, 1000);
+    }
+
+    /**
+     * construct a new GenericJsonConsumer, which will listen to a list of topics, and subsequently put the records from that topic into
+     * an Influx database. Defaults to a sleepDuration of 1000 ms.
+     * @param influxURL url for influxDB
+     * @param topic single topic on which to listen
+     * @param bootStrapServer apache kafka broker server
+     * @param groupId group ID for this consumer
+     * @param database database in which to inject message data
+     * @param measurement table inside database in which to inject message data
+     */
+    public GenericJSONConsumer(String influxURL, String topic,String bootStrapServer, String groupId, String database, String measurement) {
+        this(influxURL, topic, bootStrapServer, groupId, database, measurement, 1000);
+    }
+
+    
+    // methods
+
+    /**
+     * run the thread this consumer possesses
+     */
     public void run(){
         super.run(consumerThread);
     }
 
+    /**
+     * convert input JSON to a point for Influx
+     * @param JSONString string containing data for influx database (time(Unix timestamp), tags(Map of strings) & fields(Map of values))
+     * @param measurement name of the table in which to inject this point
+     * @return Point ready to inject into Influx
+     */
     private Point JSONToPoint(String JSONString, String measurement){
         Gson gson = new Gson();
         Map values = gson.fromJson(JSONString, Map.class);
