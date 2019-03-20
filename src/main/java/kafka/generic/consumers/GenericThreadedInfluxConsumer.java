@@ -4,6 +4,7 @@ import influx.InfluxDAO;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class GenericThreadedInfluxConsumer<K, V> extends GenericThreadedConsumer<K, V> {
@@ -29,7 +30,7 @@ public class GenericThreadedInfluxConsumer<K, V> extends GenericThreadedConsumer
                                          Object valueDeserializerClass,
                                          boolean enableAutoCommit,
                                          int autoCommitIntervalMS) {
-        this(influxURL, Arrays.asList(topic), bootStrapServers, groupId, keyDeserializerClass,
+        this(influxURL, Collections.singletonList(topic), bootStrapServers, groupId, keyDeserializerClass,
                 valueDeserializerClass, enableAutoCommit, autoCommitIntervalMS);
     }
 
@@ -39,13 +40,12 @@ public class GenericThreadedInfluxConsumer<K, V> extends GenericThreadedConsumer
     }
 
     public GenericThreadedInfluxConsumer(String influxURL, String topic, String bootStrapServer, String groupId) {
-        this(influxURL ,Arrays.asList(topic), bootStrapServer, groupId);
+        this(influxURL , Collections.singletonList(topic), bootStrapServer, groupId);
     }
 
     private void makeInfluxDAO(String influxURL){
         influxDAO = new InfluxDAO(influxURL);
     }
-
     public InfluxDAO getInfluxDAO(){
         return influxDAO;
     }

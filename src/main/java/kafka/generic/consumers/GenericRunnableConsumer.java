@@ -4,8 +4,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import util.Logging;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -22,9 +20,9 @@ public class GenericRunnableConsumer<K,V> extends GenericConsumer<K,V> implement
 
     // todo documentation
     public GenericRunnableConsumer(List<String> topics, String bootStrapServers, String groupId,
-                                         Object keyDeserializerClass, Object valueDeserializerClass,
-                                         boolean enableAutoCommit, int autoCommitIntervalMS,
-                                         Consumer<ConsumerRecords> recordsConsumer){
+                                   Object keyDeserializerClass, Object valueDeserializerClass,
+                                   boolean enableAutoCommit, int autoCommitIntervalMS,
+                                   Consumer<ConsumerRecords> recordsConsumer){
 
         super(topics, bootStrapServers, groupId, keyDeserializerClass,
                 valueDeserializerClass, enableAutoCommit, autoCommitIntervalMS);
