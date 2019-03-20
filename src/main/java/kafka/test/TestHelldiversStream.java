@@ -36,18 +36,13 @@ public class TestHelldiversStream {
 
         // process source
         KStream<String, Object> tagged = source
-            .mapValues(
-                value -> gson.fromJson(value, Status.class))// process string to Status object
+            .mapValues(value -> gson.fromJson(value, Status.class))// process string to Status object
             .flatMap((key, status) -> {
                 List<KeyValue<String, Object>> result = new LinkedList<>();
-                result.add(KeyValue
-                    .pair("helldivers-campaign_status", status.getCampaignStatuses())); // campaign_status
-                result.add(KeyValue
-                    .pair("helldivers-attack_events", status.getAttackEvents())); // attack events
-                result.add(KeyValue
-                    .pair("helldivers-defend_events", status.getDefendEvents())); // defend events
-                result.add(
-                    KeyValue.pair("helldivers-statistics", status.getStatistics())); // statistics
+                result.add(KeyValue.pair("helldivers-campaign_status", status.getCampaignStatuses())); // campaign_status
+                result.add(KeyValue.pair("helldivers-attack_events", status.getAttackEvents())); // attack events
+                result.add(KeyValue.pair("helldivers-defend_events", status.getDefendEvents())); // defend events
+                result.add(KeyValue.pair("helldivers-statistics", status.getStatistics())); // statistics
                 return result;
             });
 
@@ -62,6 +57,7 @@ public class TestHelldiversStream {
 
         final Topology topology = builder.build();
         Logging.log("topology constructed: " + topology.describe(), TAG);
+
         // create a generic stream with topology
         GenericStream hdStream = new GenericStream("streams-helldivers",
             Config.getLocalBootstrapServersConfig(), Serdes.StringSerde.class,

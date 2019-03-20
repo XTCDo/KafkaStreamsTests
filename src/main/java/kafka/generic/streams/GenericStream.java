@@ -68,7 +68,10 @@ public class GenericStream {
             Logging.log(Level.INFO,"starting stream: "+applicationId,TAG);
             streams.start();
         }catch (Exception e){
-            Logging.log(Level.SEVERE, e.toString(), TAG);
+            Logging.error(e, TAG);
+        }
+        finally {
+            close();
         }
     }
 
