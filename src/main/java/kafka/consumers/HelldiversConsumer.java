@@ -2,17 +2,16 @@ package kafka.consumers;
 
 import com.google.gson.Gson;
 import helldivers.Statistics;
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import javax.print.DocFlavor.STRING;
-import kafka.generic.consumers.GenericThreadedConsumer;
 import kafka.generic.consumers.GenericThreadedInfluxConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.influxdb.dto.Point;
 import util.Config;
 import util.Logging;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 
 public class HelldiversConsumer extends GenericThreadedInfluxConsumer {
 

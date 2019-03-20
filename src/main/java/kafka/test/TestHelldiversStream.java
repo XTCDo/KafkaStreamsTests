@@ -40,8 +40,8 @@ public class TestHelldiversStream {
                 value -> gson.fromJson(value, Status.class))// process string to Status object
             .flatMap((key, status) -> {
                 List<KeyValue<String, Object>> result = new LinkedList<>();
-                result.add(KeyValue.pair("helldivers-campaign_status",
-                    status.getCampaignStatuses())); // campaign_status
+                result.add(KeyValue
+                    .pair("helldivers-campaign_status", status.getCampaignStatuses())); // campaign_status
                 result.add(KeyValue
                     .pair("helldivers-attack_events", status.getAttackEvents())); // attack events
                 result.add(KeyValue
