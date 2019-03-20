@@ -28,6 +28,7 @@ public class GenericConsumer<K, V> {
         properties.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, autoCommitIntervalMS);
         consumer = new KafkaConsumer<>(properties);
         consumer.subscribe(topics);
+        this.topics = topics;
     }
 
     public GenericConsumer(String topic,
