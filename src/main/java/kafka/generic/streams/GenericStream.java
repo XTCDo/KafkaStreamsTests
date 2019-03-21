@@ -70,9 +70,6 @@ public class GenericStream {
         }catch (Exception e){
             Logging.error(e, TAG);
         }
-        finally {
-            close();
-        }
     }
 
     /**
