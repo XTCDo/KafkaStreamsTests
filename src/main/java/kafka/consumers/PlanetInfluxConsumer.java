@@ -40,4 +40,5 @@ public class PlanetInfluxConsumer extends GenericThreadedInfluxConsumer<String, 
         });
         super.run(consumerThread);
     }
+
 }

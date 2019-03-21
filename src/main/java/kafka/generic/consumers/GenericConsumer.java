@@ -5,10 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class GenericConsumer<K, V> {
     private Properties properties;
@@ -29,8 +26,9 @@ public class GenericConsumer<K, V> {
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializerClass);
         properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, enableAutoCommit);
         properties.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, autoCommitIntervalMS);
-        consumer = new KafkaConsumer<K, V>(properties);
+        consumer = new KafkaConsumer<>(properties);
         consumer.subscribe(topics);
+        this.topics = topics;
     }
 
     public GenericConsumer(String topic,
@@ -40,12 +38,12 @@ public class GenericConsumer<K, V> {
                            Object valueDeserializerClass,
                            boolean enableAutoCommit,
                            int autoCommitIntervalMS){
-        this(Arrays.asList(topic), bootStrapServers, groupId, keyDeserializerClass,
+        this(Collections.singletonList(topic), bootStrapServers, groupId, keyDeserializerClass,
                 valueDeserializerClass, enableAutoCommit, autoCommitIntervalMS);
     }
 
     public GenericConsumer(String topic, String bootStrapServer, String groupId){
-        this(Arrays.asList(topic), bootStrapServer, groupId);
+        this(Collections.singletonList(topic), bootStrapServer, groupId);
     }
 
     public GenericConsumer(List<String> topics, String bootStrapServer, String groupId) {
