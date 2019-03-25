@@ -55,7 +55,7 @@ public class CampaignStatus {
      */
     public CampaignStatus(Map values){
         this(
-            (long) values.get("timeStamp"),
+            (long) Math.round((double) values.get("timeStamp")),
             (int) Math.round((double) values.get("season")),
             (int) values.get("enemy"),
             (int) Math.round((double) MapUtils.safeGet(values, "points")),

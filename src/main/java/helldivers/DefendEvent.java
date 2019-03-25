@@ -64,7 +64,7 @@ public class DefendEvent {
      */
     public DefendEvent(Map values){
         this(
-            (long) values.get("timeStamp"),
+            (long) Math.round((double) values.get("timeStamp")),
             (int) Math.round((double) values.get("season")),
             (int) Math.round((double) MapUtils.safeGet(values, "event_id")),
             (long) Math.round((double) MapUtils.safeGet(values, "start_time")),
