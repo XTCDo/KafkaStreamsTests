@@ -18,7 +18,7 @@ public class TestHelldiversConsumer {
 
     public static void main(String[] args) {
         // records processor for parsing statistics Records to Influx Points
-        Function<ConsumerRecords<String, String>, List<Point>> statisticsToPointBatch = consumerRecords -> {
+        Function<ConsumerRecords<String, String>, List<Point>> StatisticsToPointBatch = consumerRecords -> {
 
             Gson gson = new Gson();
             List<Point> batch = new ArrayList<>();
@@ -87,31 +87,35 @@ public class TestHelldiversConsumer {
 
 
         // consuming statistics
-        new GenericRunnableInfluxConsumer(
+        Thread statisticsConsumer = new Thread( new GenericRunnableInfluxConsumer(
                 "http://localhost:8086", "HELLDIVERS",
                 "helldivers-statistics", Config.getLocalBootstrapServersConfig(), "HelldiversStatisticsConsumer",
-                statisticsToPointBatch)
-                .run();
+                StatisticsToPointBatch));
 
         // consuming campaign statuses
-        new GenericRunnableInfluxConsumer(
+        Thread campaignStatusConsumer = new Thread( new GenericRunnableInfluxConsumer(
                 "http://localhost:8086", "HELLDIVERS",
                 "helldivers-campaign_status", Config.getLocalBootstrapServersConfig(), "HelldiversCampaignStatusConsumer",
-                StatusesToPointBatch)
-                .run();
+                StatusesToPointBatch));
 
         // consuming attack events
-        new GenericRunnableInfluxConsumer(
+        Thread attackEventsConsumer = new Thread(  new GenericRunnableInfluxConsumer(
                 "http://localhost:8086", "HELLDIVERS",
                 "helldivers-attack_events", Config.getLocalBootstrapServersConfig(), "HelldiversAttackEventConsumer",
                 AttackEventsToPointBatch)
-                .run();
+        );
 
         // consuming defend events
-        new GenericRunnableInfluxConsumer(
+        Thread defendEventsConsumer = new Thread( new GenericRunnableInfluxConsumer(
                 "http://localhost:8086", "HELLDIVERS",
                 "helldivers-defend_events", Config.getLocalBootstrapServersConfig(), "HelldiversDefendEventConsumer",
                 DefendEventsToPointBatch)
-                .run();
+        );
+
+        statisticsConsumer.start();
+        campaignStatusConsumer.start();
+        attackEventsConsumer.start();
+        defendEventsConsumer.start();
+
     }
 }
