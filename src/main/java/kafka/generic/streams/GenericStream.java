@@ -61,7 +61,7 @@ public class GenericStream {
     // function calls
 
     /**
-     * start the streams defined in this object's constructor
+     * start the streams defined in this objects constructor
      */
     public void run(){
         try{
