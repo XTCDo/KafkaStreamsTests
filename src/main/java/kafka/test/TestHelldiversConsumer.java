@@ -7,7 +7,9 @@ import kafka.generic.consumers.GenericRunnableInfluxConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.influxdb.dto.Point;
+import sun.rmi.runtime.Log;
 import util.Config;
+import util.Logging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ public class TestHelldiversConsumer {
             for (ConsumerRecord<String, String> record : consumerRecords) {
                 // JSON to object casting
                 List<Map> statisticsList = gson.fromJson(record.value(), List.class);
+                Logging.debug(statisticsList.toString());
                 //parsing objects to correct type and inserting to Influx
                 statisticsList.forEach(statistics ->
                         batch.add(new Statistics(statistics)
