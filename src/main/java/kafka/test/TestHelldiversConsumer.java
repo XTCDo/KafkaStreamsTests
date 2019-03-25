@@ -1,7 +1,6 @@
 package kafka.test;
 
 import com.google.gson.Gson;
-import helldivers.AttackEvent;
 import helldivers.CampaignStatus;
 import helldivers.Statistics;
 import kafka.generic.consumers.GenericRunnableInfluxConsumer;
@@ -13,15 +12,11 @@ import util.Config;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public class TestHelldiversConsumer {
 
     public static void main(String[] args) {
-        // old code
-        //new HelldiversConsumer().run();
-
         // records processor for parsing statistics Records to Influx Points
         Function<ConsumerRecords<String, String>, List<Point>> statisticsToPointBatch = consumerRecords -> {
 
