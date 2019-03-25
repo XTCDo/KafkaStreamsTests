@@ -108,7 +108,7 @@ public class Statistics {
      */
     public Statistics(Map values) {
         this(
-            (long) Math.round((double) values.get("timeStamp")),
+            values.get("timeStamp"),
             (int) Math.round((double) values.get("season")),
             (int) Math.round((double) MapUtils.safeGet(values,"season_duration")),
             (int) Math.round((double) values.get("enemy")),
@@ -186,7 +186,7 @@ public class Statistics {
      * @param hits Amount of shots fired by players that hit
      * @param kills Amount of enemies killed
      */
-    public Statistics(long timeStamp, int season, long seasonDuration, int enemy,
+    public Statistics(Object timeStamp, int season, long seasonDuration, int enemy,
                       int players, int totalUniquePlayers,
                       int missions, int successfulMissions, int totalMissionDifficulty,
                       int completedPlanets,
@@ -194,7 +194,8 @@ public class Statistics {
                       int attackEvents, int successfulAttackEvents,
                       int deaths, int accidentals,
                       long shots, long hits, int kills) {
-        this.timeStamp = timeStamp; this.season = season;
+        this.timeStamp = (timeStamp instanceof Long) ? (long) timeStamp : Math.round( (double) timeStamp);
+        this.season = season;
         this.seasonDuration = seasonDuration;
         this.enemy = enemy;
         this.players = players;

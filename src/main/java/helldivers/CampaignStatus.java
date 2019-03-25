@@ -55,7 +55,7 @@ public class CampaignStatus {
      */
     public CampaignStatus(Map values){
         this(
-            (long) Math.round((double) values.get("timeStamp")),
+            values.get("timeStamp"),
             (int) Math.round((double) values.get("season")),
             (int) values.get("enemy"),
             (int) Math.round((double) MapUtils.safeGet(values, "points")),
@@ -77,10 +77,10 @@ public class CampaignStatus {
      * @param introductionOrder Order in which the faction was introduced to the war,
      *                          255 if the faction hasn't been introduced yet
      */
-    public CampaignStatus(long timeStamp, int season, int enemy,
+    public CampaignStatus(Object timeStamp, int season, int enemy,
                           int points, int pointsTaken, int pointsMax,
                           String status, int introductionOrder){
-        this.timeStamp = timeStamp;
+        this.timeStamp = (timeStamp instanceof Long) ? (long) timeStamp : Math.round( (double) timeStamp);
         this.season = season;
         this.enemy = enemy;
         this.points = points;
