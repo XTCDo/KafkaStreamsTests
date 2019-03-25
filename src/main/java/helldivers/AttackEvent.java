@@ -2,60 +2,68 @@ package helldivers;
 
 import java.sql.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import org.influxdb.dto.Point;
 import util.MapUtils;
 
 public class AttackEvent {
     /**
+     * UNIX Timestamp of when the attack event was polled from the database
+     */
+    private final long timeStamp;
+
+    /**
      * Season/war number
      */
-    private int season;
+    private final int season;
 
     /**
      * Attack event id, presumed to be equal to the total amount of attack events minus 1
      */
-    private int eventId;
+    private final int eventId;
 
     /**
      * UNIX Timestamp of when the attack event started
      */
-    private long startTime;
+    private final long startTime;
 
     /**
      * UNIX Timestamp of when the attack event will end and be lost if the points requirement is not met
      */
-    private long endTime;
+    private final long endTime;
 
     /**
      * Id of the enemy on the attacked planet
      */
-    private int enemy;
+    private final int enemy;
 
     /**
      * Current amount of points that the players have gained
      */
-    private int points;
+    private final int points;
 
     /**
      * Amount of points needed for the attack event to be successful
      */
-    private int pointsMax;
+    private final int pointsMax;
 
     /**
      * Either 'active', 'success' or 'failure depending on if the event is ongoing,
      * successfully ended or ended in a loss
      */
-    private String status;
+    private final String status;
 
     /**
      * The amount of players that are in a mission in the region where the attack event starts at the time
      * the attack event started
      */
-    private int playersAtStart;
+    private final int playersAtStart;
 
     /**
      * Unsure what this value is
      */
-    private int maxEventId;
+    private final int maxEventId;
 
     /**
      * Constructor for AttackEvent that takes a Map containing values returned by the
@@ -64,6 +72,7 @@ public class AttackEvent {
      */
     public AttackEvent(Map values){
         this(
+                (long) Math.round((double) values.get("timeStamp")),
                 (int) Math.round((double) values.get("season")),
                 (int) Math.round((double) MapUtils.safeGet(values, "event_id")),
                 (long) Math.round((double) MapUtils.safeGet(values, "start_time")),
@@ -92,8 +101,9 @@ public class AttackEvent {
      *                       the time the attack event started
      * @param maxEventId Unsure what this value is
      */
-    public AttackEvent(int season, int eventId, long startTime, long endTime, int enemy, int points, int pointsMax,
+    public AttackEvent(long timeStamp, int season, int eventId, long startTime, long endTime, int enemy, int points, int pointsMax,
                        String status, int playersAtStart, int maxEventId){
+        this.timeStamp = timeStamp;
         this.season = season;
         this.eventId = eventId;
         this.endTime = endTime;
@@ -106,6 +116,26 @@ public class AttackEvent {
         this.maxEventId = maxEventId;
     }
 
+    /**
+     * cast this object to an influx point
+     * @param table name of the measurement
+     * @return influx Point representing this object
+     */
+    public Point toPoint(String table){
+        return Point.measurement(table)
+                .time(timeStamp, TimeUnit.MILLISECONDS)
+                .tag("season", String.valueOf(getSeason()))
+                .tag("enemy", getEnemyName())
+                .tag("event_id", String.valueOf(getEventId()))
+                .tag("max_event_id", String.valueOf(getMaxEventId()))
+                .tag("status", getStatus())
+                .addField("start_time", getStartTime())
+                .addField("end_time", getEndTime())
+                .addField("players_at_start", getPlayersAtStart())
+                .addField("points", getPoints())
+                .addField("points_max", getPointsMax())
+                .build();
+    }
     /**
      * Returns the name of the enemy that is being attacked in this AttackEvent
      * @return the name of the enemy that is being attacked in this AttackEvent
@@ -135,14 +165,15 @@ public class AttackEvent {
     }
 
     /**
-     * Attack event id, presumed to be equal to the total amount of attack events minus 1
+     * @return timestamp that describes the moment at which the database was polled for this data
+     */
+    public long getTimeStamp(){ return timeStamp;}
+
+    /**
+     * @return Attack event id, presumed to be equal to the total amount of attack events minus 1
      */
     public int getEventId() {
         return eventId;
-    }
-
-    public void setEventId(int eventId) {
-        this.eventId = eventId;
     }
 
     /**
@@ -152,19 +183,11 @@ public class AttackEvent {
         return startTime;
     }
 
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
-    }
-
     /**
      * UNIX Timestamp of when the attack event will end and be lost if the points requirement is not met
      */
     public long getEndTime() {
         return endTime;
-    }
-
-    public void setEndTime(long endTime) {
-        this.endTime = endTime;
     }
 
     /**
@@ -174,10 +197,6 @@ public class AttackEvent {
         return enemy;
     }
 
-    public void setEnemy(int enemy) {
-        this.enemy = enemy;
-    }
-
     /**
      * Current amount of points that the players have gained
      */
@@ -185,19 +204,11 @@ public class AttackEvent {
         return points;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
     /**
      * Amount of points needed for the attack event to be successful
      */
     public int getPointsMax() {
         return pointsMax;
-    }
-
-    public void setPointsMax(int pointsMax) {
-        this.pointsMax = pointsMax;
     }
 
     /**
@@ -208,20 +219,12 @@ public class AttackEvent {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     /**
      * The amount of players that are in a mission in the region where the attack event starts at the time
      * the attack event started
      */
     public int getPlayersAtStart() {
         return playersAtStart;
-    }
-
-    public void setPlayersAtStart(int playersAtStart) {
-        this.playersAtStart = playersAtStart;
     }
 
     /**
@@ -231,18 +234,10 @@ public class AttackEvent {
         return maxEventId;
     }
 
-    public void setMaxEventId(int maxEventId) {
-        this.maxEventId = maxEventId;
-    }
-
     /**
      * Season/war number
      */
     public int getSeason() {
         return season;
-    }
-
-    public void setSeason(int season) {
-        this.season = season;
     }
 }

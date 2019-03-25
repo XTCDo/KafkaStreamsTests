@@ -1,6 +1,7 @@
 package kafka.test;
 
 import com.google.gson.Gson;
+import helldivers.AttackEvent;
 import helldivers.CampaignStatus;
 import helldivers.Statistics;
 import kafka.generic.consumers.GenericRunnableInfluxConsumer;
@@ -28,17 +29,14 @@ public class TestHelldiversConsumer {
             List<Point> batch = new ArrayList<>();
 
             for (ConsumerRecord<String, String> record : consumerRecords) {
-                // JSON to objects
+                // JSON to object casting
                 List<Map> statisticsList = gson.fromJson(record.value(), List.class);
+                //parsing objects to correct type and inserting to Influx
+                statisticsList.forEach(statistics ->
+                        batch.add(new Statistics(statistics)
+                                .toPoint("helldivers-statistics"))
+                );
 
-                for (Map statistics : statisticsList) {
-                    // todo hacky fix, find different way
-                    long timeStamp = (long) Math.round((double) statistics.get("timeStamp"));
-                    statistics.put("timeStamp", timeStamp);
-
-                    Statistics statisticsObject = new Statistics(statistics);
-                    batch.add(statisticsObject.toPoint());
-                }
             }
 
             return batch;
@@ -51,29 +49,47 @@ public class TestHelldiversConsumer {
 
             for (ConsumerRecord<String, String> record : consumerRecords) {
                 // json to Object casting
-                List<CampaignStatus> campaignStatuses = gson.fromJson(record.value(), List.class);
-
-                // parsing objects
-                for (CampaignStatus cstat: campaignStatuses) {
-                    // parse campaign status object to Influx point
-                    Point point = Point.measurement("helldivers-campaign-status")
-                            .time(cstat.getTimeStamp(), TimeUnit.MILLISECONDS)
-                            .tag("season", String.valueOf(cstat.getSeason()))
-                            .tag("enemy", cstat.getEnemyName())
-                            .tag("status", cstat.getStatus())
-                            .tag("introduction_order", String.valueOf(cstat.getIntroductionOrder()))
-                            .addField("points", cstat.getPoints())
-                            .addField("points_max", cstat.getPointsMax())
-                            .addField("points_taken", cstat.getPointsTaken())
-                            .build();
-                    // add to buffer
-                    batch.add(point);
-                }
+                List<Map> campaignStatuses = gson.fromJson(record.value(), List.class);
+                //parsing objects to correct type and inserting to Influx
+                campaignStatuses.forEach(campaignStatus ->
+                        batch.add(new CampaignStatus(campaignStatus)
+                                .toPoint("helldivers-campaign-status")));
             }
-
-            // return the buffer so the InfluxDao can insert it into it's database
             return batch;
         };
+
+        // records processor for parsing attack events Records to Influx Points
+        Function<ConsumerRecords<String, String>, List<Point>> AttackEventsToPointBatch = consumerRecords -> {
+            Gson gson = new Gson();
+            List<Point> batch = new ArrayList<>();
+
+            for (ConsumerRecord<String,String> record: consumerRecords){
+                // JSON to object casting
+                List<Map> attackEvents = gson.fromJson(record.value(), List.class);
+                // process to influx
+                attackEvents.forEach(attackEvent ->
+                        batch.add(new CampaignStatus(attackEvent)
+                                .toPoint("helldivers-attack-events")));
+            }
+            return batch;
+        };
+
+        // records processor for parsing defend events Records to Influx Points
+        Function<ConsumerRecords<String, String>, List<Point>> DefendEventsToPointBatch = consumerRecords -> {
+            Gson gson = new Gson();
+            List<Point> batch = new ArrayList<>();
+
+            for (ConsumerRecord<String,String> record: consumerRecords){
+                // JSON to object casting
+                List<Map> defendEvents = gson.fromJson(record.value(), List.class);
+                // process to influx
+                defendEvents.forEach(defendEvent ->
+                        batch.add(new CampaignStatus(defendEvent)
+                                .toPoint("helldivers-defend-events")));
+            }
+            return batch;
+        };
+
 
         // consuming statistics
         new GenericRunnableInfluxConsumer(
@@ -85,10 +101,22 @@ public class TestHelldiversConsumer {
         // consuming campaign statuses
         new GenericRunnableInfluxConsumer(
                 "http://localhost:8086", "HELLDIVERS",
-                "helldivers-campaign-status", Config.getLocalBootstrapServersConfig(), "HelldiversCampaignStatusConsumer",
+                "helldivers-campaign_status", Config.getLocalBootstrapServersConfig(), "HelldiversCampaignStatusConsumer",
                 StatusesToPointBatch)
                 .run();
 
+        // consuming attack events
+        new GenericRunnableInfluxConsumer(
+                "http://localhost:8086", "HELLDIVERS",
+                "helldivers-attack_events", Config.getLocalBootstrapServersConfig(), "HelldiversAttackEventConsumer",
+                AttackEventsToPointBatch)
+                .run();
 
+        // consuming defend events
+        new GenericRunnableInfluxConsumer(
+                "http://localhost:8086", "HELLDIVERS",
+                "helldivers-defend_events", Config.getLocalBootstrapServersConfig(), "HelldiversDefendEventConsumer",
+                DefendEventsToPointBatch)
+                .run();
     }
 }

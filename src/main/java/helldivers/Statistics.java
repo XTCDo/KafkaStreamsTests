@@ -10,101 +10,100 @@ public class Statistics {
     /**
      * The time at which this measurement was made
      */
-    private long timeStamp;
+    private final long timeStamp;
 
     /**
      * Season/war number
      */
-    private int season;
+    private final int season;
 
     /**
      * Amount of seconds that the current war has been going on
      */
-    private long seasonDuration;
+    private final long seasonDuration;
 
     /**
      * The id of the enemy these statistics belong to
      */
-    private int enemy;
+    private final int enemy;
 
     /**
      * Amount of players currently online (in this region?)
      */
-    private int players;
+    private final int players;
 
     /**
      * Amount of unique players that have fought this season/war
      */
-    private int totalUniquePlayers;
+    private final int totalUniquePlayers;
 
     /**
      * Amount of missions played
      */
-    private int missions;
+    private final int missions;
 
     /**
      * Amount of missions played that were successful
      */
-    private int successfulMissions;
+    private final int successfulMissions;
 
     /**
      * Sum of the mission difficulties of all successful missions
      */
-    private int totalMissionDifficulty;
+    private final int totalMissionDifficulty;
 
     /**
      * Amount of planets where all missions were finished
      */
-    private int completedPlanets;
+    private final int completedPlanets;
 
     /**
      * Amount of defend events
      */
-    private int defendEvents;
+    private final int defendEvents;
 
     /**
      * Amount of successful defend events
      */
-    private int successfulDefendEvents;
+    private final int successfulDefendEvents;
 
     /**
      * Amount of attack events
      */
-    private int attackEvents;
+    private final int attackEvents;
 
     /**
      * Amount of successful attack events
      */
-    private int successfulAttackEvents;
+    private final int successfulAttackEvents;
 
     /**
      * Amount of player deaths
      */
-    private int deaths;
+    private final int deaths;
 
     /**
      * Amount of player-caused deaths
      */
-    private int accidentals;
+    private final int accidentals;
 
     /**
      * Amount of shots fired by players
      */
-    private long shots;
+    private final long shots;
 
     /**
      * Amount of shots fired by players that hit
      */
-    private long hits;
+    private final long hits;
 
     /**
      * Amount of enemies killed
      */
-    private int kills;
+    private final int kills;
 
     /**
      * Constructor for Statistics that takes a Map containing values returned by the helldivers API
-     *
      * @param values a map containing the statistics
      */
     public Statistics(Map values) {
@@ -131,32 +130,38 @@ public class Statistics {
         );
     }
 
-    public Point toPoint() {
-        Point point = Point.measurement("helldivers-statistics")
+    /**
+     * cast this object to an influx point
+     * @param table name of the measurement
+     * @return influx Point representing this object
+     */
+    public Point toPoint(String table) {
+        return Point.measurement(table)
             .time(getTimeStamp(), TimeUnit.MILLISECONDS)
+            // tags
             .tag("season", String.valueOf(getSeason()))
             .tag("enemy", getEnemyName())
+            // general season info
             .addField("season_duration", getSeasonDuration())
-            .addField("players", getPlayers())
-            .addField("total_unique_players", getTotalUniquePlayers())
-            .addField("missions", getMissions())
-            .addField("successful_missions", getSuccessfulMissions())
-            .addField("total_mission_difficulty", getTotalMissionDifficulty())
-            .addField("completed_planets", getCompletedPlanets())
-            .addField("defend_events", getDefendEvents())
-            .addField("successful_defend_events", getSuccessfulDefendEvents())
-            .addField("attack_events", getAttackEvents())
-            .addField("successful_attack_events", getSuccessfulAttackEvents())
             .addField("deaths", getDeaths())
             .addField("accidentals", getAccidentals())
             .addField("shots", getShots())
             .addField("hits", getHits())
             .addField("kills", getKills())
-            .addField("accuracy", getAccuracy())
-
+            // players info
+            .addField("players", getPlayers())
+            .addField("total_unique_players", getTotalUniquePlayers())
+            // missions
+            .addField("missions", getMissions())
+            .addField("successful_missions", getSuccessfulMissions())
+            .addField("total_mission_difficulty", getTotalMissionDifficulty())
+            .addField("completed_planets", getCompletedPlanets())
+            // events
+            .addField("defend_events", getDefendEvents())
+            .addField("successful_defend_events", getSuccessfulDefendEvents())
+            .addField("attack_events", getAttackEvents())
+            .addField("successful_attack_events", getSuccessfulAttackEvents())
             .build();
-
-        return point;
     }
 
     /**
@@ -181,31 +186,32 @@ public class Statistics {
      * @param hits Amount of shots fired by players that hit
      * @param kills Amount of enemies killed
      */
-    public Statistics(long timeStamp, int season, long seasonDuration, int enemy, int players,
-        int totalUniquePlayers,
-        int missions, int successfulMissions, int totalMissionDifficulty, int completedPlanets,
-        int defendEvents,
-        int successfulDefendEvents, int attackEvents, int successfulAttackEvents,
-        int deaths, int accidentals, long shots, long hits, int kills) {
-        this.setTimeStamp(timeStamp);
-        this.setSeason(season);
-        this.setSeasonDuration(seasonDuration);
-        this.setEnemy(enemy);
-        this.setPlayers(players);
-        this.setTotalUniquePlayers(totalUniquePlayers);
-        this.setMissions(missions);
-        this.setSuccessfulMissions(successfulMissions);
-        this.setTotalMissionDifficulty(totalMissionDifficulty);
-        this.setCompletedPlanets(completedPlanets);
-        this.setDefendEvents(defendEvents);
-        this.setSuccessfulDefendEvents(successfulDefendEvents);
-        this.setAttackEvents(attackEvents);
-        this.setSuccessfulAttackEvents(successfulAttackEvents);
-        this.setDeaths(deaths);
-        this.setAccidentals(accidentals);
-        this.setShots(shots);
-        this.setHits(hits);
-        this.setKills(kills);
+    public Statistics(long timeStamp, int season, long seasonDuration, int enemy,
+                      int players, int totalUniquePlayers,
+                      int missions, int successfulMissions, int totalMissionDifficulty,
+                      int completedPlanets,
+                      int defendEvents, int successfulDefendEvents,
+                      int attackEvents, int successfulAttackEvents,
+                      int deaths, int accidentals,
+                      long shots, long hits, int kills) {
+        this.timeStamp = timeStamp; this.season = season;
+        this.seasonDuration = seasonDuration;
+        this.enemy = enemy;
+        this.players = players;
+        this.totalUniquePlayers = totalUniquePlayers;
+        this.missions = missions;
+        this.successfulMissions = successfulMissions;
+        this.totalMissionDifficulty = totalMissionDifficulty;
+        this.completedPlanets = completedPlanets;
+        this.defendEvents = defendEvents;
+        this.successfulDefendEvents = successfulDefendEvents;
+        this.attackEvents = attackEvents;
+        this.successfulAttackEvents = successfulAttackEvents;
+        this.deaths = deaths;
+        this.accidentals = accidentals;
+        this.shots = shots;
+        this.hits = hits;
+        this.kills = kills;
     }
 
     /**
@@ -291,10 +297,6 @@ public class Statistics {
         return season;
     }
 
-    public void setSeason(int season) {
-        this.season = season;
-    }
-
     /**
      * Amount of seconds that the current war has been going on
      */
@@ -302,9 +304,6 @@ public class Statistics {
         return seasonDuration;
     }
 
-    public void setSeasonDuration(long seasonDuration) {
-        this.seasonDuration = seasonDuration;
-    }
 
     /**
      * The id of the enemy these statistics belong to
@@ -313,9 +312,6 @@ public class Statistics {
         return enemy;
     }
 
-    public void setEnemy(int enemy) {
-        this.enemy = enemy;
-    }
 
     /**
      * Amount of players currently online (in this region?)
@@ -324,9 +320,6 @@ public class Statistics {
         return players;
     }
 
-    public void setPlayers(int players) {
-        this.players = players;
-    }
 
     /**
      * Amount of unique players that have fought this season/war
@@ -335,9 +328,6 @@ public class Statistics {
         return totalUniquePlayers;
     }
 
-    public void setTotalUniquePlayers(int totalUniquePlayers) {
-        this.totalUniquePlayers = totalUniquePlayers;
-    }
 
     /**
      * Amount of missions played
@@ -346,9 +336,6 @@ public class Statistics {
         return missions;
     }
 
-    public void setMissions(int missions) {
-        this.missions = missions;
-    }
 
     /**
      * Amount of missions played that were successful
@@ -357,9 +344,6 @@ public class Statistics {
         return successfulMissions;
     }
 
-    public void setSuccessfulMissions(int successfulMissions) {
-        this.successfulMissions = successfulMissions;
-    }
 
     /**
      * Sum of the mission difficulties of all successful missions
@@ -368,9 +352,6 @@ public class Statistics {
         return totalMissionDifficulty;
     }
 
-    public void setTotalMissionDifficulty(int totalMissionDifficulty) {
-        this.totalMissionDifficulty = totalMissionDifficulty;
-    }
 
     /**
      * Amount of planets where all missions were finished
@@ -379,9 +360,6 @@ public class Statistics {
         return completedPlanets;
     }
 
-    public void setCompletedPlanets(int completedPlanets) {
-        this.completedPlanets = completedPlanets;
-    }
 
     /**
      * Amount of defend events
@@ -390,9 +368,6 @@ public class Statistics {
         return defendEvents;
     }
 
-    public void setDefendEvents(int defendEvents) {
-        this.defendEvents = defendEvents;
-    }
 
     /**
      * Amount of successful defend events
@@ -401,9 +376,6 @@ public class Statistics {
         return successfulDefendEvents;
     }
 
-    public void setSuccessfulDefendEvents(int successfulDefendEvents) {
-        this.successfulDefendEvents = successfulDefendEvents;
-    }
 
     /**
      * Amount of attack events
@@ -412,21 +384,14 @@ public class Statistics {
         return attackEvents;
     }
 
-    public void setAttackEvents(int attackEvents) {
-        this.attackEvents = attackEvents;
-    }
 
-     /**
-     *
-     * @return
+    /**
+     * @return the number of successful attack events
      */
     public int getSuccessfulAttackEvents() {
         return successfulAttackEvents;
     }
 
-    public void setSuccessfulAttackEvents(int successfulAttackEvents) {
-        this.successfulAttackEvents = successfulAttackEvents;
-    }
 
     /**
      * Amount of player deaths
@@ -435,9 +400,6 @@ public class Statistics {
         return deaths;
     }
 
-    public void setDeaths(int deaths) {
-        this.deaths = deaths;
-    }
 
     /**
      * Amount of player-caused deaths
@@ -446,19 +408,12 @@ public class Statistics {
         return accidentals;
     }
 
-    public void setAccidentals(int accidentals) {
-        this.accidentals = accidentals;
-    }
 
     /**
      * Amount of shots fired by players
      */
     public long getShots() {
         return shots;
-    }
-
-    public void setShots(long shots) {
-        this.shots = shots;
     }
 
     /**
@@ -468,9 +423,6 @@ public class Statistics {
         return hits;
     }
 
-    public void setHits(long hits) {
-        this.hits = hits;
-    }
 
     /**
      * Amount of enemies killed
@@ -479,18 +431,11 @@ public class Statistics {
         return kills;
     }
 
-    public void setKills(int kills) {
-        this.kills = kills;
-    }
 
     /**
      * The time at which this measurement was made
      */
     public long getTimeStamp() {
         return timeStamp;
-    }
-
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
     }
 }
