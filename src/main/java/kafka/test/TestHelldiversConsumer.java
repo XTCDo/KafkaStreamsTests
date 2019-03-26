@@ -11,6 +11,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.influxdb.dto.Point;
 import util.Config;
+import util.Logging;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class TestHelldiversConsumer {
-
+    private static final String TAG = "Helldivers-Consumer";
     public static void main(String[] args) {
         // records processor for parsing statistics Records to Influx Points
         Function<ConsumerRecords<String, String>, List<Point>> StatisticsToPointBatch = consumerRecords -> {
@@ -50,9 +51,11 @@ public class TestHelldiversConsumer {
                 List<CampaignStatus> campaignStatuses = gson.fromJson(record.value(), campaignStatusListType);
 
                 //parsing objects to correct type and inserting to Influx
-                campaignStatuses.forEach(campaignStatus ->
+                campaignStatuses.forEach(campaignStatus ->{
+                    Logging.debug(campaignStatus.getDescription(), TAG);
                         batch.add(campaignStatus
-                                .toPoint("helldivers-campaign-status")));
+                                .toPoint("helldivers-campaign-status"));
+                });
             }
             return batch;
         };
@@ -84,9 +87,12 @@ public class TestHelldiversConsumer {
                 // JSON to Object casting
                 List<DefendEvent> defendEvents = gson.fromJson(record.value(), DefendEventListType);
                 // process to influx
-                defendEvents.forEach(defendEvent ->
-                        batch.add(defendEvent
-                                .toPoint("helldivers-defend-events")));
+                defendEvents.forEach(defendEvent ->{
+                    Logging.debug(defendEvent.getDescription(), TAG);
+                    batch.add(defendEvent
+                        .toPoint("helldivers-defend-events"));
+                    }
+                );
             }
             return batch;
         };
