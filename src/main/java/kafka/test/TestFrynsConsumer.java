@@ -20,11 +20,8 @@ public class TestFrynsConsumer {
             List<Point> batch = new ArrayList<>();
 
             for (ConsumerRecord<String, String> record : consumerRecords) {
-                List<Map> frynsDataList = gson.fromJson(record.value(), List.class);
-
-                for (Map frynsData : frynsDataList ) {
-                    batch.add(MapUtils.influxMapToPoint(frynsData, "fryns_data"));
-                }
+                Map recordAsMap = gson.fromJson(record.value(), Map.class);
+                batch.add(MapUtils.influxMapToPoint(recordAsMap, "fryns_data"));
             }
 
             return batch;
