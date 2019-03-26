@@ -20,7 +20,6 @@ public class TestFrynsConsumer {
         Function<ConsumerRecords<String, String>, List<Point>> frynsDataToPointBatch = consumerRecords -> {
             Gson gson = new Gson();
             List<Point> batch = new ArrayList<>();
-            Double.
             for (ConsumerRecord<String, String> record : consumerRecords) {
                 Map recordAsMap = gson.fromJson(record.value(), Map.class);
                 Point point = Point.measurement("fryns_data")
