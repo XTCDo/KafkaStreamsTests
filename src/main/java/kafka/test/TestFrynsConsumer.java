@@ -22,14 +22,14 @@ public class TestFrynsConsumer {
             List<Point> batch = new ArrayList<>();
             for (ConsumerRecord<String, String> record : consumerRecords) {
                 Map recordAsMap = gson.fromJson(record.value(), Map.class);
-                /*Point point = Point.measurement("fryns_data")
+                Point point = Point.measurement("fryns_data")
                     .tag("name", (String) ((Map) recordAsMap.get("tags")).get("name"))
                     .time(((Double) recordAsMap.get("time")).longValue(), TimeUnit.MILLISECONDS)
-                    .addField("temperatuurSensor1", Double.parseDouble((String) ((Map) recordAsMap.get("fields")).get("temperatuurSensor1")))
+                    .addField("temperatuurSensor1", Double.valueOf((String) ((Map)recordAsMap.get("fields")).get("temperatuurSensor1")))
                     .build();
                 batch.add(MapUtils.influxMapToPoint(recordAsMap, "fryns_data"));
-                Logging.debug(recordAsMap.toString());*/
-                System.out.println(Double.valueOf((String) ((Map)recordAsMap.get("fields")).get("temperatuurSensor1")));
+                Logging.debug(recordAsMap.toString());
+
             }
 
             return batch;
