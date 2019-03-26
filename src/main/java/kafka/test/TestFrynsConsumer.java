@@ -25,7 +25,7 @@ public class TestFrynsConsumer {
                 Point point = Point.measurement("fryns_data")
                     .tag("name", (String) ((Map) recordAsMap.get("tags")).get("name"))
                     .time(((Double) recordAsMap.get("time")).longValue(), TimeUnit.MILLISECONDS)
-                    .addField("temperatuurSensor1", Double.valueOf((String) ((Map) recordAsMap.get("fields")).get("temperatuurSensor1")))
+                    .addField("temperatuurSensor1", Double.parseDouble((String) ((Map) recordAsMap.get("fields")).get("temperatuurSensor1")))
                     .build();
                 batch.add(MapUtils.influxMapToPoint(recordAsMap, "fryns_data"));
                 Logging.debug(recordAsMap.toString());
