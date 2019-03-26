@@ -15,7 +15,7 @@ import util.Logging;
 import util.MapUtils;
 
 public class TestFrynsConsumer {
-    private final String TAG = "TestFrynsConsumer";
+    private static final String TAG = "TestFrynsConsumer";
     public static void main(String[] args) {
         Function<ConsumerRecords<String, String>, List<Point>> frynsDataToPointBatch = consumerRecords -> {
             Gson gson = new Gson();
@@ -28,7 +28,7 @@ public class TestFrynsConsumer {
                     .addField("temperatuurSensor1", Double.valueOf((String) ((Map)recordAsMap.get("fields")).get("temperatuurSensor1")))
                     .build();
                 batch.add(MapUtils.influxMapToPoint(recordAsMap, "fryns_data"));
-                Logging.debug(recordAsMap.toString());
+                Logging.debug(recordAsMap.toString(), TAG);
 
             }
 
