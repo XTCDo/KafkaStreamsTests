@@ -30,7 +30,7 @@ public class TestFrynsConsumer {
         };
 
         new GenericRunnableInfluxConsumer(
-            "https://localhost:8086", "fryns",
+            "http://localhost:8086", "fryns",
             "fryns-input", Config.getLocalBootstrapServersConfig(), "Fryns",
             frynsDataToPointBatch
         ).run();
