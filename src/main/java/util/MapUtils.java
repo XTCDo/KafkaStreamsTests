@@ -1,8 +1,15 @@
 package util;
 
+import java.sql.Time;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.influxdb.dto.Point;
+import org.w3c.dom.ls.LSException;
+import util.exceptions.InvalidInfluxMapException;
 
 public class MapUtils {
 
@@ -44,5 +51,45 @@ public class MapUtils {
         }
     }
 
+    public static Point influxMapToPoint(Map map, String measurement){
+        return influxMapToPoint(map, measurement, TimeUnit.MILLISECONDS);
+    }
+
+    public static Point influxMapToPoint(Map map, String measurement, TimeUnit timeUnit) {
+        Set<String> keySet = map.keySet();
+
+        if (keySet.size() < 2 || keySet.size() > 3) {
+            throw new InvalidInfluxMapException();
+        }
+
+        if (keySet.size() == 2
+            && !(keySet.contains("time") && keySet.contains("fields"))) {
+            throw new InvalidInfluxMapException();
+        }
+
+        if (keySet.size() == 3
+            && !(keySet.contains("time") && keySet.contains("fields") && keySet.contains("tags"))){
+            throw new InvalidInfluxMapException();
+        }
+
+        long time = ((Double) map.get("time")).longValue();
+        Map<String, Object> fields = (Map<String, Object>) map.get("fields");
+
+        if (keySet.contains("tags")) {
+            Map<String, String> tags = (Map<String, String>) map.get("tags");
+            Point point = Point.measurement(measurement)
+                .time(time, timeUnit)
+                .fields(fields)
+                .tag(tags)
+                .build();
+            return point;
+        } else {
+            Point point = Point.measurement(measurement)
+                .time(time, timeUnit)
+                .fields(fields)
+                .build();
+            return point;
+        }
+    }
 
 }

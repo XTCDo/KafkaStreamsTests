@@ -34,7 +34,6 @@ public class Pipe {
     private static final String TAG = "Pipe";
 
     public static void main(String[] args) throws Exception {
-
         // Create a StreamsBuilder
         final StreamsBuilder builder = new StreamsBuilder();
 
