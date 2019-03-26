@@ -28,10 +28,10 @@ public class HelldiversDataProducer extends GenericThreadedProducer<String, Stri
                 try {
                     // fetch info
                     status.refresh();
+                    Logging.debug("full status: " + status.getHttpApiResponseObject().toString());
                     Logging
                         .log("sending data at " + new SimpleDateFormat("hh:mm:SS")
                             .format(new Date()), TAG);
-                    Logging.debug("full status: " + status.getHttpApiResponseObject().toString());
 
                     getProducer()
                         .send(new ProducerRecord<String, String>(getTopic(), gson.toJson(status)));

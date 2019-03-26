@@ -10,8 +10,7 @@ public class Status {
     private List<AttackEvent> attackEvents;
     private List<Statistics> statistics;
 
-    public Status() { refresh();
-    }
+    public Status() { refresh(); }
 
     public Status(Map fullStatus) { setAll(fullStatus); }
 

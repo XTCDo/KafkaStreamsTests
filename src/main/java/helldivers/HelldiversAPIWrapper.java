@@ -92,7 +92,7 @@ public class HelldiversAPIWrapper {
             // Get JSON String from the api response
             String apiResponseJSONString = getAPIResponse();
 
-            // parse with gson and return the resulting map
+            // parse with Gson and return the resulting map
             Gson gson = new Gson();
             return gson.fromJson(apiResponseJSONString, Map.class);
 
@@ -135,10 +135,11 @@ public class HelldiversAPIWrapper {
 
         // Iterate through the Maps in mapList, add their relative index
         // and then use that info to create a new Campaign status object
-        mapList.forEach(campaignStatusMap->{
-            campaignStatusMap.put("enemy", campaignStatusList.indexOf(campaignStatusMap)); // insert enemy index
+        for (int i=0; i< mapList.size(); i++){
+            Map campaignStatusMap = mapList.get(i);
+            campaignStatusMap.put("enemy", i); // insert enemy index
             campaignStatusList.add(new CampaignStatus(campaignStatusMap));
-        });
+        }
 
         return campaignStatusList;
     }
