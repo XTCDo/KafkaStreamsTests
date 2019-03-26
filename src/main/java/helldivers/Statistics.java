@@ -107,6 +107,7 @@ public class Statistics {
      * @param values a map containing the statistics
      */
     public Statistics(Map values) {
+        // todo change these, they will only be called on construction, no longer from gson
         this(
             values.get("timeStamp"),
             (int) Math.round((double) values.get("season")),

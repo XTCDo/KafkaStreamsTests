@@ -63,8 +63,9 @@ public class DefendEvent {
      * @param values a map representing this object
      */
     public DefendEvent(Map values){
+        // todo change these, they will only be called on construction, no longer from gson
         this(
-            values.get("timeStamp"),
+            (long) values.get("timeStamp"),
             (int) Math.round((double) values.get("season")),
             (int) Math.round((double) MapUtils.safeGet(values, "event_id")),
             (long) Math.round((double) MapUtils.safeGet(values, "start_time")),
@@ -91,9 +92,9 @@ public class DefendEvent {
      * @param status Either 'active', 'success' or 'failure' depending on if the event is ongoing,
      *               successfully ended or ended in a loss
      */
-    public DefendEvent(Object timeStamp,int season, int eventId, long startTime, long endTime, int region,
+    public DefendEvent(long timeStamp,int season, int eventId, long startTime, long endTime, int region,
                        int enemy, int points, int pointsMax, String status){
-        this.timeStamp = (timeStamp instanceof Long) ? (long) timeStamp : Math.round( (double) timeStamp);
+        this.timeStamp = timeStamp;
         this.season = season;
         this.eventId = eventId;
         this.startTime = startTime;
