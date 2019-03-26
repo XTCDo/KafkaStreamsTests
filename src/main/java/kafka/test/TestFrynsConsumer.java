@@ -27,10 +27,6 @@ public class TestFrynsConsumer {
                     .tag("name", (String) ((Map) recordAsMap.get("tags")).get("name"))
                     .time(((Double) recordAsMap.get("time")).longValue(), TimeUnit.MILLISECONDS)
                     .addField("temperatuurSensor1", (double) ((Map) recordAsMap.get("fields")).get("temperatuurSensor1"))
-                    .addField("temperatuurSensor2", (double) ((Map) recordAsMap.get("fields")).get("temperatuurSensor2"))
-                    .addField("drukSensor1", (double) ((Map) recordAsMap.get("fields")).get("drukSensor1"))
-                    .addField("drukSensor2", (double) ((Map) recordAsMap.get("fields")).get("drukSensor2"))
-                    .addField("laagWaterNiveau", (boolean) ((Map) recordAsMap.get("fields")).get("laagWaterNiveau"))
                     .build();
                 batch.add(MapUtils.influxMapToPoint(recordAsMap, "fryns_data"));
                 Logging.debug(recordAsMap.toString());
