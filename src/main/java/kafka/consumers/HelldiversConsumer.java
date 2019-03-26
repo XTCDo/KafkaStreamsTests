@@ -38,7 +38,7 @@ public class HelldiversConsumer extends GenericThreadedInfluxConsumer {
                             statistics.put("timeStamp", timeStamp);
                             Statistics statisticsObject = new Statistics(statistics);
                             Logging.log(statisticsObject.getDescription(), TAG);
-                            Point point = statisticsObject.toPoint();
+                            Point point = statisticsObject.toPoint("helldivers-statistics");
                             getInfluxDAO().writePoint("HELLDIVERS", point);
                         }
                     }

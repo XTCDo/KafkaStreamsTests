@@ -10,29 +10,15 @@ public class Status {
     private List<AttackEvent> attackEvents;
     private List<Statistics> statistics;
 
-    public Status(){
-        refresh();
-    }
+    public Status() { refresh(); }
 
-    public Status(Map fullStatus){
-        this.httpApiResponseObject = fullStatus;
-        this.campaignStatuses = HelldiversAPIWrapper.getCampaignStatus(httpApiResponseObject.get("campaign_status"));
-        this.defendEvents = HelldiversAPIWrapper.getDefendEvents(httpApiResponseObject.get("defend_event"));//potentially broken, check topic helldivers-status
-        this.attackEvents = HelldiversAPIWrapper.getAttackEvents(httpApiResponseObject.get("attack_events"));// same as above
-        this.statistics = HelldiversAPIWrapper.getStatistics(httpApiResponseObject.get("statistics"));
-    }
+    public Status(Map fullStatus) { setAll(fullStatus); }
 
-    public void refresh(){
-        this.httpApiResponseObject = HelldiversAPIWrapper.getStatus();
-        this.campaignStatuses = HelldiversAPIWrapper.getCampaignStatus(httpApiResponseObject.get("campaign_status"));
-        this.defendEvents = HelldiversAPIWrapper.getDefendEvents(httpApiResponseObject.get("defend_event"));
-        this.attackEvents = HelldiversAPIWrapper.getAttackEvents(httpApiResponseObject.get("attack_events"));
-        this.statistics = HelldiversAPIWrapper.getStatistics(httpApiResponseObject.get("statistics"));
-    }
+    public void refresh() { setAll(HelldiversAPIWrapper.getStatus()); }
 
-    public Map getHttpApiResponseObject(){
-        return httpApiResponseObject;
-    }
+    // getters
+
+    public Map getHttpApiResponseObject() { return httpApiResponseObject; }
 
     public List<CampaignStatus> getCampaignStatuses() {
         return campaignStatuses;
@@ -50,4 +36,13 @@ public class Status {
         return statistics;
     }
 
+    // setters
+
+    private void setAll(Map fullStatus){
+        this.httpApiResponseObject = fullStatus;
+        this.campaignStatuses = HelldiversAPIWrapper.getCampaignStatus(httpApiResponseObject);
+        this.defendEvents = HelldiversAPIWrapper.getDefendEvents(httpApiResponseObject);//potentially broken, check topic helldivers-status
+        this.attackEvents = HelldiversAPIWrapper.getAttackEvents(httpApiResponseObject);// same as above
+        this.statistics = HelldiversAPIWrapper.getStatistics(httpApiResponseObject);
+    }
 }

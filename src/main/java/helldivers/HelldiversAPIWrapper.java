@@ -2,17 +2,19 @@ package helldivers;
 
 import com.google.gson.Gson;
 import util.Logging;
-
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class HelldiversAPIWrapper {
+    private static final String TAG = "HelldiversAPIWrapper";
 
     // Link to API
     // https://docs.google.com/document/d/11BH152Tx7YpWOlfT69Ad2anG8wwlt6xOE3VO_YHC2mQ/edit#heading=h.trtt0zalsa2
@@ -20,12 +22,11 @@ public class HelldiversAPIWrapper {
     /**
      * Returns a JSON String containing the response received when performing a POST request to the
      * Helldivers api server with as sole parameter action with action being get_campaign_status
-     * This JSON string containts the current status of the Helldivers campaign
+     * This JSON string contains the current status of the Helldivers campaign
      *
      * @return A JSON String containing the current status of the Helldivers campaign
      */
     public static String getAPIResponse() {
-        final String TAG = "HelldiversAPIWrapper";
         try {
             // Create URL object from helldivers api url string
             URL url = new URL("https://api.helldiversgame.com/1.0/");
@@ -67,15 +68,15 @@ public class HelldiversAPIWrapper {
             // Define inputLine as empty String
             String inputLine;
             // Create a StringBuffer that will contain the content of the response on our request
-            StringBuffer content = new StringBuffer();
+            StringBuffer buffer = new StringBuffer();
             // Fill the buffer with the content from the inputstream
             while ((inputLine = inputStream.readLine()) != null) {
-                content.append(inputLine);
+                buffer.append(inputLine);
             }
-            // Close the inputStream because we dont need it anymore
+            // Close the inputStream because we don't need it anymore
             inputStream.close();
 
-            return content.toString();
+            return buffer.toString();
         } catch (Exception e) {
             Logging.error(e, TAG);
             return null;
@@ -83,144 +84,126 @@ public class HelldiversAPIWrapper {
     }
 
     /**
-     * Returns a Map that is created by parsing the JSON String returned by getAPIResponse() using
-     * gson This Map contains the current status of the Helldivers campaign
-     *
-     * @return A Map containing the current status of the Helldivers campaign
+     * Fetches the API response, and then uses gson to parse the JSON string to a Map
+     * @return A Map containing the current (full) status of the Helldivers campaign
      */
     public static Map getStatus() {
-        final String TAG = "HelldiversAPIWrapper";
         try {
             // Get JSON String from the api response
             String apiResponseJSONString = getAPIResponse();
 
-            // Create a Map out of it using gson
+            // parse with Gson and return the resulting map
             Gson gson = new Gson();
-            Map apiResponse = gson.fromJson(apiResponseJSONString, Map.class);
+            return gson.fromJson(apiResponseJSONString, Map.class);
 
-            return apiResponse;
         } catch (Exception e) {
             Logging.error(e, TAG);
             return null;
         }
     }
 
-    // todo change Object to List if that doesn't break anything
-    // todo Make the cooperation between getSomething(Object httpRequestReturnValue) and
-    // todo getSomething() more clear and logical
-    public static List<Statistics> getStatistics(Object httpRequestReturnValue) {
-        // Turn httpRequestReturnValue into a List of Maps
-        List<Map> statisticsList = (List) httpRequestReturnValue;
+
+
+    public static List<Statistics> getStatistics(Map fullStatus) {
+        List<Map> mapList = getSubmapWithTimestamp(fullStatus,"statistics");
+        if (mapList == null) return null;
 
         // Make an empty List of Statistics
-        List<Statistics> statisticsObjectList = new ArrayList<>();
+        List<Statistics> statisticsList = new ArrayList<>();
 
-        // Iterate through the Maps in statisticsList, turn them into a Statistics Object
+        // Iterate through the Maps in statisticsList, use those to create a new statistics Object
         // and store them in statisticsObjectList
-        statisticsList.forEach(statistics -> {
-            statistics.put("timeStamp", System.currentTimeMillis());
-            statisticsObjectList.add(new Statistics(statistics));
-        });
+        mapList.forEach(statistics -> statisticsList.add(new Statistics(statistics)));
 
-        return statisticsObjectList;
+        // return the list of parsed objects
+        return statisticsList;
     }
 
-    public static List<Statistics> getStatistics() {
-        return getStatistics(getStatus().get("statistics"));
-    }
+    public static List<Statistics> getStatistics() { return getStatistics(getStatus()); }
 
-    public static List<CampaignStatus> getCampaignStatus(Object httpRequestReturnValue) {
-        // Turn httpRequestReturnValue into a List of Maps
-        List<Map> campaignStatusList = (List) httpRequestReturnValue;
+    /**
+     * extract
+     * @param fullStatus full HTTP API response, parsed to java map
+     * @return a list of Objects representing the Campaign status for all three enemy factions
+     */
+    public static List<CampaignStatus> getCampaignStatus(Map fullStatus) {
+        List<Map> mapList = getSubmapWithTimestamp(fullStatus,"campaign_status");
+        if (mapList == null) return null;
 
-        // Make an empty List of CampaignStatuses
-        List<CampaignStatus> campaignStatusObjectList = new ArrayList<>();
+        // Make an empty List of CampaignStatus objects
+        List<CampaignStatus> campaignStatusList = new ArrayList<>();
 
-        // Iterate through the Maps in campaignStatusList, add the index indicating which enemy the
-        // CampaignStatus Object is relevant to to the map and then add it to
-        // campaignStatusObjectList. The reason this is a for int loop and not a for each is that
-        // the enemy factions are always introduced in the same order and thus the index in the list
-        // determines the faction
-        for (int i = 0; i < campaignStatusList.size(); i++) {
-            Map campaignStatus = campaignStatusList.get(i);
-            campaignStatus.put("enemy", i);
-            campaignStatus.put("timeStamp", System.currentTimeMillis());
-            campaignStatusObjectList.add(new CampaignStatus(campaignStatus));
+        // Iterate through the Maps in mapList, add their relative index
+        // and then use that info to create a new Campaign status object
+        for (int i=0; i< mapList.size(); i++){
+            Map campaignStatusMap = mapList.get(i);
+            campaignStatusMap.put("enemy", i); // insert enemy index
+            campaignStatusList.add(new CampaignStatus(campaignStatusMap));
         }
 
-        return campaignStatusObjectList;
+        return campaignStatusList;
     }
 
     public static List<CampaignStatus> getCampaignStatus() {
-        return getCampaignStatus(getStatus().get("campaign_status"));
+        return getCampaignStatus(getStatus());
     }
 
-    public static List<AttackEvent> getAttackEvents(Object httpRequestReturnValue) {
-        // This is probably unnecessary
-        // todo remove this and make sure everything still works
-        Object returnValue = httpRequestReturnValue;
-
-        // Check if returnValue is empty, if is: return null
-        if (returnValue == null) {
-            return null;
-        }
-        Logging.log(httpRequestReturnValue.toString(), "getAttackEvents");
+    public static List<AttackEvent> getAttackEvents(Map fullStatus) {
+        List<Map> mapList = getSubmapWithTimestamp(fullStatus, "attack_events");
+        if (mapList == null) return null;
 
         // Make an empty List of AttackEvents
-        List<AttackEvent> attackEventsObjectList = new ArrayList<>();
+        List<AttackEvent> attackEventsList = new ArrayList<>();
 
-        // If returnValue is a map, that means only a single AttackEvent is present,
-        // if that's the case, create that single AttackEvent and add it to the List
-        // Otherwise just iterate through the list, turn every map into an AttackEvent
-        // and add that AttackEvent to attackEventsObjectList
-        if (returnValue instanceof Map) {
-            attackEventsObjectList.add(new AttackEvent((Map) returnValue));
-        } else {
-            List<Map> attackEventsList = (List) returnValue;
+        // convert list of Maps to List of AttackEvents
+        mapList.forEach(attackEventMap -> attackEventsList.add( new AttackEvent(attackEventMap) ) );
 
-            attackEventsList.forEach(attackEvent -> {
-                attackEventsObjectList.add(new AttackEvent(attackEvent));
-            });
-        }
-
-        return attackEventsObjectList;
+        return attackEventsList;
     }
 
     public static List<AttackEvent> getAttackEvents() {
-        return getAttackEvents(getStatus().get("attack_events"));
+        return getAttackEvents(getStatus());
     }
 
-    public static List<DefendEvent> getDefendEvents(Object httpRequestReturnValue) {
-        // This is probably unnecessary
-        // todo remove this and make sure everything still works
-        Object returnValue = httpRequestReturnValue;
+    public static List<DefendEvent> getDefendEvents(Map fullStatus) {
+        List<Map> mapList = getSubmapWithTimestamp(fullStatus, "defend_event");
+        if (mapList == null) return null;
+        // Make an empty List of DefendEvents
+        List<DefendEvent> defendEventsList = new ArrayList<>();
+        // populate the List of DefendEvents
+        mapList.forEach(defendEventMap -> defendEventsList.add( new DefendEvent(defendEventMap) ) );
 
-        // Check if returnValue is empty, if it is: return null
-        if (returnValue == null) {
-            return null;
-        }
-
-        // Make an empty List of AttackEvents
-        List<DefendEvent> defendEventsObjectList = new ArrayList<>();
-
-        // If returnValue is a map, that means only a single DefendEvent is present,
-        // if that's the case, create that single DefendEvent and add it to the List
-        // Otherwise just iterate through the list, turn every map into a DefendEvent
-        // and add that DefendEvent to defendEventObjectList
-        if (returnValue instanceof Map) {
-            defendEventsObjectList.add(new DefendEvent((Map) returnValue));
-        } else {
-            List<Map> defendEventsList = (List) returnValue;
-
-            defendEventsList.forEach(defendEvent -> {
-                defendEventsObjectList.add(new DefendEvent(defendEvent));
-            });
-        }
-        return defendEventsObjectList;
+        return defendEventsList;
     }
 
     public static List<DefendEvent> getDefendEvents() {
-        return getDefendEvents(getStatus().get("defend_event"));
+        return getDefendEvents(getStatus());
     }
 
+    /**
+     * utility function that extracts the specified sub map from the root map and adds a timeStamp
+     * @param input root map
+     * @param key key of sub-map
+     * @return a Map object representing the sub map of the root map with an additional timeStamp
+     */
+    private static List<Map> getSubmapWithTimestamp(Map input, String key){
+        try {
+            long timeStamp = Math.round((double) input.get("time")); //extract timestamp
+            Object inputObject = input.get(key); // fetch raw sub-map
+
+            // parse to list
+            List<Map> mapList = (inputObject instanceof Map) ? Collections.singletonList( (Map) inputObject)
+                    : ( inputObject instanceof List) ?
+                            ( ( (List) inputObject).get(0) instanceof Map)?
+                                    (List<Map>) inputObject
+                                    : null
+                            : null;
+
+            mapList.forEach(map -> map.put("timeStamp", timeStamp));
+
+            return mapList;
+        } catch (NullPointerException npe){
+            return null;
+        }
+    }
 }

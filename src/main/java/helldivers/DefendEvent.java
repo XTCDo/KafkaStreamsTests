@@ -2,61 +2,70 @@ package helldivers;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import org.influxdb.dto.Point;
 import util.MapUtils;
 
 public class DefendEvent {
     /**
+     * Unix timestamp of measurement
+     */
+    private final long timeStamp;
+    /**
      * Season/war number
      */
-    private static int season;
+    private final int season;
 
     /**
      * Defence event id, probably equal to the total amount of defense events minus 1
      */
-    private static int eventId;
+    private final int eventId;
 
     /**
      * UNIX Timestamp of when the attack event started
      */
-    private static long startTime;
+    private final long startTime;
 
     /**
      * UNIX Timestamp of when the attack event will end and be lost if the points requirement is not met
      */
-    private static long endTime;
+    private final long endTime;
 
     /**
      * Id of the region in which the planet that is being attacked lies
      */
-    private static int region;
+    private final int region;
 
     /**
      * Id of the enemy on the attacked planet
      */
-    private static int enemy;
+    private final int enemy;
 
     /**
      * Current amount of points that the players have gained
      */
-    private static int points;
+    private final int points;
 
     /**
      * Amount of points needed for the attack event to be successful
      */
-    private static int pointsMax;
+    private final int pointsMax;
 
     /**
      * Either 'active', 'success' or 'failure depending on if the event is ongoing,
-     * succesfully ended or ended in a loss
+     * successfully ended or ended in a loss
      */
-    private static String status;
+    private final String status;
 
     /**
      * Constructor for DefendEvent that takes a map containing values returned by the helldivers API
-     * @param values
+     * @param values a map representing this object
      */
     public DefendEvent(Map values){
+        // todo change these, they will only be called on construction, no longer from gson
         this(
+            (long) values.get("timeStamp"),
             (int) Math.round((double) values.get("season")),
             (int) Math.round((double) MapUtils.safeGet(values, "event_id")),
             (long) Math.round((double) MapUtils.safeGet(values, "start_time")),
@@ -71,6 +80,7 @@ public class DefendEvent {
 
     /**
      * Regular constructor for DefendEvent
+     * @param timeStamp the timestamp for when this event was polled from the database
      * @param season Season/war number
      * @param eventId Attack event id, presumed to be equal to the total amount of attack events minus 1
      * @param startTime UNIX Timestamp of when the attack event started
@@ -79,11 +89,12 @@ public class DefendEvent {
      * @param enemy Current amount of points that the players have gained
      * @param points Current amount of points that the players have gained
      * @param pointsMax Amount of points needed for the attack event to be successful
-     * @param status Either 'active', 'success' or 'failure depending on if the event is ongoing,
-     *               succesfully ended or ended in a loss
+     * @param status Either 'active', 'success' or 'failure' depending on if the event is ongoing,
+     *               successfully ended or ended in a loss
      */
-    public DefendEvent(int season, int eventId, long startTime, long endTime, int region,
+    public DefendEvent(long timeStamp,int season, int eventId, long startTime, long endTime, int region,
                        int enemy, int points, int pointsMax, String status){
+        this.timeStamp = timeStamp;
         this.season = season;
         this.eventId = eventId;
         this.startTime = startTime;
@@ -95,16 +106,12 @@ public class DefendEvent {
         this.status = status;
     }
 
+    public long getTimeStamp() {return timeStamp;}
+
     /**
      * Season/war number
      */
-    public static int getSeason() {
-        return season;
-    }
-
-    public static void setSeason(int season) {
-        DefendEvent.season = season;
-    }
+    public int getSeason() { return season; }
 
     /**
      * Returns a String describing the DefendEvent
@@ -126,6 +133,26 @@ public class DefendEvent {
     }
 
     /**
+     * cast this object to an influx point
+     * @param table name of the measurement
+     * @return influx Point representing this object
+     */
+    public Point toPoint(String table){
+        return Point.measurement(table)
+                .time(timeStamp, TimeUnit.SECONDS)
+                .tag("season", String.valueOf(getSeason()))
+                .tag("enemy", getEnemyName())
+                .tag("event_id", String.valueOf(getEventId()))
+                .tag("status", getStatus())
+                .addField("region", getRegion())
+                .addField("start_time", getStartTime())
+                .addField("end_time", getEndTime())
+                .addField("points", getPoints())
+                .addField("points_max", getPointsMax())
+                .build();
+    }
+
+    /**
      * Returns the name of the enemy that is being attacked in this AttackEvent
      * @return the name of the enemy that is being attacked in this AttackEvent
      */
@@ -137,89 +164,43 @@ public class DefendEvent {
     /**
      * Defence event id, probably equal to the total amount of defense events minus 1
      */
-    public static int getEventId() {
-        return eventId;
-    }
-
-    public static void setEventId(int eventId) {
-        DefendEvent.eventId = eventId;
-    }
+    public int getEventId() { return eventId; }
 
     /**
      * UNIX Timestamp of when the attack event started
      */
-    public static long getStartTime() {
-        return startTime;
-    }
-
-    public static void setStartTime(long startTime) {
-        DefendEvent.startTime = startTime;
-    }
+    public long getStartTime() { return startTime; }
 
     /**
      * UNIX Timestamp of when the attack event will end and be lost if the points requirement is not met
      */
-    public static long getEndTime() {
-        return endTime;
-    }
-
-    public static void setEndTime(long endTime) {
-        DefendEvent.endTime = endTime;
-    }
+    public long getEndTime() { return endTime; }
 
     /**
      * Id of the region in which the planet that is being attacked lies
      */
-    public static int getRegion() {
-        return region;
-    }
-
-    public static void setRegion(int region) {
-        DefendEvent.region = region;
-    }
+    public int getRegion() { return region; }
 
     /**
      * Id of the enemy on the attacked planet
      */
-    public static int getEnemy() {
-        return enemy;
-    }
-
-    public static void setEnemy(int enemy) {
-        DefendEvent.enemy = enemy;
-    }
+    public int getEnemy() { return enemy; }
 
     /**
      * Current amount of points that the players have gained
      */
-    public static int getPoints() {
-        return points;
-    }
+    public int getPoints() { return points; }
 
-    public static void setPoints(int points) {
-        DefendEvent.points = points;
-    }
 
     /**
      * Amount of points needed for the attack event to be successful
      */
-    public static int getPointsMax() {
-        return pointsMax;
-    }
-
-    public static void setPointsMax(int pointsMax) {
-        DefendEvent.pointsMax = pointsMax;
-    }
+    public int getPointsMax() { return pointsMax; }
 
     /**
      * Either 'active', 'success' or 'failure depending on if the event is ongoing,
      * succesfully ended or ended in a loss
      */
-    public static String getStatus() {
-        return status;
-    }
+    public String getStatus() { return status; }
 
-    public static void setStatus(String status) {
-        DefendEvent.status = status;
-    }
 }
