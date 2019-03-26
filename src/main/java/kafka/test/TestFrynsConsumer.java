@@ -10,10 +10,11 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.influxdb.dto.Point;
 import util.Config;
+import util.Logging;
 import util.MapUtils;
 
 public class TestFrynsConsumer {
-
+    private final String TAG = "TestFrynsConsumer";
     public static void main(String[] args) {
         Function<ConsumerRecords<String, String>, List<Point>> frynsDataToPointBatch = consumerRecords -> {
             Gson gson = new Gson();
@@ -22,6 +23,7 @@ public class TestFrynsConsumer {
             for (ConsumerRecord<String, String> record : consumerRecords) {
                 Map recordAsMap = gson.fromJson(record.value(), Map.class);
                 batch.add(MapUtils.influxMapToPoint(recordAsMap, "fryns_data"));
+                Logging.debug(recordAsMap.toString());
             }
 
             return batch;
