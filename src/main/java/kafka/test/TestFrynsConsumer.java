@@ -29,7 +29,7 @@ public class TestFrynsConsumer {
                     .build();
                 batch.add(MapUtils.influxMapToPoint(recordAsMap, "fryns_data"));
                 Logging.debug(recordAsMap.toString());*/
-                System.out.println(((Map)recordAsMap.get("fields")).get("temperatuurSensor1").getClass());
+                System.out.println(Double.valueOf((String) ((Map)recordAsMap.get("fields")).get("temperatuurSensor1")));
             }
 
             return batch;
