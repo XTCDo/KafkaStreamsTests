@@ -72,7 +72,7 @@ public class MapUtils {
             throw new InvalidInfluxMapException();
         }
 
-        Long time = (Long) map.get("time");
+        long time = ((Double) map.get("time")).longValue();
         Map<String, Object> fields = (Map<String, Object>) map.get("fields");
 
         if (keySet.contains("tags")) {
