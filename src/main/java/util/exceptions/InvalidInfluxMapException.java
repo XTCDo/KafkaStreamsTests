@@ -1,5 +1,12 @@
 package util.exceptions;
 
-public class InvalidInfluxMapException {
+public class InvalidInfluxMapException extends RuntimeException {
+    public InvalidInfluxMapException(){
 
+    }
+
+    @Override
+    public String toString() {
+        return "InvalidInfluxMapException";
+    }
 }
