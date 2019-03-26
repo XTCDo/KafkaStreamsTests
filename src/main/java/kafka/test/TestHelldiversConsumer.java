@@ -10,6 +10,7 @@ import kafka.generic.consumers.GenericRunnableInfluxConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.influxdb.dto.Point;
+import sun.rmi.runtime.Log;
 import util.Config;
 import util.Logging;
 
@@ -21,9 +22,10 @@ import java.util.function.Function;
 public class TestHelldiversConsumer {
     private static final String TAG = "Helldivers-Consumer";
     public static void main(String[] args) {
+        Logging.log("defining Functions", TAG);
+
         // records processor for parsing statistics Records to Influx Points
         Function<ConsumerRecords<String, String>, List<Point>> StatisticsToPointBatch = consumerRecords -> {
-
             Gson gson = new Gson();
             List<Point> batch = new ArrayList<>();
             Type statisticsListType = new TypeToken<ArrayList<Statistics>>(){}.getType();
@@ -52,7 +54,6 @@ public class TestHelldiversConsumer {
 
                 //parsing objects to correct type and inserting to Influx
                 campaignStatuses.forEach(campaignStatus ->{
-                    Logging.debug(campaignStatus.getDescription(), TAG);
                         batch.add(campaignStatus
                                 .toPoint("helldivers-campaign-status"));
                 });
@@ -88,7 +89,6 @@ public class TestHelldiversConsumer {
                 List<DefendEvent> defendEvents = gson.fromJson(record.value(), DefendEventListType);
                 // process to influx
                 defendEvents.forEach(defendEvent ->{
-                    Logging.debug(defendEvent.getDescription(), TAG);
                     batch.add(defendEvent
                         .toPoint("helldivers-defend-events"));
                     }
@@ -97,6 +97,7 @@ public class TestHelldiversConsumer {
             return batch;
         };
 
+        Logging.log("setting up threads",TAG);
 
         // consuming statistics
         Thread statisticsConsumer = new Thread( new GenericRunnableInfluxConsumer(
@@ -124,10 +125,13 @@ public class TestHelldiversConsumer {
                 DefendEventsToPointBatch)
         );
 
+        Logging.log("starting threads",TAG);
+
         statisticsConsumer.start();
         campaignStatusConsumer.start();
         attackEventsConsumer.start();
         defendEventsConsumer.start();
 
+        Logging.log("consumer is running",TAG);
     }
 }
