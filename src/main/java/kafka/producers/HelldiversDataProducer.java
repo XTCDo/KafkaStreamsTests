@@ -31,7 +31,10 @@ public class HelldiversDataProducer extends GenericThreadedProducer<String, Stri
                     Logging
                         .log("sending data at " + new SimpleDateFormat("hh:mm:SS")
                             .format(new Date()), TAG);
-                    Logging.log("campaignStatus: "+ status.getCampaignStatuses().toString(), TAG);
+                    Logging.debug("campaignStatus 0: "+ status.getCampaignStatuses().get(0).getDescription(), TAG);
+                    Logging.debug("campaignStatus 1: "+ status.getCampaignStatuses().get(1).getDescription(), TAG);
+                    Logging.debug("campaignStatus 2: "+ status.getCampaignStatuses().get(2).getDescription(), TAG);
+                    
                     getProducer()
                         .send(new ProducerRecord<String, String>(getTopic(), gson.toJson(status)));
 
