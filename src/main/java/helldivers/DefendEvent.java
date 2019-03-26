@@ -139,7 +139,7 @@ public class DefendEvent {
      */
     public Point toPoint(String table){
         return Point.measurement(table)
-                .time(timeStamp, TimeUnit.MILLISECONDS)
+                .time(timeStamp, TimeUnit.SECONDS)
                 .tag("season", String.valueOf(getSeason()))
                 .tag("enemy", getEnemyName())
                 .tag("event_id", String.valueOf(getEventId()))

@@ -114,7 +114,7 @@ public class CampaignStatus {
      */
     public Point toPoint(String table){
         return Point.measurement(table)
-                .time(timeStamp, TimeUnit.MILLISECONDS)
+                .time(timeStamp, TimeUnit.SECONDS)
                 .tag("season", String.valueOf(getSeason()))
                 .tag("enemy", getEnemyName())
                 .tag("introduction_order", String.valueOf(getIntroductionOrder()))

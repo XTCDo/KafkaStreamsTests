@@ -138,7 +138,7 @@ public class Statistics {
      */
     public Point toPoint(String table) {
         return Point.measurement(table)
-            .time(getTimeStamp(), TimeUnit.MILLISECONDS)
+            .time(getTimeStamp(), TimeUnit.SECONDS)
             // tags
             .tag("season", String.valueOf(getSeason()))
             .tag("enemy", getEnemyName())
