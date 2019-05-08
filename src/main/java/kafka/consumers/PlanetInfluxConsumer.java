@@ -13,27 +13,27 @@ public class PlanetInfluxConsumer extends GenericThreadedInfluxConsumer<String, 
     static final String topic = "streams-planets-input";
     static final String influxURL = "http://localhost:8086";
 
-    public PlanetInfluxConsumer(){
+    public PlanetInfluxConsumer() {
         super(influxURL, topic, Config.getLocalBootstrapServersConfig(), "PlanetInfluxConsumer");
     }
 
-    public void run(){
+    public void run() {
         Thread consumerThread = new Thread(() -> {
             try {
-                while(true){
+                while(true) {
                     // Get records containing Strings describing Planets
                     ConsumerRecords<String, String> records = getConsumer().poll(Duration.ofMillis(10));
 
                     // Turn every record into a Planet, describe that planet
                     // and then turn it into a point to put in InfluxDB
-                    for(ConsumerRecord<String, String> record : records){
+                    for(ConsumerRecord<String, String> record : records) {
                         Planet planet = new Planet(record.value());
                         planet.describe();
                         Point point = planet.toPoint();
                         getInfluxDAO().writePoint("kafka_test", point);
                     }
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 getInfluxDAO().close();
             }

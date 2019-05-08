@@ -16,18 +16,18 @@ public class VaillantConsumer extends GenericThreadedInfluxConsumer<String, Stri
     static final String topic = "vaillant-input";
     static final String influxURL = "http://localhost:8086";
     static final String TAG = "VaillantConsumer";
-    public VaillantConsumer(){
+    public VaillantConsumer() {
         super(influxURL, topic, Config.getLocalBootstrapServersConfig(), "VaillantConsumer");
     }
 
-    public void run(){
+    public void run() {
         Thread consumerThread = new Thread(() -> {
             Gson gson = new Gson();
             try {
-                while(true) {
+                while (true) {
                     ConsumerRecords<String, String> records = getConsumer().poll(Duration.ofMillis(10));
 
-                    for(ConsumerRecord<String, String> record : records){
+                    for(ConsumerRecord<String, String> record : records) {
                         // Get data from vaillant-input topic in form of JSON String and parse it
                         // to a Map
                         Map vaillantData = gson.fromJson(record.value().toString(), Map.class);
