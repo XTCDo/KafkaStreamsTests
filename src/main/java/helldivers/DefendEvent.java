@@ -8,10 +8,12 @@ import org.influxdb.dto.Point;
 import util.MapUtils;
 
 public class DefendEvent {
+    
     /**
      * Unix timestamp of measurement
      */
     private final long timeStamp;
+
     /**
      * Season/war number
      */
@@ -62,7 +64,7 @@ public class DefendEvent {
      * Constructor for DefendEvent that takes a map containing values returned by the helldivers API
      * @param values a map representing this object
      */
-    public DefendEvent(Map values){
+    public DefendEvent(Map values) {
         // todo change these, they will only be called on construction, no longer from gson
         this(
             (long) values.get("timeStamp"),
@@ -93,7 +95,7 @@ public class DefendEvent {
      *               successfully ended or ended in a loss
      */
     public DefendEvent(long timeStamp,int season, int eventId, long startTime, long endTime, int region,
-                       int enemy, int points, int pointsMax, String status){
+                       int enemy, int points, int pointsMax, String status) {
         this.timeStamp = timeStamp;
         this.season = season;
         this.eventId = eventId;
@@ -117,7 +119,7 @@ public class DefendEvent {
      * Returns a String describing the DefendEvent
      * @return a String describing the DefendEvent
      */
-    public String getDescription(){
+    public String getDescription() {
         StringBuilder description = new StringBuilder();
         description.append(this.toString()).append("\n")
                 .append("Enemy:      ").append(getEnemyName()).append("\n")
@@ -137,7 +139,7 @@ public class DefendEvent {
      * @param table name of the measurement
      * @return influx Point representing this object
      */
-    public Point toPoint(String table){
+    public Point toPoint(String table) {
         return Point.measurement(table)
                 .time(timeStamp, TimeUnit.SECONDS)
                 .tag("season", String.valueOf(getSeason()))
@@ -156,7 +158,7 @@ public class DefendEvent {
      * Returns the name of the enemy that is being attacked in this AttackEvent
      * @return the name of the enemy that is being attacked in this AttackEvent
      */
-    public String getEnemyName(){
+    public String getEnemyName() {
         String[] enemies = new String[] {"Bugs", "Cyborgs", "Illuminate"};
         return enemies[getEnemy()];
     }
@@ -190,7 +192,6 @@ public class DefendEvent {
      * Current amount of points that the players have gained
      */
     public int getPoints() { return points; }
-
 
     /**
      * Amount of points needed for the attack event to be successful
