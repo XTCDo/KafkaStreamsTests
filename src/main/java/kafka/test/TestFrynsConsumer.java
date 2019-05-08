@@ -20,16 +20,18 @@ public class TestFrynsConsumer {
         Function<ConsumerRecords<String, String>, List<Point>> frynsDataToPointBatch = consumerRecords -> {
             Gson gson = new Gson();
             List<Point> batch = new ArrayList<>();
+
             for (ConsumerRecord<String, String> record : consumerRecords) {
                 Map recordAsMap = gson.fromJson(record.value(), Map.class);
+
                 Point point = Point.measurement("fryns_data")
                     .tag("name", (String) ((Map) recordAsMap.get("tags")).get("name"))
                     .time(((Double) recordAsMap.get("time")).longValue(), TimeUnit.MILLISECONDS)
                     .addField("temperatuurSensor1", Double.valueOf((String) ((Map)recordAsMap.get("fields")).get("temperatuurSensor1")))
                     .build();
+
                 batch.add(MapUtils.influxMapToPoint(recordAsMap, "fryns_data"));
                 Logging.debug(recordAsMap.toString(), TAG);
-
             }
 
             return batch;

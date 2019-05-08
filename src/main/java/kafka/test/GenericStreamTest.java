@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 public class GenericStreamTest {
     private static final String TAG = "GenericStreamTest";
-    public static void main(String... args){
+    public static void main(String... args) {
         try {
             log("commencing test\n\n");
             simpleSerdeTest();
@@ -31,21 +31,20 @@ public class GenericStreamTest {
             // in this instance a simple pipe
 
             log("testing concluded");
-        }
-        catch (Throwable e){
+        } catch (Throwable e) {
             error(e);
         }
     }
 
-    public static void log(String message){
+    public static void log(String message) {
         Logging.log(Level.INFO, message, TAG);
     }
 
-    public static void error(Throwable err){
+    public static void error(Throwable err) {
         Logging.log(Level.INFO, err.toString(), TAG);
     }
 
-    public static void simpleSerdeTest(){
+    public static void simpleSerdeTest() {
         log("initiating simple Serde test:\n");
 
         ObjectSerde objectSerde = new ObjectSerde();
@@ -60,7 +59,7 @@ public class GenericStreamTest {
 
     }
 
-    public static void testObject(ObjectSerde serde, Object testObject){
+    public static void testObject(ObjectSerde serde, Object testObject) {
         log("testing object:" +testObject.toString());
         try {
             byte[] serialized = serde.serializer().serialize("topic", testObject);
@@ -68,12 +67,12 @@ public class GenericStreamTest {
 
             Object returnObject = serde.deserializer().deserialize("topic", serialized);
             log("de-serialized back into:" + returnObject.toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             error(e);
         }
     }
 
-    public static void serdeTest(){
+    public static void serdeTest() {
         log("initiating Serde test:\n");
 
         log("ObjectSerde setup");
@@ -96,30 +95,30 @@ public class GenericStreamTest {
                 .setDistanceToSun(10f)
                 .setGravity(1f)
                 .setTemperature(300f).build());
-        log("created list of various objects of types: ["+objects.stream().map(obj -> obj.getClass().getName()).collect(Collectors.joining(" | "))+"]");
+        log("created list of various objects of types: [" + objects.stream().map(obj -> obj.getClass().getName()).collect(Collectors.joining(" | ")) + "]");
 
 
         log("using ObjectSerde to serialize objects into ByteArray");
         List<byte[]> serializedObjects = objects.stream()
-                .map(object-> objectSerde.serializer().serialize("topic",object))
+                .map(object -> objectSerde.serializer().serialize("topic", object))
                 .collect(Collectors.toList());
 
         log("using ObjectSerde to de-serialize results back into Objects");
         List<Object> deserializedObjects = serializedObjects.stream()
-                .map(serializedObject-> objectSerde.deserializer().deserialize("topic", serializedObject))
+                .map(serializedObject -> objectSerde.deserializer().deserialize("topic", serializedObject))
                 .collect(Collectors.toList());
 
-        log("deserialized into list of various objects of types: ["+deserializedObjects.stream()
+        log("deserialized into list of various objects of types: [" + deserializedObjects.stream()
                 .map(obj -> obj.getClass().getName())
                 .collect(Collectors.joining(" | ")) + "]");
 
-        log("result: ["+deserializedObjects.stream().map(Object::toString)
+        log("result: [" + deserializedObjects.stream().map(Object::toString)
                 .collect(Collectors.joining(" | ")) + "]");
 
         log("Serde test concluded\n");
     }
 
-    public static void pipeTest(){
+    public static void pipeTest() {
         log("Initiating generic streams test\n");
 
         log("constructing pipe topology with streamsBuilder");

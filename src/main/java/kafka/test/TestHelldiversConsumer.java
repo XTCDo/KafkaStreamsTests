@@ -36,8 +36,7 @@ public class TestHelldiversConsumer {
 
                 //parsing objects to correct type and inserting to Influx
                 statisticsList.forEach(statistics ->
-                        batch.add(statistics
-                                .toPoint("helldivers-statistics")));
+                        batch.add(statistics.toPoint("helldivers-statistics")));
             }
 
             return batch;
@@ -53,7 +52,7 @@ public class TestHelldiversConsumer {
                 List<CampaignStatus> campaignStatuses = gson.fromJson(record.value(), campaignStatusListType);
 
                 //parsing objects to correct type and inserting to Influx
-                campaignStatuses.forEach(campaignStatus ->{
+                campaignStatuses.forEach(campaignStatus -> {
                         batch.add(campaignStatus
                                 .toPoint("helldivers-campaign-status"));
                 });
@@ -71,9 +70,7 @@ public class TestHelldiversConsumer {
                 // JSON to Object casting
                 List<AttackEvent> attackEvents = gson.fromJson(record.value(), AttackEventListType);
 
-                attackEvents.forEach(event ->
-                        batch.add(event
-                                .toPoint("helldivers-attack-events")));
+                attackEvents.forEach(event -> batch.add(event.toPoint("helldivers-attack-events")));
             }
             return batch;
         };
@@ -88,9 +85,8 @@ public class TestHelldiversConsumer {
                 // JSON to Object casting
                 List<DefendEvent> defendEvents = gson.fromJson(record.value(), DefendEventListType);
                 // process to influx
-                defendEvents.forEach(defendEvent ->{
-                    batch.add(defendEvent
-                        .toPoint("helldivers-defend-events"));
+                defendEvents.forEach(defendEvent -> {
+                    batch.add(defendEvent .toPoint("helldivers-defend-events"));
                     }
                 );
             }
@@ -100,26 +96,26 @@ public class TestHelldiversConsumer {
         Logging.log("setting up threads",TAG);
 
         // consuming statistics
-        Thread statisticsConsumer = new Thread( new GenericRunnableInfluxConsumer(
+        Thread statisticsConsumer = new Thread(new GenericRunnableInfluxConsumer(
                 "http://localhost:8086", "HELLDIVERS",
                 "helldivers-statistics", Config.getLocalBootstrapServersConfig(), "HelldiversStatisticsConsumer",
                 StatisticsToPointBatch));
 
         // consuming campaign statuses
-        Thread campaignStatusConsumer = new Thread( new GenericRunnableInfluxConsumer(
+        Thread campaignStatusConsumer = new Thread(new GenericRunnableInfluxConsumer(
                 "http://localhost:8086", "HELLDIVERS",
                 "helldivers-campaign_status", Config.getLocalBootstrapServersConfig(), "HelldiversCampaignStatusConsumer",
                 StatusesToPointBatch));
 
         // consuming attack events
-        Thread attackEventsConsumer = new Thread(  new GenericRunnableInfluxConsumer(
+        Thread attackEventsConsumer = new Thread(new GenericRunnableInfluxConsumer(
                 "http://localhost:8086", "HELLDIVERS",
                 "helldivers-attack_events", Config.getLocalBootstrapServersConfig(), "HelldiversAttackEventConsumer",
                 AttackEventsToPointBatch)
         );
 
         // consuming defend events
-        Thread defendEventsConsumer = new Thread( new GenericRunnableInfluxConsumer(
+        Thread defendEventsConsumer = new Thread(new GenericRunnableInfluxConsumer(
                 "http://localhost:8086", "HELLDIVERS",
                 "helldivers-defend_events", Config.getLocalBootstrapServersConfig(), "HelldiversDefendEventConsumer",
                 DefendEventsToPointBatch)

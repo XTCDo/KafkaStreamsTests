@@ -6,7 +6,7 @@ import util.Logging;
 public class TestVaillantConsumer {
     private static final String TAG = "TestVaillantConsumer";
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Logging.log("Starting VaillantConsumer test", TAG);
         VaillantConsumer vc = new VaillantConsumer();
         vc.run();
