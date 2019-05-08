@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-public class GenericRunnableInfluxConsumer<K,V> extends GenericConsumer<K,V> implements Runnable{
+public class GenericRunnableInfluxConsumer<K,V> extends GenericConsumer<K,V> implements Runnable {
     private String database;
     private InfluxDAO influxDAO;
     private Function<ConsumerRecords, List<Point>> recordsToPoints;
@@ -20,8 +20,8 @@ public class GenericRunnableInfluxConsumer<K,V> extends GenericConsumer<K,V> imp
                                          List<String> topics, String bootStrapServers, String groupId,
                                          Object keyDeserializerClass, Object valueDeserializerClass,
                                          boolean enableAutoCommit, int autoCommitIntervalMS,
-                                         Function<ConsumerRecords, List<Point>> recordsToPoints
-                                         ) {
+                                         Function<ConsumerRecords, List<Point>> recordsToPoints) {
+
         // constructor call for super class
         super(topics, bootStrapServers, groupId,
                 keyDeserializerClass, valueDeserializerClass,
@@ -39,10 +39,9 @@ public class GenericRunnableInfluxConsumer<K,V> extends GenericConsumer<K,V> imp
                                          boolean enableAutoCommit, int autoCommitIntervalMS,
                                          Function<ConsumerRecords, List<Point>> recordsToPoints) {
         // overloaded constructor
-        this(influxURL, database,
-                Collections.singletonList(topic), bootStrapServers, groupId,
-                keyDeserializerClass, valueDeserializerClass,
-                enableAutoCommit, autoCommitIntervalMS, recordsToPoints);
+        this(influxURL, database, Collections.singletonList(topic), bootStrapServers, groupId,
+             keyDeserializerClass, valueDeserializerClass, enableAutoCommit, autoCommitIntervalMS, 
+             recordsToPoints);
 
     }
 
@@ -73,7 +72,7 @@ public class GenericRunnableInfluxConsumer<K,V> extends GenericConsumer<K,V> imp
     public void run() {
         Logging.log("Starting runnable influx consumer on topics: "+ this.getTopics().toString());
         Logging.log("Inserting results into: "+ this.database);
-        try{
+        try {
             while (true) {
                 // fetch records from Kafka Consumer
                 ConsumerRecords records = getConsumer().poll(Duration.ofMillis(10));
@@ -82,10 +81,10 @@ public class GenericRunnableInfluxConsumer<K,V> extends GenericConsumer<K,V> imp
                 // insert converted points into Influx
                 getInfluxDAO().writePointList(database, batch);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             Logging.error(e);
         }
     }
 
-    private InfluxDAO getInfluxDAO(){ return this.influxDAO; }
+    private InfluxDAO getInfluxDAO() { return this.influxDAO; }
 }
