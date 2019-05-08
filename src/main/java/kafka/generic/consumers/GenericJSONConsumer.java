@@ -35,11 +35,11 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
                                String database, String measurement, int sleepDuration) {
         super(influxURL, topics,  bootStrapServer, groupId);
 
-        this.consumerThread= new Thread(()->{
-            Logging.log("Starting consumer on topics: ["+String.join(", ",topics)+"]");
-            Logging.log("Inserting into database: "+database+", measurement: "+measurement);
+        this.consumerThread= new Thread(() -> {
+            Logging.log("Starting consumer on topics: [" + String.join(", ",topics) + "]");
+            Logging.log("Inserting into database: " + database + ", measurement: " + measurement);
 
-            while (true){
+            while (true) {
                 try {
                     ConsumerRecords<String, String> records = getConsumer().poll(Duration.ofMillis(10));
 
@@ -53,7 +53,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
 
                     // sleep for a bit as to not torture processors
                     Thread.sleep(sleepDuration);
-                } catch ( Exception e){
+                } catch ( Exception e) {
                     Logging.error(e, TAG);
                 }
             }
@@ -107,13 +107,10 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
         this(influxURL, topic, bootStrapServer, groupId, database, measurement, 1000);
     }
 
-
-    // methods
-
     /**
      * run the thread this consumer possesses
      */
-    public void run(){
+    public void run() {
         super.run(consumerThread);
     }
 
@@ -123,7 +120,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
      * @param measurement name of the table in which to inject this point
      * @return Point ready to inject into Influx
      */
-    private Point JSONToPoint(String JSONString, String measurement){
+    private Point JSONToPoint(String JSONString, String measurement) {
         Gson gson = new Gson();
         Map values = gson.fromJson(JSONString, Map.class);
 
@@ -132,7 +129,7 @@ public class GenericJSONConsumer extends GenericThreadedInfluxConsumer<String, S
 
         // extract tags
         Map<String, String> tags = new HashMap<>();
-        ((Map) values.get("tags")).forEach((key, value)->tags.put((String)key, String.valueOf(value)));
+        ((Map) values.get("tags")).forEach((key, value) -> tags.put((String)key, String.valueOf(value)));
 
         // extract values
         Map<String, Object> fields = (Map<String, Object>) values.get("fields");
