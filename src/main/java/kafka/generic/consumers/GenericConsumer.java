@@ -42,7 +42,7 @@ public class GenericConsumer<K, V> {
                 valueDeserializerClass, enableAutoCommit, autoCommitIntervalMS);
     }
 
-    public GenericConsumer(String topic, String bootStrapServer, String groupId){
+    public GenericConsumer(String topic, String bootStrapServer, String groupId) {
         this(Collections.singletonList(topic), bootStrapServer, groupId);
     }
 
@@ -51,11 +51,11 @@ public class GenericConsumer<K, V> {
                 true, 1000);
     }
 
-    public List<String> getTopics(){
+    public List<String> getTopics() {
         return topics;
     }
 
-    public Consumer<K, V> getConsumer(){
+    public Consumer<K, V> getConsumer() {
         return consumer;
     }
 }
