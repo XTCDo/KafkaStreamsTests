@@ -56,7 +56,7 @@ public class GenericProducer<K, V> {
      * @param topic The topic the GenericProducer should send messages to
      * @param bootStrapServer The hostname of the server that the GenericProducer should use
      */
-    public GenericProducer(String topic, String bootStrapServer){
+    public GenericProducer(String topic, String bootStrapServer) {
         this(topic, bootStrapServer, StringSerializer.class, StringSerializer.class,
                 "all", 0, 16384, 1, 33554432);
     }
