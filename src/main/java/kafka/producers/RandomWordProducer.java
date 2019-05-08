@@ -28,8 +28,8 @@ public class RandomWordProducer {
         Producer<String, String> producer = new KafkaProducer<String, String>(props);
 
         // Create a thread to keep our producer going
-        Thread producerThread = new Thread(){
-            public void run(){
+        Thread producerThread = new Thread() {
+            public void run() {
                 try {
                     // List of random words
                     final String[] WORDS = {
@@ -38,7 +38,7 @@ public class RandomWordProducer {
                     };
                     final int WORD_LENGTH = 4;
 
-                    while(true){
+                    while(true) {
                         String generatedWord = RandomUtils.randomString(WORDS, WORD_LENGTH);
 
                         // Send the random word to the topic
@@ -48,17 +48,16 @@ public class RandomWordProducer {
                         // Sleep because obviously
                         Thread.sleep(1000);
                     }
-                } catch(Exception e){
+                } catch(Exception e) {
                     e.printStackTrace();
                 }
             }
         };
 
         final CountDownLatch latch = new CountDownLatch(1);
-        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook"){
+        Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
             @Override
-            public void run(){
-                // Stop producer when thread stops
+            public void run() {
                 producer.close();
                 latch.countDown();
             }
@@ -67,7 +66,7 @@ public class RandomWordProducer {
         try {
             producerThread.start();
             latch.await();
-        } catch (Throwable e){
+        } catch (Throwable e) {
             System.exit(1);
         }
 

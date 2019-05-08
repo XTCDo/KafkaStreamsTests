@@ -11,23 +11,25 @@ import java.util.List;
 public class PlanetVaryingTemperatureProducer extends GenericThreadedProducer<String, String> {
     private static final String topic = "streams-planets-input";
 
-    public PlanetVaryingTemperatureProducer(){
+    public PlanetVaryingTemperatureProducer() {
         super(topic, Config.getLocalBootstrapServersConfig());
     }
 
-    public void run(){
+    public void run() {
         Thread producerThread = new Thread(() -> {
             try {
-                while(true){
+                while(true) {
                     // PlanetProvider provides a list of PlanetVaryingTemperature(s)
                     List<Planet> planets = PlanetProvider.getPlanetsVaryingTemperature();
 
                     // Send these planets to Kafka
-                    planets.forEach(planet -> getProducer().send(new ProducerRecord<String, String>(getTopic(),
-                            planet.getName(), planet.toString())));
+                    planets.forEach(planet -> {
+                        getProducer().send(new ProducerRecord<String, String>(getTopic(),
+                            planet.getName(), planet.toString()));
+                    });
                     Thread.sleep(100);
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
