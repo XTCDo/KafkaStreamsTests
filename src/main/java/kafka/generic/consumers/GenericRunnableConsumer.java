@@ -27,7 +27,6 @@ public class GenericRunnableConsumer<K,V> extends GenericConsumer<K,V> implement
         super(topics, bootStrapServers, groupId, keyDeserializerClass,
                 valueDeserializerClass, enableAutoCommit, autoCommitIntervalMS);
 
-        // set up lambdas
         this.lambda = recordsConsumer;
     }
 
@@ -45,7 +44,7 @@ public class GenericRunnableConsumer<K,V> extends GenericConsumer<K,V> implement
     public GenericRunnableConsumer(List<String> topics,
                                    String bootStrapServer,
                                    String groupId,
-                                   Consumer<ConsumerRecords> recordsConsumer){
+                                   Consumer<ConsumerRecords> recordsConsumer) {
 
         super(topics, bootStrapServer, groupId);
 
@@ -55,15 +54,15 @@ public class GenericRunnableConsumer<K,V> extends GenericConsumer<K,V> implement
     public GenericRunnableConsumer(String topic, 
                                    String bootStrapServer,
                                    String groupId,
-                                   Consumer<ConsumerRecords> recordsConsumer){
+                                   Consumer<ConsumerRecords> recordsConsumer) {
         this(Collections.singletonList(topic), bootStrapServer, groupId, recordsConsumer);
     }
 
     // Run override for runnable class
     @Override
     public void run() {
-        Logging.log("Starting runnable consumer on topics: "+ this.getTopics().toString());
-        try{
+        Logging.log("Starting runnable consumer on topics: " + this.getTopics().toString());
+        try {
             while (true) {
                 // fetch records from Kafka Consumer
                 ConsumerRecords records = getConsumer().poll(Duration.ofMillis(10));
@@ -71,7 +70,7 @@ public class GenericRunnableConsumer<K,V> extends GenericConsumer<K,V> implement
                 // perform the java consumer action on the records
                 this.lambda.accept(records);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             Logging.error(e);
         }
     }
