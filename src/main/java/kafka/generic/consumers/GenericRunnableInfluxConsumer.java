@@ -32,6 +32,7 @@ public class GenericRunnableInfluxConsumer<K,V> extends GenericConsumer<K,V> imp
         this.influxDAO = new InfluxDAO(influxURL);
         this.recordsToPoints = recordsToPoints;
     }
+    
     // todo documentation
     public GenericRunnableInfluxConsumer(String influxURL, String database,
                                          String topic, String bootStrapServers, String groupId,
