@@ -30,20 +30,20 @@ public class ObjectSerializer implements Serializer {
     @Override
     public byte[] serialize(String topic, Object object) {
         // catch null objects early
-        if (object == null){
+        if (object == null) {
             return null;
         }
         //Logging.log(Level.FINER,"received: "+ object.toString(), TAG);
 
         byte[] bArray = null;
-        try (   ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                ObjectOutputStream out = new ObjectOutputStream(outputStream)) {
+        try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(outputStream)) {
 
             out.writeObject(object);
             bArray = outputStream.toByteArray();
 
             //Logging.log(Level.FINER,"parsed to(string): "+ outputStream.toString(), TAG);
-        } catch (Exception e){
+        } catch (Exception e) {
             Logging.log(Level.SEVERE, Arrays.toString(e.getStackTrace()),TAG);
         }
 
@@ -55,7 +55,5 @@ public class ObjectSerializer implements Serializer {
      * does nothing temporarily
      */
     @Override
-    public void close() {
-
-    }
+    public void close() { }
 }

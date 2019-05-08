@@ -13,7 +13,7 @@ public class ObjectSerde implements Serde {
     /**
      * constructor for this class, creates a serializer and deserializer to use
      */
-    public ObjectSerde(){
+    public ObjectSerde() {
         this.serializer = new ObjectSerializer();
         this.deserializer = new ObjectDeserializer();
     }
