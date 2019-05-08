@@ -16,7 +16,7 @@ public class GenericThreadedInfluxConsumer<K, V> extends GenericThreadedConsumer
                                           Object keyDeserializerClass,
                                           Object valueDeserializerClass,
                                           boolean enableAutoCommit,
-                                          int autoCommitIntervalMS){
+                                          int autoCommitIntervalMS) {
         super(topics, bootStrapServers, groupId, keyDeserializerClass,
                 valueDeserializerClass, enableAutoCommit, autoCommitIntervalMS);
         makeInfluxDAO(influxURL);
@@ -43,10 +43,10 @@ public class GenericThreadedInfluxConsumer<K, V> extends GenericThreadedConsumer
         this(influxURL , Collections.singletonList(topic), bootStrapServer, groupId);
     }
 
-    private void makeInfluxDAO(String influxURL){
+    private void makeInfluxDAO(String influxURL) {
         influxDAO = new InfluxDAO(influxURL);
     }
-    public InfluxDAO getInfluxDAO(){
+    public InfluxDAO getInfluxDAO() {
         return influxDAO;
     }
 }

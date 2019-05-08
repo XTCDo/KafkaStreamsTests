@@ -1,7 +1,6 @@
 package helldivers.test;
 
 import helldivers.*;
-import sun.rmi.runtime.Log;
 import util.Logging;
 
 import java.util.HashMap;
