@@ -124,6 +124,7 @@ public class CampaignStatus {
                 .addField("points_max",getPointsMax())
                 .build();
     }
+    
     /**
      * Returns the name of the enemy that is being attacked in this AttackEvent
      * @return the name of the enemy that is being attacked in this AttackEvent
@@ -154,7 +155,6 @@ public class CampaignStatus {
         return pointsMax;
     }
 
-
     /**
      * Either 'active' if there are missions available, 'defeated' if the faction has been defeated or
      * 'hidden' if war has not yet been declared.
@@ -177,14 +177,13 @@ public class CampaignStatus {
         return points;
     }
 
-    /**
-     * The id of the enemy this CampaignStatus belongs to
-     */ /**
+     /**
      * The id of the enemy this campaignstatus belongs to
      */
     public int getEnemy() {
         return enemy;
     }
+
     /**
      * The time at which this measurement was made
      */
