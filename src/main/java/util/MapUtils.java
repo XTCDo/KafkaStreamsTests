@@ -51,7 +51,7 @@ public class MapUtils {
         }
     }
 
-    public static Point influxMapToPoint(Map map, String measurement){
+    public static Point influxMapToPoint(Map map, String measurement) {
         return influxMapToPoint(map, measurement, TimeUnit.MILLISECONDS);
     }
 
@@ -68,7 +68,7 @@ public class MapUtils {
         }
 
         if (keySet.size() == 3
-            && !(keySet.contains("time") && keySet.contains("fields") && keySet.contains("tags"))){
+            && !(keySet.contains("time") && keySet.contains("fields") && keySet.contains("tags"))) {
             throw new InvalidInfluxMapException();
         }
 

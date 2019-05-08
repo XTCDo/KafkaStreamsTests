@@ -20,7 +20,7 @@ public class RandomUtils {
      * @param max maximum value for random float
      * @retur random float between min and max
      */
-    public static float randomFloat(float min, float max){
+    public static float randomFloat(float min, float max) {
         Random rand = new Random();
         return min + rand.nextFloat()*(max - min);
     }
@@ -31,10 +31,10 @@ public class RandomUtils {
      * @param wordLength the amount of substrings in the random word
      * @return the random word
      */
-    public static String randomString(String[] words, int wordLength){
+    public static String randomString(String[] words, int wordLength) {
         String [] wordsArray = new String[wordLength];
 
-        for(int i = 0; i < wordLength; i++){
+        for(int i = 0; i < wordLength; i++) {
             wordsArray[i] = words[randomInteger(0, words.length - 1)];
         }
 

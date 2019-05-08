@@ -16,8 +16,8 @@ public class TestLoggingConsumer extends GenericThreadedConsumer<String, String>
     public void run(){
         final String TAG = "TestLoggingConsumer.run";
         Thread consumerThread = new Thread(() -> {
-            try{
-                while(true){
+            try {
+                while(true) {
                     ConsumerRecords<String, String> records = getConsumer().poll(Duration.ofMillis(10));
                     records.forEach((record) -> {
                         String word = record.value();

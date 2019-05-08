@@ -42,11 +42,11 @@ public class Logging {
      * Getter for the logger that calls the constructor for Logging if there is no logger
      * @return The logger
      */
-    private static Logger getLogger(){
-        if(logger == null){
+    private static Logger getLogger() {
+        if(logger == null) {
             try {
                 new Logging();
-            } catch (IOException ioe){
+            } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
         }
@@ -60,7 +60,7 @@ public class Logging {
      * @param message   message to send to logger
      * @param params    logging tags
      */
-    public static void log(Level level, String message, Object ...params){
+    public static void log(Level level, String message, Object ...params) {
         getLogger().log(level, message, params);
     }
 
@@ -71,7 +71,7 @@ public class Logging {
      * @param thrown throwable object
      * @param params logging tags
      */
-    public static void log(Level level, String message, Throwable thrown, Object ... params){
+    public static void log(Level level, String message, Throwable thrown, Object ...params) {
         LogRecord record = new LogRecord(level, message);
         record.setParameters(params);
         record.setThrown(thrown);
@@ -86,7 +86,7 @@ public class Logging {
      * @param message   log message
      * @param params    log parameters
      */
-    public static void log(String message, Object ...params){
+    public static void log(String message, Object ...params) {
         log(Level.INFO, message, params);
     }
 
@@ -95,7 +95,7 @@ public class Logging {
      * @param message   log message
      * @param thrown    thrown error
      */
-    public static void error(String message, Throwable thrown, Object ...params){
+    public static void error(String message, Throwable thrown, Object ...params) {
         log(Level.SEVERE, message, thrown, params);
     }
 
@@ -103,7 +103,7 @@ public class Logging {
      * log an error without message
      * @param thrown what went wrong
      */
-    public static void error(Throwable thrown, Object ...params){
+    public static void error(Throwable thrown, Object ...params) {
         log(Level.SEVERE, "Error thrown: ", thrown, params);
     }
 
@@ -112,7 +112,7 @@ public class Logging {
      * @param message   logging message
      * @param params    logging tags
      */
-    public static void warn(String message, Object ...params){
+    public static void warn(String message, Object ...params) {
         log(Level.WARNING, message, params);
     }
 
@@ -121,7 +121,7 @@ public class Logging {
      * @param message   logging message
      * @param params    logging tags
      */
-    public static void debug(String message, Object ...params){
+    public static void debug(String message, Object ...params) {
         log(Level.FINE, message, params);
     }
 

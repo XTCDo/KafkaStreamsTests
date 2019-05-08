@@ -2,7 +2,6 @@ package util.test;
 
 import kafka.generic.producers.GenericThreadedProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import sun.rmi.runtime.Log;
 import util.Logging;
 import util.RandomUtils;
 

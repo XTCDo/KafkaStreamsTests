@@ -30,7 +30,7 @@ public class LoggingFormatter extends Formatter {
                 .append("[").append(record.getLevel()).append("]");
 
         // Only add tags if there are any
-        if(record.getParameters() != null){
+        if(record.getParameters() != null) {
             List<String> parameters = new ArrayList<>();
             Arrays.asList(record.getParameters()).forEach(value -> parameters.add(String.valueOf(value)));
             stringBuilder.append("[").append(String.join(" | ", parameters)).append("]");
@@ -40,7 +40,7 @@ public class LoggingFormatter extends Formatter {
         stringBuilder.append(": ").append(record.getMessage()).append("\n");
 
         // if an error was logged, append this to the message
-        if (record.getThrown() != null){
+        if (record.getThrown() != null) {
             // first element of stacktrace is always error message
             stringBuilder.append("\t").append(record.getThrown().getMessage()).append(" at: \n\t")
             // follow up with a listing of stack trace elements
@@ -49,7 +49,6 @@ public class LoggingFormatter extends Formatter {
                     .collect(Collectors.joining("\n\t")))
                     .append("\n");
         }
-
 
         // Return our beautiful string
         return new String(stringBuilder);
