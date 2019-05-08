@@ -28,20 +28,20 @@ public class ObjectDeserializer implements Deserializer {
     @Override
     public Object deserialize(String topic, byte[] serializedData) {
         // input may be null, recommended to catch early
-        if (serializedData == null){
+        if (serializedData == null) {
             return null;
         }
         //Logging.log(Level.FINER,"received: "+ Arrays.toString(serializedData), TAG);
         Object obj = null;
 
         // try-with-resources auto-closes the resources we create
-        try(    ByteArrayInputStream inputStream = new ByteArrayInputStream(serializedData);
-                ObjectInputStream in = new ObjectInputStream(inputStream)){
+        try(ByteArrayInputStream inputStream = new ByteArrayInputStream(serializedData);
+                ObjectInputStream in = new ObjectInputStream(inputStream)) {
 
             obj = in.readObject();
 
-        }catch (Exception e){
-            Logging.log(Level.SEVERE, Arrays.toString(e.getStackTrace()),TAG);
+        } catch (Exception e) {
+            Logging.log(Level.SEVERE, Arrays.toString(e.getStackTrace()), TAG);
         }
 
         //Logging.log(Level.FINER,"parsed to: "+ (obj != null ? obj.toString() : "null Object"), TAG);
@@ -51,8 +51,7 @@ public class ObjectDeserializer implements Deserializer {
 
     /**
      * close for some reason, code will temporarily do nothing
-      */
+     */
     @Override
-    public void close() {
-    }
+    public void close() { }
 }
