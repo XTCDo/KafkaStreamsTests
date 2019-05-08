@@ -18,7 +18,7 @@ public class RandomUtils {
      * Returns a random float between min and max
      * @param min minimum value for random float
      * @param max maximum value for random float
-     * @retur random float between min and max
+     * @return random float between min and max
      */
     public static float randomFloat(float min, float max) {
         Random rand = new Random();
