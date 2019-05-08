@@ -13,7 +13,7 @@ import java.util.function.Consumer;
  * at creation, it behaves exactly like GenericThreadedConsumer with the exception that it accepts
  * java consumers (lambda functions) and executes them in a thread
  */
-public class GenericRunnableConsumer<K,V> extends GenericConsumer<K,V> implements Runnable{
+public class GenericRunnableConsumer<K,V> extends GenericConsumer<K,V> implements Runnable {
     private Consumer<ConsumerRecords> lambda;
 
     // constructors
@@ -22,7 +22,7 @@ public class GenericRunnableConsumer<K,V> extends GenericConsumer<K,V> implement
     public GenericRunnableConsumer(List<String> topics, String bootStrapServers, String groupId,
                                    Object keyDeserializerClass, Object valueDeserializerClass,
                                    boolean enableAutoCommit, int autoCommitIntervalMS,
-                                   Consumer<ConsumerRecords> recordsConsumer){
+                                   Consumer<ConsumerRecords> recordsConsumer) {
 
         super(topics, bootStrapServers, groupId, keyDeserializerClass,
                 valueDeserializerClass, enableAutoCommit, autoCommitIntervalMS);
@@ -42,13 +42,20 @@ public class GenericRunnableConsumer<K,V> extends GenericConsumer<K,V> implement
 
     // constructors from super with sensible defaults
 
-    public GenericRunnableConsumer(List<String> topics, String bootStrapServer, String groupId, Consumer<ConsumerRecords> recordsConsumer){
+    public GenericRunnableConsumer(List<String> topics,
+                                   String bootStrapServer,
+                                   String groupId,
+                                   Consumer<ConsumerRecords> recordsConsumer){
+
         super(topics, bootStrapServer, groupId);
 
         this.lambda = recordsConsumer;
     }
 
-    public GenericRunnableConsumer(String topic, String bootStrapServer, String groupId, Consumer<ConsumerRecords> recordsConsumer){
+    public GenericRunnableConsumer(String topic, 
+                                   String bootStrapServer,
+                                   String groupId,
+                                   Consumer<ConsumerRecords> recordsConsumer){
         this(Collections.singletonList(topic), bootStrapServer, groupId, recordsConsumer);
     }
 
