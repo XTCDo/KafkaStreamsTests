@@ -139,25 +139,20 @@ public class Statistics {
     public Point toPoint(String table) {
         return Point.measurement(table)
             .time(getTimeStamp(), TimeUnit.SECONDS)
-            // tags
             .tag("season", String.valueOf(getSeason()))
             .tag("enemy", getEnemyName())
-            // general season info
             .addField("season_duration", getSeasonDuration())
             .addField("deaths", getDeaths())
             .addField("accidentals", getAccidentals())
             .addField("shots", getShots())
             .addField("hits", getHits())
             .addField("kills", getKills())
-            // players info
             .addField("players", getPlayers())
             .addField("total_unique_players", getTotalUniquePlayers())
-            // missions
             .addField("missions", getMissions())
             .addField("successful_missions", getSuccessfulMissions())
             .addField("total_mission_difficulty", getTotalMissionDifficulty())
             .addField("completed_planets", getCompletedPlanets())
-            // events
             .addField("defend_events", getDefendEvents())
             .addField("successful_defend_events", getSuccessfulDefendEvents())
             .addField("attack_events", getAttackEvents())
