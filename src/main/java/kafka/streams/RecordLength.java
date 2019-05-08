@@ -50,10 +50,10 @@ public class RecordLength {
         // finally, construct the topology using the streams builder
         final Topology topology = builder.build();
 
-        Logging.log(topology.describe().toString(),TAG);
+        Logging.log(topology.describe().toString(), TAG);
 
         GenericStream RecordLengthStream = new GenericStream("streams-recordlength", Config.getLocalBootstrapServersConfig(),
-                Serdes.String().getClass(), Serdes.String().getClass(),topology);
+                Serdes.String().getClass(), Serdes.String().getClass(), topology);
 
         // creating countDownLatch for Thread handling
         final CountDownLatch latch = new CountDownLatch(1);

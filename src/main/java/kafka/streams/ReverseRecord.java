@@ -47,7 +47,7 @@ public class ReverseRecord {
                 .to("streams-reverserecord-output");
 
         final Topology topology = builder.build();
-        Logging.log(topology.describe().toString(),TAG);
+        Logging.log(topology.describe().toString(), TAG);
 
         GenericStream reverseRecordStream = new GenericStream("streams-reverserecord", Config.getLocalBootstrapServersConfig(),
                 Serdes.String().getClass(), Serdes.String().getClass(), topology);

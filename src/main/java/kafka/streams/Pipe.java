@@ -46,7 +46,7 @@ public class Pipe {
 
         // create a generic stream with declared topology
         GenericStream pipeStream = new GenericStream("streams-pipe",Config.getLocalBootstrapServersConfig(),
-                Serdes.String().getClass(),Serdes.String().getClass(),topology);
+                Serdes.String().getClass(), Serdes.String().getClass(), topology);
 
         final CountDownLatch latch = new CountDownLatch(1);
 
