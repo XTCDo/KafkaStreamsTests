@@ -193,9 +193,9 @@ public class HelldiversAPIWrapper {
             // initiate list
             List<Map> mapList = new ArrayList<>();
             // populate list with input
-            if (inputObject instanceof Map){
+            if (inputObject instanceof Map) {
                 mapList = Collections.singletonList( (Map) inputObject);
-            } else if ( inputObject instanceof List ){
+            } else if ( inputObject instanceof List ) {
                 for (Object object : (List) inputObject) {
                     if (object instanceof Map)
                         mapList.add((Map)object);
