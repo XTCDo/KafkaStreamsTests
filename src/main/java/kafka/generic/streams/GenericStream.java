@@ -29,7 +29,7 @@ public class GenericStream {
      */
     public GenericStream(String applicationId, String bootStrapServer,
                          Class<? extends Serde> defaultKeySerdeClass, Class<? extends Serde> defaultValueSerdeClass,
-                         Topology topology){
+                         Topology topology) {
 
         this.applicationId= applicationId;
 
@@ -53,21 +53,18 @@ public class GenericStream {
      * @param bootStrapServer location of broker server this stream will listen to/ be registered to
      * @param topology topology this stream will be built according to, defines: input topics, processes and output topics
      */
-     public GenericStream(String appId, String bootStrapServer, Topology topology){
+     public GenericStream(String appId, String bootStrapServer, Topology topology) {
         this(appId, bootStrapServer, Serdes.String().getClass(), ObjectSerde.class, topology);
     }
-
-
-    // function calls
 
     /**
      * start the streams defined in this objects constructor
      */
-    public void run(){
-        try{
-            Logging.log(Level.INFO,"starting stream: "+applicationId,TAG);
+    public void run() {
+        try {
+            Logging.log(Level.INFO, "starting stream: " + applicationId,TAG);
             streams.start();
-        }catch (Exception e){
+        } catch (Exception e) {
             Logging.error(e, TAG);
         }
     }
@@ -75,8 +72,8 @@ public class GenericStream {
     /**
      * gracefully terminating streams
      */
-    public void close(){
-        Logging.log(Level.INFO,"terminating stream: "+applicationId,TAG);
+    public void close() {
+        Logging.log(Level.INFO, "terminating stream: " + applicationId,TAG);
         streams.close();
     }
 
