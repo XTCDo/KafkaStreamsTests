@@ -11,25 +11,25 @@ import java.time.Duration;
 public class PlanetConsumer extends GenericThreadedConsumer<String, String> {
     final static String topic = "streams-planets-input";
 
-    public PlanetConsumer(){
+    public PlanetConsumer() {
         super(topic, Config.getLocalBootstrapServersConfig(), "PlanetConsumer");
     }
 
-    public void run(){
+    public void run() {
         Thread consumerThread = new Thread(() -> {
             try {
-                while(true){
+                while(true) {
                     // Get records containing Strings that represent Planets
                     ConsumerRecords<String,String> records = getConsumer().poll(Duration.ofMillis(10));
 
                     // Turn every String into a Planet and describe it
-                    for(ConsumerRecord<String, String> record : records){
+                    for(ConsumerRecord<String, String> record : records) {
                         Planet planet = new Planet(record.value());
                         planet.describe();
                         System.out.println();
                     }
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
