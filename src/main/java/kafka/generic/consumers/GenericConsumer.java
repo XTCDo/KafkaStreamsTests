@@ -18,7 +18,7 @@ public class GenericConsumer<K, V> {
                            Object keyDeserializerClass,
                            Object valueDeserializerClass,
                            boolean enableAutoCommit,
-                           int autoCommitIntervalMS){
+                           int autoCommitIntervalMS) {
         properties = new Properties();
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapServers);
@@ -37,7 +37,7 @@ public class GenericConsumer<K, V> {
                            Object keyDeserializerClass,
                            Object valueDeserializerClass,
                            boolean enableAutoCommit,
-                           int autoCommitIntervalMS){
+                           int autoCommitIntervalMS) {
         this(Collections.singletonList(topic), bootStrapServers, groupId, keyDeserializerClass,
                 valueDeserializerClass, enableAutoCommit, autoCommitIntervalMS);
     }
