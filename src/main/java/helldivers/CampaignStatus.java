@@ -53,7 +53,7 @@ public class CampaignStatus {
      * Constructor for CampaignStatus that takes a Map containing values returned by the helldivers API
      * @param values Map containing values returned by the helldivers API
      */
-    public CampaignStatus(Map values){
+    public CampaignStatus(Map values) {
         // todo change these, they will only be called on construction, no longer from gson
         this(
             (long) values.get("timeStamp"),
@@ -80,7 +80,7 @@ public class CampaignStatus {
      */
     public CampaignStatus(long timeStamp, int season, int enemy,
                           int points, int pointsTaken, int pointsMax,
-                          String status, int introductionOrder){
+                          String status, int introductionOrder) {
         this.timeStamp = timeStamp;
         this.season = season;
         this.enemy = enemy;
@@ -95,7 +95,7 @@ public class CampaignStatus {
      * Returns a String describing the CampaignStatus
      * @return a String describing the CampaignStatus
      */
-    public String getDescription(){
+    public String getDescription() {
         StringBuilder description = new StringBuilder();
         description.append(this.toString()).append("\n")
                 .append("Enemy:              ").append(getEnemyName()).append("\n")
@@ -112,7 +112,7 @@ public class CampaignStatus {
      * @param table name of the measurement
      * @return influx Point representing this object
      */
-    public Point toPoint(String table){
+    public Point toPoint(String table) {
         return Point.measurement(table)
                 .time(timeStamp, TimeUnit.SECONDS)
                 .tag("season", String.valueOf(getSeason()))
@@ -128,7 +128,7 @@ public class CampaignStatus {
      * Returns the name of the enemy that is being attacked in this AttackEvent
      * @return the name of the enemy that is being attacked in this AttackEvent
      */
-    public String getEnemyName(){
+    public String getEnemyName() {
         String[] enemies = new String[] {"Bugs", "Cyborgs", "Illuminate"};
         return enemies[getEnemy()];
     }
