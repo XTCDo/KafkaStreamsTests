@@ -13,20 +13,19 @@ public class PlanetProducer extends GenericThreadedProducer<String, String> {
         super(topic, bootStrapServer, keySerializerClass, valueSerializerClass, acks, retries, batchSize, lingerMS, bufferMemory);
     }
 
-    public PlanetProducer(String topic, String bootStrapServer){
+    public PlanetProducer(String topic, String bootStrapServer) {
         super(topic, bootStrapServer);
     }
 
-    public void run(){
+    public void run() {
         Thread producerThread = new Thread(() -> {
             try {
                 // PlanetProvider provides a list of planets
                 List<Planet> planets = PlanetProvider.getPlanets();
 
                 while(true) {
-
                     // Keep sending these planets to Kafka
-                    for(Planet p : planets){
+                    for(Planet p : planets) {
                         getProducer().send(new ProducerRecord<String, String>(getTopic(), p.getName(), p.toString()));
                         Thread.sleep(100);
                     }
