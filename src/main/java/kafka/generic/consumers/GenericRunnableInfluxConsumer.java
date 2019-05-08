@@ -15,15 +15,28 @@ public class GenericRunnableInfluxConsumer<K,V> extends GenericConsumer<K,V> imp
     private InfluxDAO influxDAO;
     private Function<ConsumerRecords, List<Point>> recordsToPoints;
 
-    // todo documentation
+
+    /**
+     * Create a generic runnable consumer that interacts with an influx database.
+     * @param influxURL URL of the influx database
+     * @param database name of the database to interact with
+     * @param topics a list of topics for which this consumer will listen
+     * @param bootstrapServer the server from which to poll Kafka data
+     * @param groupId group ID for load distribution
+     * @param keyDeserializerClass Class with which to serialize/deserialize record keys
+     * @param valueDeserializerClass Class with which to serialize/deserialize record values
+     * @param enableAutoCommit whether or not autoCommits are enabled
+     * @param autoCommitIntervalMS interval between auto-commits
+     * @param recordsToPoints a function which converts kafka ConsumerRecords to Influx Points
+     */
     public GenericRunnableInfluxConsumer(String influxURL, String database,
-                                         List<String> topics, String bootStrapServers, String groupId,
+                                         List<String> topics, String bootstrapServer, String groupId,
                                          Object keyDeserializerClass, Object valueDeserializerClass,
                                          boolean enableAutoCommit, int autoCommitIntervalMS,
                                          Function<ConsumerRecords, List<Point>> recordsToPoints) {
 
         // constructor call for super class
-        super(topics, bootStrapServers, groupId,
+        super(topics, bootstrapServer, groupId,
                 keyDeserializerClass, valueDeserializerClass,
                 enableAutoCommit, autoCommitIntervalMS);
 
@@ -32,27 +45,48 @@ public class GenericRunnableInfluxConsumer<K,V> extends GenericConsumer<K,V> imp
         this.influxDAO = new InfluxDAO(influxURL);
         this.recordsToPoints = recordsToPoints;
     }
-    
-    // todo documentation
+
+    /**
+     * Create a generic runnable consumer that interacts with an influx database.
+     * @param influxURL URL of the influx database
+     * @param database name of the database to interact with
+     * @param topic a single topic for which this consumer will listen
+     * @param bootstrapServer the server from which to poll Kafka data
+     * @param groupId group ID for load distribution
+     * @param keyDeserializerClass Class with which to serialize/deserialize record keys
+     * @param valueDeserializerClass Class with which to serialize/deserialize record values
+     * @param enableAutoCommit whether or not autoCommits are enabled
+     * @param autoCommitIntervalMS interval between auto-commits
+     * @param recordsToPoints a function which converts kafka ConsumerRecords to Influx Points
+     */
     public GenericRunnableInfluxConsumer(String influxURL, String database,
-                                         String topic, String bootStrapServers, String groupId,
+                                         String topic, String bootstrapServer, String groupId,
                                          Object keyDeserializerClass, Object valueDeserializerClass,
                                          boolean enableAutoCommit, int autoCommitIntervalMS,
                                          Function<ConsumerRecords, List<Point>> recordsToPoints) {
         // overloaded constructor
-        this(influxURL, database, Collections.singletonList(topic), bootStrapServers, groupId,
+        this(influxURL, database, Collections.singletonList(topic), bootstrapServer, groupId,
              keyDeserializerClass, valueDeserializerClass, enableAutoCommit, autoCommitIntervalMS, 
              recordsToPoints);
 
     }
 
-    // with sensible defaults
-    // todo documentation
+    // constructors with sensible defaults
+
+    /**
+     * Generic runnable Influx Consumer with sensible defaults
+     * @param influxURL URL of the influx database
+     * @param database name of the database to interact with
+     * @param topics a list of topics for which this consumer will listen
+     * @param bootstrapServer the server from which to poll Kafka data
+     * @param groupId group ID for load distribution
+     * @param recordsToPoints a function which converts kafka ConsumerRecords to Influx Points
+     */
     public GenericRunnableInfluxConsumer(String influxURL, String database,
-                                         List<String> topics, String bootStrapServer, String groupId,
+                                         List<String> topics, String bootstrapServer, String groupId,
                                          Function<ConsumerRecords, List<Point>> recordsToPoints) {
         // super constructor call
-        super(topics, bootStrapServer, groupId);
+        super(topics, bootstrapServer, groupId);
 
         // special variables
         this.database = database;
@@ -60,11 +94,20 @@ public class GenericRunnableInfluxConsumer<K,V> extends GenericConsumer<K,V> imp
         this.recordsToPoints = recordsToPoints;
     }
 
+    /**
+     * Generic runnable Influx Consumer with sensible defaults
+     * @param influxURL URL of the influx database
+     * @param database name of the database to interact with
+     * @param topic a single topic for which this consumer will listen
+     * @param bootstrapServer the server from which to poll Kafka data
+     * @param groupId group ID for load distribution
+     * @param recordsToPoints a function which converts kafka ConsumerRecords to Influx Points
+     */
     public GenericRunnableInfluxConsumer(String influxURL, String database,
-                                         String topics, String bootStrapServer, String groupId,
+                                         String topic, String bootstrapServer, String groupId,
                                          Function<ConsumerRecords, List<Point>> recordsToPoints) {
         // overloaded constructor
-        this(influxURL, database, Collections.singletonList(topics), bootStrapServer, groupId, recordsToPoints);
+        this(influxURL, database, Collections.singletonList(topic), bootstrapServer, groupId, recordsToPoints);
     }
 
 
