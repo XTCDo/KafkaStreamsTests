@@ -102,8 +102,6 @@ public class HelldiversAPIWrapper {
         }
     }
 
-
-
     public static List<Statistics> getStatistics(Map fullStatus) {
         List<Map> mapList = getSubmapWithTimestamp(fullStatus,"statistics");
         if (mapList == null) return null;
@@ -135,7 +133,7 @@ public class HelldiversAPIWrapper {
 
         // Iterate through the Maps in mapList, add their relative index
         // and then use that info to create a new Campaign status object
-        for (int i=0; i< mapList.size(); i++){
+        for (int i = 0; i < mapList.size(); i++) {
             Map campaignStatusMap = mapList.get(i);
             campaignStatusMap.put("enemy", i); // insert enemy index
             campaignStatusList.add(new CampaignStatus(campaignStatusMap));
@@ -186,7 +184,7 @@ public class HelldiversAPIWrapper {
      * @param key key of sub-map
      * @return a Map object representing the sub map of the root map with an additional timeStamp
      */
-    private static List<Map> getSubmapWithTimestamp(Map input, String key){
+    private static List<Map> getSubmapWithTimestamp(Map input, String key) {
         try {
             long timeStamp = Math.round((double) input.get("time")); //extract timestamp
             Object inputObject = input.get(key); // fetch raw sub-map
@@ -202,7 +200,7 @@ public class HelldiversAPIWrapper {
             mapList.forEach(map -> map.put("timeStamp", timeStamp));
 
             return mapList;
-        } catch (NullPointerException npe){
+        } catch (NullPointerException npe) {
             return null;
         }
     }
