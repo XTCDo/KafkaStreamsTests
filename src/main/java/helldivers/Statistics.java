@@ -221,7 +221,6 @@ public class Statistics {
         return enemies[getEnemy()];
     }
 
-
     /**
      * Returns a String describing the Statistics
      *
@@ -301,7 +300,6 @@ public class Statistics {
         return seasonDuration;
     }
 
-
     /**
      * The id of the enemy these statistics belong to
      */
@@ -309,14 +307,12 @@ public class Statistics {
         return enemy;
     }
 
-
     /**
      * Amount of players currently online (in this region?)
      */
     public int getPlayers() {
         return players;
     }
-
 
     /**
      * Amount of unique players that have fought this season/war
