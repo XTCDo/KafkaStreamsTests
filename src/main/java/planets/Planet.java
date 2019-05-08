@@ -5,7 +5,7 @@ import org.influxdb.dto.Point;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
-public class Planet{
+public class Planet {
     private String name;
     private String capitol;
     private String color;
@@ -27,7 +27,7 @@ public class Planet{
      * name:capitol:color:distanceToSun:gravity:temperature
      * @param planetAsString Structured String that describes the Planet
      */
-    public Planet(String planetAsString){
+    public Planet(String planetAsString) {
         String[] data = planetAsString.split(":");
         name = data[0];
         capitol = data[1];
@@ -41,7 +41,7 @@ public class Planet{
      * Turns the planets into a structured String
      * @return The structured String
      */
-    public String toString(){
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(name).append(":")
                 .append(capitol).append(":")
@@ -56,7 +56,7 @@ public class Planet{
      *
      * @return
      */
-    public Point toPoint(){
+    public Point toPoint() {
         Point point = Point.measurement("planets")
                 .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                 .addField("name", getName())
@@ -72,7 +72,7 @@ public class Planet{
     /**
      * Prints out a description of the Planet
      */
-    public void describe(){
+    public void describe() {
         System.out.printf("Planet: %s\n", getName());
         System.out.printf("\tCapitol:\t\t%s\n", getCapitol());
         System.out.printf("\tColor:\t\t\t%s\n", getColor());
@@ -81,11 +81,11 @@ public class Planet{
         System.out.printf("\tTemperature:\t\t%s K\n", getTemperature());
     }
 
-    private float parseFloatWithDefault(String value, float defaultValue){
+    private float parseFloatWithDefault(String value, float defaultValue) {
         float valueAsFloat = defaultValue;
-        try{
+        try {
             valueAsFloat = Float.parseFloat(value);
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             nfe.printStackTrace();
         } finally {
             return valueAsFloat;

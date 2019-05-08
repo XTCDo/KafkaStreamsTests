@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlanetProvider {
-    public static List<Planet> getPlanetsVaryingTemperature(){
+    public static List<Planet> getPlanetsVaryingTemperature() {
         List<Planet> planets = new ArrayList<>();
         final float DEVIATION = 10.0f;
+        
         planets.add(new PlanetVaryingTemperature(
                 "Mercury",
                 "Sydney",
@@ -16,6 +17,7 @@ public class PlanetProvider {
                 452 - DEVIATION,
                 452 + DEVIATION
         ));
+
         planets.add(new PlanetVaryingTemperature(
                 "Venus",
                 "",
@@ -25,6 +27,7 @@ public class PlanetProvider {
                 726 - DEVIATION,
                 726 + DEVIATION
         ));
+
         planets.add(new PlanetVaryingTemperature(
                 "Terra",
                 "Diepenbeek",
@@ -34,6 +37,7 @@ public class PlanetProvider {
                 310 - DEVIATION,
                 310 + DEVIATION
         ));
+
         planets.add(new PlanetVaryingTemperature(
                 "Mars",
                 "Valis Marineris",
@@ -43,6 +47,7 @@ public class PlanetProvider {
                 150 - DEVIATION,
                 150 + DEVIATION
         ));
+
         planets.add(new PlanetVaryingTemperature(
                 "Jupiter",
                 "",
@@ -52,6 +57,7 @@ public class PlanetProvider {
                 120 - DEVIATION,
                 120 + DEVIATION
         ));
+
         planets.add(new PlanetVaryingTemperature(
                 "Saturn",
                 "",
@@ -61,6 +67,7 @@ public class PlanetProvider {
                 88 - DEVIATION,
                 88 + DEVIATION
         ));
+
         planets.add(new Planet(
                 "Uranus",
                 "",
@@ -69,6 +76,7 @@ public class PlanetProvider {
                 8.87f,
                 59
         ));
+
         planets.add(new PlanetVaryingTemperature(
                 "Neptune",
                 "",
@@ -78,6 +86,7 @@ public class PlanetProvider {
                 48 - DEVIATION,
                 48 + DEVIATION
         ));
+
         planets.add(new PlanetVaryingTemperature(
                 "Pluto",
                 "",
@@ -91,7 +100,7 @@ public class PlanetProvider {
         return planets;
     }
 
-    public static List<Planet> getPlanets(){
+    public static List<Planet> getPlanets() {
         List<Planet> planets = new ArrayList<>();
         planets.add(new Planet(
                 "Mercury",
@@ -101,6 +110,7 @@ public class PlanetProvider {
                 3.7f,
                 452
         ));
+
         planets.add(new Planet(
                 "Venus",
                 "",
@@ -109,6 +119,7 @@ public class PlanetProvider {
                 8.87f,
                 726
         ));
+
         planets.add(new Planet(
                 "Terra",
                 "Diepenbeek",
@@ -117,6 +128,7 @@ public class PlanetProvider {
                 9.81f,
                 310
         ));
+
         planets.add(new Planet(
                 "Mars",
                 "Valis Marineris",
@@ -125,6 +137,7 @@ public class PlanetProvider {
                 3.711f,
                 150
         ));
+
         planets.add(new Planet(
                 "Jupiter",
                 "",
@@ -133,6 +146,7 @@ public class PlanetProvider {
                 24.79f,
                 120
         ));
+
         planets.add(new Planet(
                 "Saturn",
                 "",
@@ -141,6 +155,7 @@ public class PlanetProvider {
                 10.44f,
                 88
         ));
+
         planets.add(new Planet(
                 "Uranus",
                 "",
@@ -149,6 +164,7 @@ public class PlanetProvider {
                 8.87f,
                 59
         ));
+
         planets.add(new Planet(
                 "Neptune",
                 "",
@@ -157,6 +173,7 @@ public class PlanetProvider {
                 11.15f,
                 48
         ));
+
         planets.add(new Planet(
                 "Pluto",
                 "",
@@ -165,6 +182,7 @@ public class PlanetProvider {
                 0.62f,
                 37
         ));
+
         return planets;
     }
 }

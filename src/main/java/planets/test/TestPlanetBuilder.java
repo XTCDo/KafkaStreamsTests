@@ -9,7 +9,7 @@ import planets.exceptions.InvalidTemperatureException;
 import planets.exceptions.InvalidTemperatureRangeException;
 
 public class TestPlanetBuilder {
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         // Create a regular planet and describe it
         PlanetBuilder pb = new PlanetBuilder();
@@ -34,7 +34,7 @@ public class TestPlanetBuilder {
                 .setMinimumTemperature(270.f - 40.0f)
                 .buildWithVaryingTemperature();
 
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 5; i++) {
             randomDjop.describe();
         }
 
@@ -43,7 +43,7 @@ public class TestPlanetBuilder {
         try {
             pb = new PlanetBuilder();
             Planet invalidTemperaturePlanet = pb.setTemperature(-1.0f).build();
-        } catch(InvalidTemperatureException ite){
+        } catch(InvalidTemperatureException ite) {
             ite.printStackTrace();
         }
 
@@ -52,7 +52,7 @@ public class TestPlanetBuilder {
         try {
             pb = new PlanetBuilder();
             Planet invalidGravityPlanet = pb.setGravity(-1.0f).build();
-        } catch (InvalidGravityException ige){
+        } catch (InvalidGravityException ige) {
             ige.printStackTrace();
         }
 
@@ -61,7 +61,7 @@ public class TestPlanetBuilder {
         try {
             pb = new PlanetBuilder();
             Planet invalidDistanceToSunPlanet = pb.setDistanceToSun(-1.0f).build();
-        } catch (InvalidDistanceToSunException idtse){
+        } catch (InvalidDistanceToSunException idtse) {
             idtse.printStackTrace();
         }
 
@@ -73,7 +73,7 @@ public class TestPlanetBuilder {
                     pb.setMinimumTemperature(100.0f)
                         .setMaximumTemperature(0.0f)
                         .buildWithVaryingTemperature();
-        } catch (InvalidTemperatureRangeException itre){
+        } catch (InvalidTemperatureRangeException itre) {
             itre.printStackTrace();
         }
 
@@ -84,7 +84,7 @@ public class TestPlanetBuilder {
             PlanetVaryingTemperature invalidMinimumTemperaturePlanet =
                     pb.setMinimumTemperature(-1.0f)
                     .buildWithVaryingTemperature();
-        } catch (InvalidTemperatureRangeException itre){
+        } catch (InvalidTemperatureRangeException itre) {
             itre.printStackTrace();
         }
 

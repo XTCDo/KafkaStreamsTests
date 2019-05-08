@@ -30,7 +30,7 @@ public class PlanetBuilder {
      * @param capitol the capitol of the Planet
      * @return The PlanetBuilder
      */
-    public PlanetBuilder setCapitol(String capitol){
+    public PlanetBuilder setCapitol(String capitol) {
         this.capitol = capitol;
         return this;
     }
@@ -40,7 +40,7 @@ public class PlanetBuilder {
      * @param color the color of the Planet
      * @return The PlanetBuilder
      */
-    public PlanetBuilder setColor(String color){
+    public PlanetBuilder setColor(String color) {
         this.color = color;
         return this;
     }
@@ -50,7 +50,7 @@ public class PlanetBuilder {
      * @param distanceToSun The distance to the sun of the Planet in AU
      * @return The PlanetBuilder
      */
-    public PlanetBuilder setDistanceToSun(float distanceToSun){
+    public PlanetBuilder setDistanceToSun(float distanceToSun) {
         this.distanceToSun = distanceToSun;
         return this;
     }
@@ -60,7 +60,7 @@ public class PlanetBuilder {
      * @param gravity The gravity of the Planet in m/s^2
      * @return The PlanetBuilder
      */
-    public PlanetBuilder setGravity(float gravity){
+    public PlanetBuilder setGravity(float gravity) {
         this.gravity = gravity;
         return this;
     }
@@ -70,7 +70,7 @@ public class PlanetBuilder {
      * @param temperature The temperature of the Planet in K
      * @return The PlanetBuilder
      */
-    public PlanetBuilder setTemperature(float temperature){
+    public PlanetBuilder setTemperature(float temperature) {
         this.temperature = temperature;
         return this;
     }
@@ -80,7 +80,7 @@ public class PlanetBuilder {
      * @param minimumTemperature The minimum value for temperature of the PlanetVaryingTemperature
      * @return The PlanetBuilder
      */
-    public PlanetBuilder setMinimumTemperature(float minimumTemperature){
+    public PlanetBuilder setMinimumTemperature(float minimumTemperature) {
         this.minimumTemperature = minimumTemperature;
         return this;
     }
@@ -90,7 +90,7 @@ public class PlanetBuilder {
      * @param maximumTemperature The maximum value for temperature of the PlanetVaryingTemperature
      * @return The PlanetBuilder
      */
-    public PlanetBuilder setMaximumTemperature(float maximumTemperature){
+    public PlanetBuilder setMaximumTemperature(float maximumTemperature) {
         this.maximumTemperature = maximumTemperature;
         return this;
     }
@@ -99,13 +99,13 @@ public class PlanetBuilder {
      * Builds a Planet with the provided values
      * @return The Planet
      */
-    public Planet build(){
+    public Planet build() {
         // Gravity must be larger than 0 m/s^2
-        if (gravity < 0.0f){
+        if (gravity < 0.0f) {
             throw new InvalidGravityException();
         }
         // Distance to sun must be larger than 0 AU
-        if (distanceToSun < 0.0f){
+        if (distanceToSun < 0.0f) {
             throw new InvalidDistanceToSunException();
         }
         // Temperature must be larger than 0 K
@@ -119,7 +119,7 @@ public class PlanetBuilder {
      * Builds a PlanetVaryingTemperature with the provided values
      * @return The PlanetVaryingTemperature
      */
-    public PlanetVaryingTemperature buildWithVaryingTemperature(){
+    public PlanetVaryingTemperature buildWithVaryingTemperature() {
         // Minimum temperature can not be larger than maximumtemperature
         // Minimum and maximum temperature must be larger than 0 K
         if (minimumTemperature > maximumTemperature
@@ -128,11 +128,11 @@ public class PlanetBuilder {
             throw new InvalidTemperatureRangeException(minimumTemperature, maximumTemperature);
         }
         // Gravity must be larger than 0 m/s^2
-        if (gravity < 0.0f){
+        if (gravity < 0.0f) {
             throw new InvalidGravityException();
         }
         // Distance to sun must be larger than 0 AU
-        if (distanceToSun < 0.0f){
+        if (distanceToSun < 0.0f) {
             throw new InvalidDistanceToSunException();
         }
         // Temperature must be larger than 0 K

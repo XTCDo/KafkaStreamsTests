@@ -10,7 +10,7 @@ public class PlanetVaryingTemperature extends Planet {
     public PlanetVaryingTemperature(String name, String capitol,
                                     String color, float distanceToSun,
                                     float gravity, float minimumTemperature,
-                                    float maximumTemperature){
+                                    float maximumTemperature) {
         super(name, capitol, color, distanceToSun, gravity,
                 RandomUtils.randomFloat(minimumTemperature, maximumTemperature));
         this.minimumTemperature = minimumTemperature;
