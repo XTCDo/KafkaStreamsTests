@@ -190,12 +190,17 @@ public class HelldiversAPIWrapper {
             Object inputObject = input.get(key); // fetch raw sub-map
 
             // parse to list
-            List<Map> mapList = (inputObject instanceof Map) ? Collections.singletonList( (Map) inputObject)
-                    : ( inputObject instanceof List) ?
-                            ( ( (List) inputObject).get(0) instanceof Map)?
-                                    (List<Map>) inputObject
-                                    : null
-                            : null;
+            // initiate list
+            List<Map> mapList = new ArrayList<>();
+            // populate list with input
+            if (inputObject instanceof Map){
+                mapList = Collections.singletonList( (Map) inputObject);
+            } else if ( inputObject instanceof List ){
+                for (Object object : (List) inputObject) {
+                    if (object instanceof Map)
+                        mapList.add((Map)object);
+                }
+            }
 
             mapList.forEach(map -> map.put("timeStamp", timeStamp));
 
