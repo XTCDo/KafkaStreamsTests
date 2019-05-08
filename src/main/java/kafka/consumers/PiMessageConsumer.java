@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 
 public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, String> {
     private static final String TAG = "PiMessageConsumer";
-    public PiMessageConsumer(){
+    public PiMessageConsumer() {
         super("http://localhost:8086","python-input-new", Config.getLocalBootstrapServersConfig(), "PiMessageConsumer");
     }
 
-    public void run(){
+    public void run() {
         Thread consumerThread = new Thread(() -> {
             Gson gson = new Gson();
 
@@ -36,7 +36,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                            Point point = toPoint("experimental-test-measurements", input);
                            Logging.log("received data:" + point.toString(),TAG);
                            getInfluxDAO().writePoint("Pi_Measurements", point);
-                       } catch (Exception e){
+                       } catch (Exception e) {
                            Logging.error(e, TAG);
                        }
                    });
@@ -70,7 +70,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
          */
         long time = Math.round((double) inputMap.get("time"));
         Map tags = (Map) inputMap.get("tags");
-        tags.replaceAll((key, value)-> String.valueOf(value));
+        tags.replaceAll((key, value) -> String.valueOf(value));
         Map fields = (Map) inputMap.get("fields");
         Point point = null;
         try {
@@ -79,8 +79,7 @@ public class PiMessageConsumer extends GenericThreadedInfluxConsumer<String, Str
                     .tag(tags)
                     .fields(fields)
                     .build();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             Logging.error(e, TAG);
             throw e;
         }

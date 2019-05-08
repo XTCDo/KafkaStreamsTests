@@ -16,7 +16,7 @@ public class InfluxDAO {
     private InfluxDB influxDB;
     private static final String DEFAULT_RP = "autogen";
 
-    public InfluxDAO(String urlString){
+    public InfluxDAO(String urlString) {
         targetUrl = urlString;
         influxDB = connect();
     }
@@ -28,12 +28,12 @@ public class InfluxDAO {
     /**
      * pings the target URL of this object
      */
-    public void ping(){
+    public void ping() {
         System.out.println("sending ping request to:\t" + targetUrl);
         System.out.println("response time:\t" + influxDB.ping().getResponseTime());
     }
 
-    public String select(String database, String target, String table){
+    public String select(String database, String target, String table) {
         String selectQuery = new StringBuilder()
                 .append("SELECT ").append(target)
                 .append("FROM ").append(table)
@@ -41,7 +41,7 @@ public class InfluxDAO {
         return query(database,selectQuery);
     }
 
-    public String select(String database, String target, String table, String conditional){
+    public String select(String database, String target, String table, String conditional) {
         String selectQuery = new StringBuilder()
                 .append("SELECT ").append(target)
                 .append("FROM ").append(table)
@@ -50,11 +50,11 @@ public class InfluxDAO {
         return query(database,selectQuery);
     }
 
-    public void writePointList(String database, List<Point> points){
+    public void writePointList(String database, List<Point> points) {
         writePointList(database, points, DEFAULT_RP);
     }
 
-    public void writePointList(String database, List<Point> points, String retentionPolicy){
+    public void writePointList(String database, List<Point> points, String retentionPolicy) {
         BatchPoints batch = BatchPoints
                 .database(database)
                 .retentionPolicy(retentionPolicy)
@@ -69,7 +69,7 @@ public class InfluxDAO {
      * @param database  name of database
      * @param point     point to write
      */
-    public void writePoint(String database, Point point){
+    public void writePoint(String database, Point point) {
         writePoint(database, point, DEFAULT_RP);
     }
 
@@ -79,7 +79,7 @@ public class InfluxDAO {
      * @param point             point to write
      * @param retentionPolicy   retention policy to maintain(how long to save etc...)
      */
-    public void writePoint(String database, Point point, String retentionPolicy){
+    public void writePoint(String database, Point point, String retentionPolicy) {
         influxDB.write(database, retentionPolicy, point);
     }
 
@@ -88,14 +88,14 @@ public class InfluxDAO {
      * @param database      database name
      * @param inputQuery    query to perform
      */
-    public String query(String database, String inputQuery){
+    public String query(String database, String inputQuery) {
         // connect to influxdb
         influxDB.setDatabase(database); // is this necessary?
         influxDB.enableBatch(BatchOptions.DEFAULTS); // todo figure out if this needs to exist
 
         // prepare query
         Query query = new Query(inputQuery, database);
-        System.out.println("performing query:\t"+query.getCommand());
+        System.out.println("performing query:\t" + query.getCommand());
 
         // perform query and immediately process response as a string
         QueryResult result = influxDB.query(query);  // todo improve this to better process responses
@@ -109,7 +109,7 @@ public class InfluxDAO {
         return responseString;
     }
 
-    public void close(){
+    public void close() {
         influxDB.close();
     }
 }
