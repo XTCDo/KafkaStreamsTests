@@ -16,8 +16,6 @@ public class Status {
 
     public void refresh() { setAll(HelldiversAPIWrapper.getStatus()); }
 
-    // getters
-
     public Map getHttpApiResponseObject() { return httpApiResponseObject; }
 
     public List<CampaignStatus> getCampaignStatuses() {
@@ -35,8 +33,6 @@ public class Status {
     public List<Statistics> getStatistics() {
         return statistics;
     }
-
-    // setters
 
     private void setAll(Map fullStatus){
         this.httpApiResponseObject = fullStatus;
